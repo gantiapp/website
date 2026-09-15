@@ -1,4 +1,13 @@
-@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;500;700;800&family=Inter:wght@400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+
+@font-face {
+  font-family: "Bricolage Grotesque";
+  src: url("/fonts/BricolageGrotesque-Variable.ttf") format("truetype");
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+  font-optical-sizing: none;
+}
 
 :root {
   /* Local FILL styles — Base */
@@ -57,6 +66,7 @@
   /* Type — local TEXT styles */
   --font-sans: "Inter", system-ui, sans-serif;
   --font-display: "Bricolage Grotesque", var(--font-sans);
+  --font-opsz-figma: 14;
 
   --font-weight-regular: 400;
   --font-weight-medium: 500;
@@ -86,7 +96,7 @@
   --font-size-large-text: var(--font-size-24);
   --font-size-subtitle: var(--font-size-24);
 
-  --line-height-heading: 1;
+  --line-height-heading: 1.2;
   --line-height-body: 1.5;
 
   /* Space — gap and padding on page Maquettes */
@@ -129,7 +139,7 @@
   /* Semantic */
   --color-text: var(--color-primary-800);
   --color-text-muted: var(--color-gray-500);
-  --color-bg: var(--color-gray-100);
+  --color-bg: var(--color-base-white);
   --color-bg-raised: var(--color-base-white);
   --color-action: var(--color-primary-500);
   --color-action-text: var(--color-base-white);

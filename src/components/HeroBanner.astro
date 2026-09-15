@@ -1,0 +1,78 @@
+---
+import Carousel from './Carousel.astro';
+import Highlight from './Highlight.astro';
+---
+
+<section class="hero">
+  <div class="hero__copy">
+    <h1 class="hero__title">
+      L'excellence de la <Highlight>donnée</Highlight>,<br />à chaque étape de votre métier.
+    </h1>
+    <p class="hero__subtitle">
+      De la détection à la résolution, reprenez le{' '}
+      <Highlight strong>contrôle total</Highlight>
+      {' '}de votre patrimoine data.
+    </p>
+  </div>
+  <Carousel />
+</section>
+
+<style>
+  .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-96);
+    padding: var(--space-64) 0;
+    box-sizing: border-box;
+    text-align: center;
+  }
+
+  .hero__copy {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-16);
+    width: 100%;
+  }
+
+  .hero__title {
+    margin: 0;
+    color: var(--color-base-black);
+    font-family: var(--font-display);
+    font-size: var(--font-size-h1);
+    font-weight: var(--font-weight-extrabold);
+    font-optical-sizing: none;
+    font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 800;
+    letter-spacing: 0;
+    line-height: 1.2;
+  }
+
+  .hero__subtitle {
+    margin: 0;
+    max-width: 932px;
+    color: var(--color-base-black);
+    font-family: var(--font-display);
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-weight-medium);
+    font-optical-sizing: none;
+    font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 500;
+    letter-spacing: 0;
+    line-height: 1.2;
+  }
+
+  @media (max-width: 768px) {
+    .hero {
+      gap: var(--space-48);
+      padding: var(--space-32) var(--space-24);
+    }
+
+    .hero__title {
+      font-size: var(--font-size-h2);
+    }
+
+    .hero__subtitle {
+      font-size: var(--font-size-body-large);
+    }
+  }
+</style>

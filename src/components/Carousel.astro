@@ -1,0 +1,213 @@
+---
+const slides = [
+  {
+    id: 'observabilite',
+    label: 'Observabilité',
+    image: '/images/schemas/observabilite.jpg?v=2',
+  },
+  {
+    id: 'cartographie',
+    label: 'Cartographie',
+    image: '/images/schemas/cartographie.jpg?v=2',
+  },
+  {
+    id: 'referentiel-unique',
+    label: 'Référentiel unique',
+    image: '/images/schemas/referentiel-unique.jpg?v=2',
+  },
+  {
+    id: 'exploration',
+    label: 'Exploration',
+    image: '/images/schemas/exploration.jpg?v=2',
+  },
+  {
+    id: 'diagnostic',
+    label: 'Diagnostic',
+    image: '/images/schemas/diagnostic.jpg?v=2',
+  },
+];
+---
+
+<div class="carousel" data-carousel>
+  {
+    slides.map((slide) => (
+      <link rel="preload" href={slide.image} as="image" />
+    ))
+  }
+
+  <div class="carousel__tabs" role="tablist" aria-label="Fonctionnalités">
+    {
+      slides.map((slide, index) => (
+        <button
+          class="carousel__tab"
+          type="button"
+          role="tab"
+          id={`carousel-tab-${slide.id}`}
+          aria-controls={`carousel-panel-${slide.id}`}
+          aria-selected={index === 0 ? 'true' : 'false'}
+          data-carousel-tab
+          data-index={String(index)}
+        >
+          {slide.label}
+        </button>
+      ))
+    }
+  </div>
+
+  <div class="carousel__stage">
+    {
+      slides.map((slide, index) => (
+        <div
+          class:list={['carousel__slide', index === 0 && 'is-active']}
+          id={`carousel-panel-${slide.id}`}
+          role="tabpanel"
+          aria-labelledby={`carousel-tab-${slide.id}`}
+          aria-hidden={index === 0 ? 'false' : 'true'}
+          data-carousel-slide
+        >
+          <img
+            class="carousel__image"
+            src={slide.image}
+            alt=""
+            width="2880"
+            height="1800"
+            loading="eager"
+            decoding="async"
+          />
+        </div>
+      ))
+    }
+  </div>
+</div>
+
+<script>
+  function setupCarousels() {
+    const carousels = document.querySelectorAll('[data-carousel]');
+    carousels.forEach((carousel) => {
+      const tabs = [...carousel.querySelectorAll('[data-carousel-tab]')];
+      const slides = [...carousel.querySelectorAll('[data-carousel-slide]')];
+      const images = [...carousel.querySelectorAll('.carousel__image')];
+
+      images.forEach((image) => {
+        if (image.decode) {
+          image.decode().catch(() => {});
+        }
+      });
+
+      const show = (nextIndex) => {
+        const currentIndex = (nextIndex + slides.length) % slides.length;
+        tabs.forEach((tab, index) => {
+          tab.setAttribute('aria-selected', index === currentIndex ? 'true' : 'false');
+        });
+        slides.forEach((slide, index) => {
+          const isActive = index === currentIndex;
+          slide.classList.toggle('is-active', isActive);
+          slide.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+        });
+      };
+
+      tabs.forEach((tab, index) => {
+        tab.addEventListener('click', () => show(index));
+      });
+    });
+  }
+
+  setupCarousels();
+</script>
+
+<style>
+  .carousel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-16);
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 var(--space-128);
+  }
+
+  .carousel__tabs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: center;
+    gap: var(--space-64);
+  }
+
+  .carousel__tab {
+    position: relative;
+    padding: 0 0 var(--space-4);
+    border: 0;
+    background: transparent;
+    color: var(--color-base-black);
+    opacity: 0.5;
+    font-family: var(--font-display);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-medium);
+    font-optical-sizing: none;
+    font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 500;
+    letter-spacing: 0;
+    line-height: 1.2;
+    cursor: pointer;
+  }
+
+  .carousel__tab:hover,
+  .carousel__tab:focus-visible {
+    opacity: 1;
+  }
+
+  .carousel__tab[aria-selected='true'] {
+    opacity: 1;
+  }
+
+  .carousel__tab[aria-selected='true']::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 48px;
+    height: 2px;
+    background: var(--color-primary-500);
+    transform: translateX(-50%);
+  }
+
+  .carousel__stage {
+    position: relative;
+    width: 1100px;
+    max-width: 100%;
+    aspect-ratio: 1440 / 900;
+  }
+
+  .carousel__slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .carousel__slide.is-active {
+    z-index: 1;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .carousel__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--radius-2xl);
+  }
+
+  @media (max-width: 768px) {
+    .carousel {
+      padding: 0;
+    }
+
+    .carousel__tabs {
+      gap: var(--space-16) var(--space-24);
+    }
+  }
+</style>
