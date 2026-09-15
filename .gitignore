@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# local Figma sources (decoded into CSS tokens, not shipped)
+*.fig
