@@ -1,0 +1,196 @@
+---
+interface Props {
+  stat: string;
+  statLabel: string;
+  title: string;
+  description: string;
+}
+
+const { stat, statLabel, title, description } = Astro.props;
+---
+
+<article class="card">
+  <span class="card__shine" aria-hidden="true"></span>
+  <div class="card__top">
+    <span class="card__icon">
+      <slot name="icon" />
+    </span>
+    <p class="card__stat">
+      <span class="card__stat-value">{stat}</span>
+      <span class="card__stat-label">{statLabel}</span>
+    </p>
+  </div>
+  <div class="card__body">
+    <h3 class="card__title">{title}</h3>
+    <p class="card__description">{description}</p>
+  </div>
+</article>
+
+<style>
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-64);
+    box-sizing: border-box;
+    min-height: 343px;
+    padding: var(--space-64);
+    overflow: hidden;
+    isolation: isolate;
+    border: var(--stroke-width) solid var(--color-border);
+    border-radius: var(--radius-card);
+    background: var(--color-bg-raised);
+    transform: rotate(0deg);
+    transition:
+      transform 0.35s ease,
+      border-color 0.35s ease;
+  }
+
+  .card__shine {
+    position: absolute;
+    z-index: 1;
+    top: -30%;
+    left: -60%;
+    width: 45%;
+    height: 160%;
+    pointer-events: none;
+    background: linear-gradient(
+      115deg,
+      transparent 0%,
+      rgb(255 255 255 / 0) 35%,
+      rgb(255 255 255 / 0.55) 50%,
+      rgb(255 255 255 / 0) 65%,
+      transparent 100%
+    );
+    transform: translateX(0);
+    opacity: 0;
+    transition:
+      transform 0.7s ease,
+      opacity 0.2s ease;
+  }
+
+  .card:hover,
+  .card:focus-within {
+    z-index: 1;
+    border-color: var(--color-primary-300);
+    transform: rotate(-0.8deg);
+  }
+
+  .card:hover .card__shine,
+  .card:focus-within .card__shine {
+    opacity: 1;
+    transform: translateX(280%);
+  }
+
+  .card__top,
+  .card__body {
+    position: relative;
+    z-index: 0;
+  }
+
+  .card__top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-16);
+  }
+
+  .card__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    flex-shrink: 0;
+    border-radius: var(--radius-m);
+    background: var(--color-primary-50);
+    color: var(--color-primary-600);
+  }
+
+  .card__icon :global(svg) {
+    display: block;
+    width: 32px;
+    height: 32px;
+  }
+
+  .card__stat {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin: 0;
+    color: var(--color-primary-700);
+    text-align: right;
+  }
+
+  .card__stat-value {
+    font-family: var(--font-display);
+    font-size: var(--font-size-h2);
+    font-weight: var(--font-weight-extrabold);
+    font-optical-sizing: none;
+    font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 800;
+    letter-spacing: 0;
+    line-height: var(--line-height-heading);
+  }
+
+  .card__stat-label {
+    font-family: var(--font-display);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-medium);
+    font-optical-sizing: none;
+    font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 500;
+    letter-spacing: 0;
+    line-height: var(--line-height-heading);
+  }
+
+  .card__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .card__title {
+    margin: 0;
+    color: var(--color-primary-700);
+    font-family: var(--font-display);
+    font-size: var(--font-size-h2);
+    font-weight: var(--font-weight-bold);
+    font-optical-sizing: none;
+    font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 700;
+    letter-spacing: 0;
+    line-height: var(--line-height-heading);
+  }
+
+  .card__description {
+    margin: 0;
+    color: var(--color-primary-700);
+    font-family: var(--font-body);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-body);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card,
+    .card__shine {
+      transition: none;
+    }
+
+    .card:hover,
+    .card:focus-within {
+      transform: none;
+    }
+
+    .card:hover .card__shine,
+    .card:focus-within .card__shine {
+      display: none;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .card {
+      min-height: 0;
+      gap: var(--space-32);
+      padding: var(--space-32);
+    }
+  }
+</style>

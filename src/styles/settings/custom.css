@@ -140,6 +140,7 @@
   --color-text: var(--color-primary-800);
   --color-text-muted: var(--color-gray-500);
   --color-bg: var(--color-base-white);
+  --color-bg-muted: #f9f7fa;
   --color-bg-raised: var(--color-base-white);
   --color-action: var(--color-primary-500);
   --color-action-text: var(--color-base-white);

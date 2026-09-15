@@ -1,0 +1,154 @@
+---
+import {
+  IconBolt,
+  IconChartBar,
+  IconCircleCheck,
+  IconDatabase,
+  IconPlugConnected,
+  IconSparkles,
+} from '@tabler/icons-astro';
+import Button from './Button.astro';
+import Card from './Card.astro';
+import SectionHeading from './SectionHeading.astro';
+
+const cards = [
+  {
+    stat: '+50%',
+    statLabel: 'd’accès aux données',
+    title: 'Rapidité d’accès',
+    description:
+      "Une vue unifiée et temps réel sur la santé de l'ensemble de votre patrimoine data.",
+    icon: 'chart',
+  },
+  {
+    stat: '8',
+    statLabel: 'intégrations natives',
+    title: 'Intégré à votre écosystème',
+    description:
+      'Slack, Teams, ServiceNow, EasyVista, Discord — recevez les bonnes alertes au bon endroit.',
+    icon: 'plug',
+  },
+  {
+    stat: '95%',
+    statLabel: 'score qualité moyen',
+    title: 'Qualité garantie',
+    description:
+      'Analyse continue, scoring et alertes automatiques sur la qualité de vos données critiques.',
+    icon: 'check',
+  },
+  {
+    stat: '10',
+    statLabel: 'sources intégrées',
+    title: '10 connecteurs natifs',
+    description:
+      'PostgreSQL, Oracle, Snowflake, MongoDB, IBM DB2, AS/400… connectez vos sources en quelques minutes.',
+    icon: 'database',
+  },
+  {
+    stat: '−50%',
+    statLabel: 'temps d’analyse',
+    title: 'Agent IA intégré',
+    description:
+      'Un copilote intelligent vous accompagne tout au long du processus, de la création à l’analyse.',
+    icon: 'sparkles',
+  },
+  {
+    stat: '−80%',
+    statLabel: "d'intervention manuelle",
+    title: 'Automatisation',
+    description:
+      'Déclenchez des actions préventives instantanées et automatisez vos flux de données.',
+    icon: 'bolt',
+  },
+];
+---
+
+<section class="features">
+  <div class="features__inner">
+    <SectionHeading subtitle="Une plateforme unifiée pensée pour les équipes data et métier, du diagnostic à l'action.">
+      Tout ce qu'il faut pour piloter votre data,<br />sans angle mort.
+    </SectionHeading>
+
+    <div class="features__grid">
+      {
+        cards.map((card) => (
+          <Card
+            stat={card.stat}
+            statLabel={card.statLabel}
+            title={card.title}
+            description={card.description}
+          >
+            {card.icon === 'chart' && (
+              <IconChartBar slot="icon" size={32} stroke={3} />
+            )}
+            {card.icon === 'plug' && (
+              <IconPlugConnected slot="icon" size={32} stroke={3} />
+            )}
+            {card.icon === 'check' && (
+              <IconCircleCheck slot="icon" size={32} stroke={3} />
+            )}
+            {card.icon === 'database' && (
+              <IconDatabase slot="icon" size={32} stroke={3} />
+            )}
+            {card.icon === 'sparkles' && (
+              <IconSparkles slot="icon" size={32} stroke={3} />
+            )}
+            {card.icon === 'bolt' && (
+              <IconBolt slot="icon" size={32} stroke={3} />
+            )}
+          </Card>
+        ))
+      }
+    </div>
+
+    <div class="features__cta">
+      <Button href="/produit">Découvrir le produit</Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .features {
+    background: var(--color-bg-muted);
+    padding: var(--space-128) var(--space-64);
+  }
+
+  .features__inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-64);
+    max-width: 1408px;
+    margin: 0 auto;
+  }
+
+  .features__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .features__cta {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  @media (max-width: 1024px) {
+    .features {
+      padding: var(--space-64) var(--space-32);
+    }
+
+    .features__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .features {
+      padding: var(--space-48) var(--space-24);
+    }
+
+    .features__inner {
+      gap: var(--space-32);
+    }
+  }
+</style>
