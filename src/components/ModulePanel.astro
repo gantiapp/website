@@ -1,0 +1,98 @@
+---
+import Button from './Button.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  href: string;
+  imageSrc: string;
+  imageAlt: string;
+}
+
+const { title, description, href, imageSrc, imageAlt } = Astro.props;
+---
+
+<article class="module-panel">
+  <div class="module-panel__copy">
+    <h2 class="module-panel__title">{title}</h2>
+    <p class="module-panel__description">{description}</p>
+  </div>
+  <div class="module-panel__figure">
+    <img class="module-panel__image" src={imageSrc} alt={imageAlt} />
+  </div>
+  <Button href={href} variant="module">Accéder au module</Button>
+</article>
+
+<style>
+  .module-panel {
+    display: flex;
+    flex-direction: column;
+    min-height: 753px;
+    padding: var(--space-64);
+    box-sizing: border-box;
+    background: var(--module-bg);
+    color: var(--module-accent);
+    --button-bg: var(--module-accent);
+    --button-fg: var(--module-bg);
+  }
+
+  .module-panel__copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+
+  .module-panel__title {
+    margin: 0;
+    color: var(--module-accent);
+    font-family: var(--font-display);
+    font-size: var(--font-size-h2);
+    font-weight: var(--font-weight-bold);
+    font-optical-sizing: none;
+    font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 700;
+    letter-spacing: 0;
+    line-height: var(--line-height-heading);
+  }
+
+  .module-panel__description {
+    margin: 0;
+    color: var(--color-base-black);
+    font-family: var(--font-body);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-body);
+  }
+
+  .module-panel__figure {
+    display: flex;
+    flex: 1;
+    align-items: flex-end;
+    justify-content: center;
+    min-height: 288px;
+    padding-bottom: var(--space-32);
+  }
+
+  .module-panel__image {
+    display: block;
+    width: auto;
+    height: 288px;
+    max-width: 100%;
+    object-fit: contain;
+  }
+
+  @media (max-width: 1024px) {
+    .module-panel {
+      min-height: 0;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .module-panel {
+      padding: var(--space-32);
+    }
+
+    .module-panel__image {
+      height: 220px;
+    }
+  }
+</style>

@@ -45,6 +45,15 @@
   --color-module-data-manager: #6ec9f2;
   --color-module-query-manager: #8eeddd;
 
+  --color-module-query-bg: #f1fcfa;
+  --color-module-query-accent: #1a7969;
+  --color-module-bridge-bg: #ebe0ff;
+  --color-module-bridge-accent: #40286c;
+  --color-module-data-bg: #c8ebfa;
+  --color-module-data-accent: #194f66;
+  --color-module-command-bg: #fff2cd;
+  --color-module-command-accent: #695417;
+
   /* Local FILL styles — Utilities */
   --color-utility-mauve: #d6c2ff;
   --color-utility-sea: #8eeddd;

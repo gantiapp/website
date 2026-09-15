@@ -3,12 +3,20 @@ import { IconArrowUpRight } from '@tabler/icons-astro';
 
 interface Props {
   href: string;
+  variant?: 'primary' | 'module';
 }
 
-const { href } = Astro.props;
+const { href, variant = 'primary' } = Astro.props;
 ---
 
-<a class="button button--primary" href={href}>
+<a
+  class:list={[
+    'button',
+    variant === 'primary' && 'button--primary',
+    variant === 'module' && 'button--module',
+  ]}
+  href={href}
+>
   <span class="button__label"><slot /></span>
   <IconArrowUpRight size={20} stroke={1.5} />
 </a>
@@ -17,6 +25,7 @@ const { href } = Astro.props;
   .button {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     align-self: flex-start;
     width: max-content;
     gap: var(--space-8);
@@ -29,6 +38,7 @@ const { href } = Astro.props;
     line-height: 1;
     text-decoration: none;
     cursor: pointer;
+    box-sizing: border-box;
   }
 
   .button--primary {
@@ -39,6 +49,18 @@ const { href } = Astro.props;
   .button--primary:hover,
   .button--primary:focus-visible {
     background: var(--color-primary-600);
+  }
+
+  .button--module {
+    align-self: stretch;
+    width: 100%;
+    background: var(--button-bg);
+    color: var(--button-fg);
+  }
+
+  .button--module:hover,
+  .button--module:focus-visible {
+    filter: brightness(0.92);
   }
 
   .button__label {

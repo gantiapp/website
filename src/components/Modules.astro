@@ -1,0 +1,98 @@
+---
+import ModulePanel from './ModulePanel.astro';
+
+const modules = [
+  {
+    title: 'Query Manager : L’accès universel',
+    description:
+      "Interrogez toutes vos sources de données (SQL, NoSQL, API, Google Sheets) depuis un point d'entrée unique. Une interface simple pour visualiser des résultats complexes.",
+    href: '/produit',
+    imageSrc: '/images/personnages/scout.png',
+    imageAlt: 'Scout, mascotte du Query Manager',
+    tone: 'query',
+  },
+  {
+    title: 'Bridge Query Manager : Le garant de la cohérence',
+    description:
+      'Le point de contrôle entre vos applications. Il compare et réconcilie automatiquement les flux de données issus de systèmes différents.',
+    href: '/produit',
+    imageSrc: '/images/personnages/link.png',
+    imageAlt: 'Link, mascotte du Bridge Query Manager',
+    tone: 'bridge',
+  },
+  {
+    title: 'Data Manager : La vision à 360°',
+    description:
+      "La cartographie de votre patrimoine. Visualisez et explorez l'ensemble de vos données, organisées logiquement par domaine d'expertise métier.",
+    href: '/produit',
+    imageSrc: '/images/personnages/atlas.png',
+    imageAlt: 'Atlas, mascotte du Data Manager',
+    tone: 'data',
+  },
+  {
+    title: 'Command Manager : La vigie technique',
+    description:
+      'Le monitoring rendu transparent. Visualisez et analysez les fichiers de rejets et les logs serveurs directement depuis une interface lisible, sans ligne de commande.',
+    href: '/produit',
+    imageSrc: '/images/personnages/termi.png',
+    imageAlt: 'Termi, mascotte du Command Manager',
+    tone: 'command',
+  },
+];
+---
+
+<section class="modules" aria-label="Les 4 modules Ganti">
+  {
+    modules.map((moduleItem) => (
+      <div class={`modules__cell modules__cell--${moduleItem.tone}`}>
+        <ModulePanel
+          title={moduleItem.title}
+          description={moduleItem.description}
+          href={moduleItem.href}
+          imageSrc={moduleItem.imageSrc}
+          imageAlt={moduleItem.imageAlt}
+        />
+      </div>
+    ))
+  }
+</section>
+
+<style>
+  .modules {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+  }
+
+  .modules__cell--query {
+    --module-bg: var(--color-module-query-bg);
+    --module-accent: var(--color-module-query-accent);
+  }
+
+  .modules__cell--bridge {
+    --module-bg: var(--color-module-bridge-bg);
+    --module-accent: var(--color-module-bridge-accent);
+  }
+
+  .modules__cell--data {
+    --module-bg: var(--color-module-data-bg);
+    --module-accent: var(--color-module-data-accent);
+  }
+
+  .modules__cell--command {
+    --module-bg: var(--color-module-command-bg);
+    --module-accent: var(--color-module-command-accent);
+  }
+
+  @media (max-width: 1024px) {
+    .modules {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .modules {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
