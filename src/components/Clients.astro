@@ -1,0 +1,177 @@
+---
+const logos = [
+  { src: '/images/logos-clients/auchan.png', alt: 'Auchan' },
+  { src: '/images/logos-clients/carrefour.png', alt: 'Carrefour' },
+  { src: '/images/logos-clients/idkids.png', alt: 'IDKids' },
+  { src: '/images/logos-clients/leroy-merlin.png?v=2', alt: 'Leroy Merlin' },
+  { src: '/images/logos-clients/carter-cash.png', alt: 'Carter Cash' },
+];
+
+const groupCount = 6;
+---
+
+<section class="clients">
+  <h2 class="clients__title">Ils nous font confiance</h2>
+  <div class="clients__marquee">
+    <div class="clients__track" style={`--clients-groups: ${groupCount}`}>
+      {
+        Array.from({ length: groupCount }, (_, groupIndex) => (
+          <ul class="clients__group" aria-hidden={groupIndex > 0 ? 'true' : undefined}>
+            {logos.map((logo) => (
+              <li class="clients__item">
+                <span
+                  class="clients__tint"
+                  style={`--logo-mask: url('${logo.src}')`}
+                  aria-hidden="true"
+                ></span>
+                <img
+                  class="clients__logo"
+                  src={logo.src}
+                  alt={groupIndex === 0 ? logo.alt : ''}
+                  height="48"
+                />
+              </li>
+            ))}
+          </ul>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .clients {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-48);
+    padding: var(--space-96) 0 var(--space-64);
+  }
+
+  .clients__title {
+    margin: 0;
+    color: var(--color-base-black);
+    font-family: var(--font-display);
+    font-size: var(--font-size-h2);
+    font-weight: var(--font-weight-bold);
+    font-optical-sizing: none;
+    font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 700;
+    letter-spacing: 0;
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  .clients__marquee {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    padding: 7px 0;
+    background: transparent;
+    pointer-events: none;
+  }
+
+  .clients__track {
+    display: flex;
+    width: max-content;
+    animation: clients-scroll 32s linear infinite;
+  }
+
+  .clients__track:has(.clients__item:hover) {
+    animation-play-state: paused;
+  }
+
+  .clients__group {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: var(--space-96);
+    margin: 0;
+    padding: 0 var(--space-96) 0 0;
+    list-style: none;
+  }
+
+  .clients__item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 48px;
+    pointer-events: auto;
+  }
+
+  .clients__logo {
+    display: block;
+    height: 48px;
+    width: auto;
+    max-width: 220px;
+    object-fit: contain;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+
+  .clients__tint {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-color: var(--color-primary-700);
+    opacity: 0.4;
+    transition: opacity 0.25s ease;
+    mask-image: var(--logo-mask);
+    mask-repeat: no-repeat;
+    mask-position: center;
+    mask-size: contain;
+    -webkit-mask-image: var(--logo-mask);
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    -webkit-mask-size: contain;
+  }
+
+  .clients__item:hover .clients__logo {
+    opacity: 1;
+  }
+
+  .clients__item:hover .clients__tint {
+    opacity: 0;
+  }
+
+  @keyframes clients-scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(calc(-100% / var(--clients-groups)));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .clients__track {
+      animation: none;
+    }
+
+    .clients__logo {
+      opacity: 0.4;
+      filter: brightness(0);
+    }
+
+    .clients__tint {
+      display: none;
+    }
+
+    .clients__item:hover .clients__logo {
+      opacity: 1;
+      filter: none;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .clients {
+      gap: var(--space-32);
+      padding: var(--space-64) 0 var(--space-32);
+    }
+
+    .clients__group {
+      gap: var(--space-48);
+      padding-right: var(--space-48);
+    }
+  }
+</style>
