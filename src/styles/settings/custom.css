@@ -1,0 +1,151 @@
+@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;500;700;800&family=Inter:wght@400;500;600;700;800&display=swap");
+
+:root {
+  /* Local FILL styles — Base */
+  --color-base-black: #000000;
+  --color-base-white: #ffffff;
+
+  /* Local FILL styles — Primary */
+  --color-primary-50: #eee1f1;
+  --color-primary-100: #e1d0e5;
+  --color-primary-200: #c3a3ca;
+  --color-primary-300: #a676b0;
+  --color-primary-400: #884a95;
+  --color-primary-500: #6a167a;
+  --color-primary-600: #4d0d59;
+  --color-primary-700: #31063a;
+  --color-primary-800: #18021d;
+  --color-primary-900: #040005;
+
+  /* Local FILL styles — Gray */
+  --color-gray-100: #f2f1ed;
+  --color-gray-200: #e6e5e1;
+  --color-gray-300: #d6d6d4;
+  --color-gray-400: #a3a2a0;
+  --color-gray-500: #737371;
+  --color-gray-600: #525250;
+  --color-gray-700: #424241;
+  --color-gray-800: #292928;
+  --color-gray-900: #141414;
+  --color-gray-black: var(--color-base-black);
+  --color-gray-white: var(--color-base-white);
+
+  /* Local FILL styles — Modules */
+  --color-module-command-manager: #ffcd39;
+  --color-module-bridge-query-manager: #d6c2ff;
+  --color-module-data-manager: #6ec9f2;
+  --color-module-query-manager: #8eeddd;
+
+  /* Local FILL styles — Utilities */
+  --color-utility-mauve: #d6c2ff;
+  --color-utility-sea: #8eeddd;
+
+  /* Local FILL styles — Alert */
+  --color-alert-error-500: #ef4444;
+  --color-alert-success-500: #22c55e;
+  --color-alert-warning-500: #ffc107;
+  --color-alert-info-500: #0ea5e9;
+
+  /* Figma variables (aliases onto local styles where they match) */
+  --color-primary: var(--color-primary-500);
+  --color-stroke: var(--color-gray-300);
+  --color-success: var(--color-alert-success-500);
+  --color-danger: var(--color-alert-error-500);
+  --color-bridge-query: var(--color-module-bridge-query-manager);
+  --color-data-manager: var(--color-module-data-manager);
+
+  /* Type — local TEXT styles */
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-display: "Bricolage Grotesque", var(--font-sans);
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+
+  --font-size-12: 12px;
+  --font-size-14: 14px;
+  --font-size-16: 16px;
+  --font-size-18: 18px;
+  --font-size-20: 20px;
+  --font-size-24: 24px;
+  --font-size-32: 32px;
+  --font-size-48: 48px;
+  --font-size-64: 64px;
+
+  --font-size-body-small: var(--font-size-14);
+  --font-size-body: var(--font-size-16);
+  --font-size-body-large: var(--font-size-18);
+  --font-size-button: var(--font-size-18);
+  --font-size-h4: var(--font-size-16);
+  --font-size-h3: var(--font-size-24);
+  --font-size-h2: var(--font-size-32);
+  --font-size-h1: var(--font-size-48);
+  --font-size-display: var(--font-size-64);
+  --font-size-large-text: var(--font-size-24);
+  --font-size-subtitle: var(--font-size-24);
+
+  --line-height-heading: 1;
+  --line-height-body: 1.5;
+
+  /* Space — gap and padding on page Maquettes */
+  --space-4: 4px;
+  --space-6: 6px;
+  --space-8: 8px;
+  --space-10: 10px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-48: 48px;
+  --space-64: 64px;
+  --space-96: 96px;
+  --space-128: 128px;
+  --space-192: 192px;
+  --space-256: 256px;
+
+  --space-gap-tight: var(--space-8);
+  --space-gap: var(--space-10);
+  --space-gap-md: var(--space-16);
+  --space-gap-lg: var(--space-32);
+  --space-gap-section: var(--space-64);
+  --space-pad-control: var(--space-10);
+  --space-pad-card: var(--space-32);
+  --space-pad-nav: var(--space-64);
+  --space-pad-footer: var(--space-96);
+
+  /* Radius — Maquettes */
+  --radius-s: 8px;
+  --radius-m: 12px;
+  --radius-l: 16px;
+  --radius-xl: 24px;
+  --radius-2xl: 32px;
+  --radius-pill: 999px;
+
+  --stroke-width: 1px;
+
+  /* Semantic */
+  --color-text: var(--color-primary-800);
+  --color-text-muted: var(--color-gray-500);
+  --color-bg: var(--color-gray-100);
+  --color-bg-raised: var(--color-base-white);
+  --color-action: var(--color-primary-500);
+  --color-action-text: var(--color-base-white);
+  --color-border: var(--color-gray-300);
+  --font-body: var(--font-sans);
+  --font-heading: var(--font-display);
+  --space-page: var(--space-64);
+  --radius-control: var(--radius-pill);
+  --radius-card: var(--radius-2xl);
+}
+
+html {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-body);
+}
