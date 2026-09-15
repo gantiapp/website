@@ -1,0 +1,256 @@
+---
+const tagline =
+  "L'excellence de la donnée, à chaque étape de votre métier.\nReprenez le contrôle total de votre patrimoine data.";
+
+const columns = [
+  {
+    title: 'Produit',
+    links: [
+      { href: '/produit', label: 'Query Manager' },
+      { href: '/produit', label: 'Bridge Query Manager' },
+      { href: '/produit', label: 'Data Manager' },
+      { href: '/produit', label: 'Command Manager' },
+    ],
+  },
+  {
+    title: 'Solutions',
+    links: [
+      { href: '/cas-d-usages', label: 'Analyste fonctionnel' },
+      { href: '/cas-d-usages', label: 'Analyste d’exploitation' },
+      { href: '/cas-d-usages', label: 'Responsable d’application' },
+      { href: '/cas-d-usages', label: 'Product owner (PPO)' },
+    ],
+  },
+  {
+    title: 'Tarifs',
+    links: [
+      { href: '/tarifs', label: 'Licence Essentiel' },
+      { href: '/tarifs', label: 'Licence Business' },
+      { href: '/tarifs', label: 'Licence Business+' },
+    ],
+  },
+  {
+    title: 'À propos',
+    links: [
+      { href: '/contact', label: 'Contact' },
+      { href: '/mentions-legales', label: 'Mentions légales' },
+      { href: '/politique-de-confidentialite', label: 'Confidentialité' },
+    ],
+  },
+];
+---
+
+<footer class="footer">
+  <div class="footer__top">
+    <div class="footer__brand">
+      <a class="footer__logo" href="/" aria-label="Ganti">
+        <span class="footer__mark" aria-hidden="true">
+          <svg
+            class="footer__mark-letter"
+            viewBox="0 1.68 22.6 28.92"
+            width="23"
+            height="29"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M14.08 6.12C11.2267 6.12 9.04 7.01333 7.52 8.8C6.02667 10.56 5.28 13.0133 5.28 16.16C5.28 17.6533 5.45333 19.0267 5.8 20.28C6.17333 21.5067 6.70667 22.56 7.4 23.44C8.12 24.32 9 25.0133 10.04 25.52C11.1067 26 12.3467 26.24 13.76 26.24C14.64 26.24 15.4 26.2133 16.04 26.16C16.68 26.08 17.1867 25.9867 17.56 25.88V15.92H22.6V29.24C21.9067 29.5067 20.7333 29.8 19.08 30.12C17.4267 30.44 15.52 30.6 13.36 30.6C11.36 30.6 9.53333 30.28 7.88 29.64C6.22667 29 4.81333 28.0667 3.64 26.84C2.49333 25.6133 1.6 24.1067 0.96 22.32C0.32 20.5333 0 18.48 0 16.16C0 13.84 0.346667 11.7867 1.04 10C1.76 8.21334 2.73333 6.70667 3.96 5.48C5.18667 4.22667 6.62667 3.28 8.28 2.64C9.93333 2 11.6933 1.68 13.56 1.68C14.84 1.68 15.9733 1.77333 16.96 1.96C17.9733 2.12 18.84 2.30667 19.56 2.52C20.28 2.73334 20.8667 2.96 21.32 3.2C21.8 3.44 22.1333 3.61333 22.32 3.72L20.8 7.84C20 7.36 19 6.96 17.8 6.64C16.6267 6.29333 15.3867 6.12 14.08 6.12Z"
+              fill="currentColor"
+            ></path>
+          </svg>
+        </span>
+        <img
+          class="footer__wordmark"
+          src="/images/ganti/ganti.svg"
+          alt="Ganti"
+          width="94"
+          height="32"
+        />
+      </a>
+      <p class="footer__tagline">{tagline}</p>
+    </div>
+    <div class="footer__columns">
+      {
+        columns.map((column) => (
+          <nav class="footer__column" aria-label={column.title}>
+            <p class="footer__heading">{column.title}</p>
+            <ul class="footer__links">
+              {column.links.map((link) => (
+                <li>
+                  <a class="footer__link" href={link.href}>
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        ))
+      }
+    </div>
+  </div>
+  <p class="footer__copyright">© 2026 Ganti. Tous droits réservés.</p>
+</footer>
+
+<style>
+  .footer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-96);
+    box-sizing: border-box;
+    width: 100%;
+    padding: var(--space-pad-footer) clamp(var(--space-24), 10vw, var(--space-192));
+    background: var(--color-primary-100);
+  }
+
+  .footer__top {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-128);
+  }
+
+  .footer__brand {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--space-64);
+    min-width: 0;
+  }
+
+  .footer__logo {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-24);
+    width: fit-content;
+    text-decoration: none;
+  }
+
+  .footer__mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+    border-radius: var(--radius-m);
+    background: var(--color-primary-500);
+    color: var(--color-base-white);
+  }
+
+  .footer__mark-letter {
+    display: block;
+  }
+
+  .footer__wordmark {
+    display: block;
+    width: 94px;
+    height: 32px;
+  }
+
+  .footer__tagline {
+    margin: 0;
+    color: var(--color-primary-700);
+    font-family: var(--font-body);
+    font-size: var(--font-size-body-large);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-heading);
+    white-space: pre-line;
+  }
+
+  .footer__columns {
+    display: flex;
+    flex-shrink: 0;
+    justify-content: flex-start;
+    gap: var(--space-64);
+  }
+
+  .footer__column {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-32);
+    min-width: 0;
+  }
+
+  .footer__heading {
+    margin: 0;
+    color: var(--color-primary-700);
+    font-family: var(--font-heading);
+    font-size: var(--font-size-h2);
+    font-weight: var(--font-weight-extrabold);
+    font-optical-sizing: none;
+    font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 800;
+    letter-spacing: 0;
+    line-height: var(--line-height-heading);
+  }
+
+  .footer__links {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .footer__link {
+    color: var(--color-primary-700);
+    font-family: var(--font-body);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-heading);
+    text-decoration: none;
+  }
+
+  .footer__link:hover,
+  .footer__link:focus-visible {
+    color: var(--color-primary-500);
+  }
+
+  .footer__copyright {
+    margin: 0;
+    color: var(--color-primary-700);
+    font-family: var(--font-body);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-heading);
+  }
+
+  @media (max-width: 1024px) {
+    .footer {
+      padding: var(--space-pad-footer) var(--space-64);
+    }
+
+    .footer__top {
+      flex-direction: column;
+      gap: var(--space-64);
+    }
+
+    .footer__columns {
+      display: grid;
+      flex-shrink: 1;
+      grid-template-columns: 1fr 1fr;
+      justify-content: start;
+      gap: var(--space-48) var(--space-64);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .footer {
+      gap: var(--space-64);
+      padding: var(--space-pad-footer) var(--space-24);
+    }
+
+    .footer__brand {
+      gap: var(--space-32);
+    }
+
+    .footer__columns {
+      gap: var(--space-32);
+    }
+  }
+
+  @media (max-width: 520px) {
+    .footer__columns {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,6 +1,7 @@
 ---
 import '../styles/settings/custom.css';
 import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
 
 interface Props {
   title?: string;
@@ -23,5 +24,6 @@ const { title = 'Ganti' } = Astro.props;
     <main>
       <slot />
     </main>
+    <Footer />
   </body>
 </html>
