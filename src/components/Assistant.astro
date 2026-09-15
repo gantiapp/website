@@ -1,0 +1,299 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import GaiaChat from './GaiaChat.astro';
+
+const steps = [
+  'Aide à la mise en place de contrôles de données',
+  'Analyse des données en temps réel avec l’utilisateur',
+  'Connexion a vos modèles internes.',
+];
+---
+
+<section class="assistant" data-assistant>
+  <div class="assistant__glow" aria-hidden="true"></div>
+  <div class="assistant__inner">
+    <div class="assistant__copy">
+      <SectionHeading subtitle="Un copilote intelligent vous accompagne tout au long du processus, de la création à l’analyse.">
+        Un assistant qui vous<br />accompagne à chaque étape
+      </SectionHeading>
+
+      <div class="assistant__details">
+        <div class="assistant__lead">
+          <h3 class="assistant__kicker">L'IA repère ce que personne ne voit passer</h3>
+          <p class="assistant__body">
+            Notre assistant comprend votre métier et vous aide à garantir la cohérence des
+            données de votre système.
+          </p>
+        </div>
+        <ol class="assistant__steps">
+          {
+            steps.map((step, index) => (
+              <li class="assistant__step">
+                <span class="assistant__index">{String(index + 1).padStart(2, '0')}</span>
+                <span class="assistant__step-label">{step}</span>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </div>
+
+    <div class="assistant__chat">
+      <GaiaChat />
+    </div>
+  </div>
+</section>
+
+<script>
+  function setupAssistantGlow() {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const finePointer = window.matchMedia('(pointer: fine)').matches;
+    if (reduceMotion || !finePointer) {
+      return;
+    }
+
+    const sections = document.querySelectorAll('[data-assistant]');
+    sections.forEach((section) => {
+      if (!(section instanceof HTMLElement)) {
+        return;
+      }
+
+      let animationFrame = 0;
+      let targetX = 0.72;
+      let targetY = 0.42;
+      let currentX = 0.72;
+      let currentY = 0.42;
+
+      const render = () => {
+        currentX += (targetX - currentX) * 0.16;
+        currentY += (targetY - currentY) * 0.16;
+        section.style.setProperty('--glow-x', `${(currentX * 100).toFixed(2)}%`);
+        section.style.setProperty('--glow-y', `${(currentY * 100).toFixed(2)}%`);
+        const stillMoving =
+          Math.abs(targetX - currentX) > 0.001 || Math.abs(targetY - currentY) > 0.001;
+        animationFrame = stillMoving ? requestAnimationFrame(render) : 0;
+      };
+
+      section.addEventListener('mousemove', (event) => {
+        const bounds = section.getBoundingClientRect();
+        targetX = (event.clientX - bounds.left) / bounds.width;
+        targetY = (event.clientY - bounds.top) / bounds.height;
+        section.classList.add('is-glowing');
+        if (!animationFrame) {
+          animationFrame = requestAnimationFrame(render);
+        }
+      });
+
+      section.addEventListener('mouseleave', () => {
+        section.classList.remove('is-glowing');
+      });
+    });
+  }
+
+  setupAssistantGlow();
+</script>
+
+<style>
+  .assistant {
+    --glow-x: 72%;
+    --glow-y: 42%;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    background-color: var(--color-base-white);
+    background-image:
+      radial-gradient(ellipse 52% 70% at 12% 8%, rgb(238 225 241 / 0.9) 0%, transparent 58%),
+      radial-gradient(ellipse 46% 64% at 92% 78%, rgb(214 194 255 / 0.55) 0%, transparent 62%),
+      radial-gradient(ellipse 38% 50% at 78% 18%, rgb(195 163 202 / 0.28) 0%, transparent 55%);
+    padding: var(--space-64) var(--space-64);
+  }
+
+  .assistant__glow {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(
+      820px circle at var(--glow-x) var(--glow-y),
+      rgb(214 194 255 / 0.22) 0%,
+      rgb(238 225 241 / 0.1) 42%,
+      transparent 74%
+    );
+    filter: blur(28px);
+    transition: opacity 0.6s ease;
+  }
+
+  .assistant.is-glowing .assistant__glow {
+    opacity: 1;
+  }
+
+  .assistant__inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-128);
+    max-width: 1408px;
+    margin: 0 auto;
+  }
+
+  .assistant__chat {
+    position: relative;
+    flex-shrink: 0;
+    width: 100%;
+    max-width: 480px;
+    animation: assistant-float 6s ease-in-out infinite;
+  }
+
+  .assistant__chat::before {
+    content: '';
+    position: absolute;
+    z-index: 0;
+    inset: 12% -8%;
+    border-radius: 48%;
+    background: radial-gradient(circle, rgb(214 194 255 / 0.32) 0%, transparent 72%);
+    filter: blur(36px);
+    pointer-events: none;
+    transition: opacity 0.4s ease, filter 0.4s ease;
+  }
+
+  .assistant__chat:hover::before {
+    opacity: 0.85;
+    filter: blur(28px);
+    background: radial-gradient(circle, rgb(214 194 255 / 0.42) 0%, transparent 72%);
+  }
+
+  @keyframes assistant-float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  .assistant__copy {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--space-48);
+    min-width: 0;
+    max-width: 800px;
+  }
+
+  .assistant__details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-32);
+  }
+
+  .assistant__lead {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .assistant__kicker {
+    margin: 0;
+    color: var(--color-primary-800);
+    font-family: var(--font-display);
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-weight-medium);
+    font-optical-sizing: none;
+    font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 500;
+    letter-spacing: 0;
+    line-height: var(--line-height-heading);
+  }
+
+  .assistant__body {
+    margin: 0;
+    color: var(--color-primary-800);
+    font-family: var(--font-body);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-body);
+  }
+
+  .assistant__steps {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .assistant__step {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+  }
+
+  .assistant__index {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    border-radius: var(--radius-s);
+    background: var(--color-primary-500);
+    color: var(--color-primary-50);
+    font-family: var(--font-display);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-bold);
+    font-optical-sizing: none;
+    font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 700;
+    line-height: 1;
+  }
+
+  .assistant__step-label {
+    color: var(--color-primary-800);
+    font-family: var(--font-body);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-heading);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .assistant__glow {
+      display: none;
+    }
+
+    .assistant__chat {
+      animation: none;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .assistant {
+      padding: var(--space-64) var(--space-32);
+    }
+
+    .assistant__inner {
+      flex-direction: column;
+      align-items: stretch;
+      gap: var(--space-48);
+    }
+
+    .assistant__copy {
+      max-width: none;
+    }
+
+    .assistant__chat {
+      max-width: none;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .assistant {
+      padding: var(--space-48) var(--space-24);
+    }
+
+    .assistant__copy {
+      gap: var(--space-32);
+    }
+  }
+</style>
