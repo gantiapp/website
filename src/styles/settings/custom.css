@@ -156,7 +156,8 @@
   --color-border: var(--color-gray-300);
   --font-body: var(--font-sans);
   --font-heading: var(--font-display);
-  --space-page: var(--space-64);
+  --space-page: clamp(24px, 5vw, 64px);
+  --space-page-wide: clamp(24px, 8vw, 128px);
   --radius-control: var(--radius-pill);
   --radius-card: var(--radius-2xl);
 }
@@ -168,8 +169,16 @@ html {
   font-size: var(--font-size-body);
   font-weight: var(--font-weight-regular);
   line-height: var(--line-height-body);
+  overflow-x: hidden;
 }
 
 body {
   margin: 0;
+  overflow-x: hidden;
+}
+
+@media (max-width: 768px) {
+  .break-desktop {
+    display: none;
+  }
 }

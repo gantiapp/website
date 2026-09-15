@@ -1,5 +1,5 @@
 ---
-import { IconArrowUpRight } from '@tabler/icons-astro';
+import { IconArrowUpRight, IconMenu2, IconX } from '@tabler/icons-astro';
 
 const links = [
   { href: '/produit', label: 'Produit' },
@@ -9,7 +9,7 @@ const links = [
 ];
 ---
 
-<header class="navbar">
+<header class="navbar" data-navbar>
   <a class="navbar__brand" href="/">
     <img
       class="navbar__logo"
@@ -19,7 +19,23 @@ const links = [
       height="31"
     />
   </a>
-  <nav class="navbar__nav" aria-label="Navigation principale">
+  <button
+    class="navbar__toggle"
+    type="button"
+    aria-expanded="false"
+    aria-controls="navbar-menu"
+    aria-label="Ouvrir le menu"
+    data-navbar-toggle
+  >
+    <span class="navbar__icon-open">
+      <IconMenu2 size={24} stroke={1.5} />
+    </span>
+    <span class="navbar__icon-close">
+      <IconX size={24} stroke={1.5} />
+    </span>
+    <span class="navbar__toggle-label">Menu</span>
+  </button>
+  <nav class="navbar__nav" id="navbar-menu" aria-label="Navigation principale" data-navbar-nav>
     <ul class="navbar__links">
       {
         links.map((link) => (
@@ -38,6 +54,48 @@ const links = [
   </a>
 </header>
 
+<script>
+  function setupNavbars() {
+    const navbars = document.querySelectorAll('[data-navbar]');
+    navbars.forEach((navbar) => {
+      if (!(navbar instanceof HTMLElement)) {
+        return;
+      }
+
+      const toggle = navbar.querySelector('[data-navbar-toggle]');
+      if (!(toggle instanceof HTMLButtonElement)) {
+        return;
+      }
+
+      const setOpen = (isOpen) => {
+        navbar.classList.toggle('is-open', isOpen);
+        toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        toggle.setAttribute('aria-label', isOpen ? 'Fermer le menu' : 'Ouvrir le menu');
+      };
+
+      setOpen(false);
+
+      toggle.addEventListener('click', () => {
+        setOpen(!navbar.classList.contains('is-open'));
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          setOpen(false);
+        }
+      });
+
+      window.addEventListener('resize', () => {
+        if (window.innerWidth > 1024) {
+          setOpen(false);
+        }
+      });
+    });
+  }
+
+  setupNavbars();
+</script>
+
 <style>
   .navbar {
     display: grid;
@@ -46,7 +104,7 @@ const links = [
     column-gap: var(--space-32);
     width: 100%;
     box-sizing: border-box;
-    padding: var(--space-32) var(--space-64);
+    padding: var(--space-32) var(--space-page);
     background: var(--color-bg);
   }
 
@@ -60,6 +118,46 @@ const links = [
     display: block;
     width: 95px;
     height: 32px;
+  }
+
+  .navbar__toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-s);
+    background: transparent;
+    color: var(--color-primary-800);
+    cursor: pointer;
+  }
+
+  .navbar__toggle-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .navbar__icon-open,
+  .navbar__icon-close {
+    display: flex;
+  }
+
+  .navbar__icon-close {
+    display: none;
+  }
+
+  .navbar.is-open .navbar__icon-open {
+    display: none;
+  }
+
+  .navbar.is-open .navbar__icon-close {
+    display: flex;
   }
 
   .navbar__nav {
@@ -104,6 +202,7 @@ const links = [
     font-weight: var(--font-weight-medium);
     line-height: 1;
     text-decoration: none;
+    white-space: nowrap;
   }
 
   .navbar__cta:hover,
@@ -111,16 +210,66 @@ const links = [
     background: var(--color-primary-600);
   }
 
-  @media (max-width: 768px) {
+  .navbar :global(svg) {
+    display: block;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 1024px) {
     .navbar {
-      grid-template-columns: 1fr auto;
-      padding: var(--space-16) var(--space-24);
-      row-gap: var(--space-16);
+      grid-template-columns: 1fr auto auto;
+      column-gap: var(--space-12);
+    }
+
+    .navbar__toggle {
+      display: inline-flex;
+      order: 2;
+      justify-self: end;
+    }
+
+    .navbar__cta {
+      order: 3;
+      padding: var(--space-12) var(--space-16);
+      font-size: var(--font-size-body);
     }
 
     .navbar__nav {
+      display: none;
+      order: 4;
       grid-column: 1 / -1;
-      justify-self: center;
+      justify-self: stretch;
+    }
+
+    .navbar.is-open .navbar__nav {
+      display: block;
+    }
+
+    .navbar__links {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-16);
+      padding: var(--space-16) 0 0;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .navbar {
+      padding: var(--space-16) var(--space-24);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .navbar__cta span {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+
+    .navbar__cta {
+      padding: var(--space-12);
     }
   }
 </style>

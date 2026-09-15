@@ -80,17 +80,14 @@ const { title, description, href, imageSrc, imageAlt } = Astro.props;
     object-fit: contain;
   }
 
-  @media (max-width: 1024px) {
+  @media (max-width: 1280px) {
     .module-panel {
       min-height: 0;
+      padding: var(--space-32);
     }
   }
 
   @media (max-width: 768px) {
-    .module-panel {
-      padding: var(--space-32);
-    }
-
     .module-panel__image {
       height: 220px;
     }

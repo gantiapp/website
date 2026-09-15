@@ -98,7 +98,7 @@ const columns = [
     gap: var(--space-96);
     box-sizing: border-box;
     width: 100%;
-    padding: var(--space-pad-footer) clamp(var(--space-24), 10vw, var(--space-192));
+    padding: var(--space-pad-footer) var(--space-page-wide);
     background: var(--color-primary-100);
   }
 
@@ -153,12 +153,12 @@ const columns = [
     font-size: var(--font-size-body-large);
     font-weight: var(--font-weight-regular);
     line-height: var(--line-height-heading);
-    white-space: pre-line;
   }
 
   .footer__columns {
     display: flex;
-    flex-shrink: 0;
+    flex-shrink: 1;
+    flex-wrap: wrap;
     justify-content: flex-start;
     gap: var(--space-64);
   }
@@ -214,14 +214,14 @@ const columns = [
     line-height: var(--line-height-heading);
   }
 
-  @media (max-width: 1024px) {
-    .footer {
-      padding: var(--space-pad-footer) var(--space-64);
-    }
-
+  @media (max-width: 1280px) {
     .footer__top {
       flex-direction: column;
       gap: var(--space-64);
+    }
+
+    .footer__heading {
+      font-size: var(--font-size-h3);
     }
 
     .footer__columns {
@@ -236,7 +236,7 @@ const columns = [
   @media (max-width: 768px) {
     .footer {
       gap: var(--space-64);
-      padding: var(--space-pad-footer) var(--space-24);
+      padding: var(--space-pad-footer) var(--space-page);
     }
 
     .footer__brand {
@@ -248,7 +248,7 @@ const columns = [
     }
   }
 
-  @media (max-width: 520px) {
+  @media (max-width: 480px) {
     .footer__columns {
       grid-template-columns: 1fr;
     }

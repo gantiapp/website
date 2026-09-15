@@ -102,7 +102,7 @@ import {
     gap: var(--space-20);
     box-sizing: border-box;
     width: 100%;
-    max-width: 480px;
+    max-width: min(480px, 100%);
     flex-shrink: 0;
     padding: var(--space-32);
     border-radius: var(--radius-xl);
@@ -251,6 +251,7 @@ import {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
     gap: var(--space-10);
   }
 
@@ -296,6 +297,18 @@ import {
   @media (max-width: 1024px) {
     .gaia-chat {
       max-width: none;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .gaia-chat {
+      padding: var(--space-24);
+    }
+
+    .gaia-chat__sql,
+    .gaia-chat__prompt,
+    .gaia-chat__answer {
+      margin-left: 0;
     }
   }
 </style>
