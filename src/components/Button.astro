@@ -3,10 +3,12 @@ import { IconArrowUpRight } from '@tabler/icons-astro';
 
 interface Props {
   href: string;
-  variant?: 'primary' | 'module';
+  variant?: 'primary' | 'module' | 'inverse' | 'inverse-outline';
+  hideIcon?: boolean;
 }
 
-const { href, variant = 'primary' } = Astro.props;
+const { href, variant = 'primary', hideIcon = false } = Astro.props;
+const iconAtStart = variant === 'inverse';
 ---
 
 <a
@@ -14,11 +16,28 @@ const { href, variant = 'primary' } = Astro.props;
     'button',
     variant === 'primary' && 'button--primary',
     variant === 'module' && 'button--module',
+    variant === 'inverse' && 'button--inverse',
+    variant === 'inverse-outline' && 'button--inverse-outline',
   ]}
   href={href}
 >
+  {
+    !hideIcon && iconAtStart ? (
+      <span class="button__icon">
+        <slot name="icon">
+          <IconArrowUpRight size={20} stroke={1.5} />
+        </slot>
+      </span>
+    ) : null
+  }
   <span class="button__label"><slot /></span>
-  <IconArrowUpRight size={20} stroke={1.5} />
+  {
+    !hideIcon && !iconAtStart ? (
+      <span class="button__icon">
+        <IconArrowUpRight size={20} stroke={1.5} />
+      </span>
+    ) : null
+  }
 </a>
 
 <style>
@@ -61,6 +80,32 @@ const { href, variant = 'primary' } = Astro.props;
   .button--module:hover,
   .button--module:focus-visible {
     filter: brightness(0.92);
+  }
+
+  .button--inverse {
+    background: var(--color-primary-50);
+    color: var(--color-primary-700);
+  }
+
+  .button--inverse:hover,
+  .button--inverse:focus-visible {
+    background: var(--color-primary-100);
+  }
+
+  .button--inverse-outline {
+    background: rgb(255 255 255 / 0.1);
+    color: var(--color-primary-50);
+    border: 1.5px solid var(--color-primary-50);
+  }
+
+  .button--inverse-outline:hover,
+  .button--inverse-outline:focus-visible {
+    background: rgb(255 255 255 / 0.18);
+  }
+
+  .button__icon {
+    display: flex;
+    flex-shrink: 0;
   }
 
   .button__label {

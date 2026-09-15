@@ -1,0 +1,110 @@
+---
+import { IconMail } from '@tabler/icons-astro';
+import Button from './Button.astro';
+
+interface Props {
+  title?: string;
+  subtitle?: string;
+  primaryHref?: string;
+  primaryLabel?: string;
+  secondaryHref?: string;
+  secondaryLabel?: string;
+}
+
+const {
+  title = 'Prêt à reprendre le contrôle de votre patrimoine data ?',
+  subtitle = 'Demandez une démo personnalisée.\nNous étudions votre stack et vous montrons ce que Ganti peut faire dès la première semaine.',
+  primaryHref = '/contact',
+  primaryLabel = 'Demander une démo',
+  secondaryHref = '/tarifs',
+  secondaryLabel = 'Voir les tarifs',
+} = Astro.props;
+---
+
+<section class="cta-banner" aria-label={title}>
+  <div class="cta-banner__copy">
+    <h2 class="cta-banner__title">{title}</h2>
+    <p class="cta-banner__subtitle">{subtitle}</p>
+  </div>
+  <div class="cta-banner__actions">
+    <Button href={primaryHref} variant="inverse">
+      <IconMail slot="icon" size={20} stroke={1.5} />
+      {primaryLabel}
+    </Button>
+    {
+      secondaryHref && secondaryLabel ? (
+        <Button href={secondaryHref} variant="inverse-outline" hideIcon>
+          {secondaryLabel}
+        </Button>
+      ) : null
+    }
+  </div>
+</section>
+
+<style>
+  .cta-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-64);
+    box-sizing: border-box;
+    width: 100%;
+    padding: var(--space-128);
+    background: var(--color-primary-700);
+  }
+
+  .cta-banner__copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+    max-width: 846px;
+  }
+
+  .cta-banner__title {
+    margin: 0;
+    color: var(--color-primary-50);
+    font-family: var(--font-display);
+    font-size: var(--font-size-h2);
+    font-weight: var(--font-weight-bold);
+    font-optical-sizing: none;
+    font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 700;
+    letter-spacing: 0;
+    line-height: var(--line-height-heading);
+  }
+
+  .cta-banner__subtitle {
+    margin: 0;
+    color: var(--color-primary-50);
+    font-family: var(--font-body);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-body);
+    white-space: pre-line;
+  }
+
+  .cta-banner__actions {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: var(--space-16);
+  }
+
+  @media (max-width: 1024px) {
+    .cta-banner {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: var(--space-96) var(--space-32);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .cta-banner {
+      gap: var(--space-32);
+      padding: var(--space-64) var(--space-24);
+    }
+
+    .cta-banner__actions {
+      flex-wrap: wrap;
+    }
+  }
+</style>
