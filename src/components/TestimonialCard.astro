@@ -1,0 +1,186 @@
+---
+import { IconStarFilled } from '@tabler/icons-astro';
+
+interface Props {
+  name: string;
+  role: string;
+  domain: string;
+  quote: string;
+  rating: number;
+  logo: string;
+  company: string;
+  featured?: boolean;
+}
+
+const { name, role, domain, quote, rating, logo, company, featured = false } = Astro.props;
+
+const initials = name
+  .split(' ')
+  .filter(Boolean)
+  .map((part) => part[0])
+  .join('')
+  .slice(0, 2)
+  .toUpperCase();
+---
+
+<article class:list={['testimonial-card', featured && 'is-featured']}>
+  <div class="testimonial-card__top">
+    <div class="testimonial-card__header">
+      <img class="testimonial-card__logo" src={logo} alt={company} width="148" height="45" draggable="false" />
+      <p class="testimonial-card__rating" aria-label={`${rating} étoiles sur 5`}>
+        {
+          Array.from({ length: 5 }, (_, index) => (
+            <span
+              class:list={[
+                'testimonial-card__star',
+                index < rating && 'testimonial-card__star--on',
+              ]}
+            >
+              <IconStarFilled size={32} />
+            </span>
+          ))
+        }
+      </p>
+    </div>
+    <p class="testimonial-card__quote">{quote}</p>
+  </div>
+  <div class="testimonial-card__footer">
+    <div class="testimonial-card__author">
+      <span class="testimonial-card__avatar" aria-hidden="true">{initials}</span>
+      <div class="testimonial-card__identity">
+        <p class="testimonial-card__name">{name} — {role}</p>
+        <p class="testimonial-card__domain">{domain}</p>
+      </div>
+    </div>
+  </div>
+</article>
+
+<style>
+  .testimonial-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--space-64);
+    box-sizing: border-box;
+    width: 100%;
+    height: 347px;
+    padding: var(--space-48);
+    border-radius: var(--radius-2xl);
+    background: var(--color-base-white);
+  }
+
+  .testimonial-card__top {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-32);
+  }
+
+  .testimonial-card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .testimonial-card__logo {
+    display: block;
+    width: 148px;
+    height: 45px;
+    object-fit: contain;
+    object-position: left center;
+  }
+
+  .testimonial-card__quote {
+    margin: 0;
+    color: var(--color-primary-800);
+    font-family: var(--font-body);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-body);
+  }
+
+  .testimonial-card__footer {
+    display: flex;
+    align-items: center;
+  }
+
+  .testimonial-card__author {
+    display: flex;
+    align-items: center;
+    gap: var(--space-16);
+    min-width: 0;
+  }
+
+  .testimonial-card__avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+    border-radius: var(--radius-pill);
+    background: var(--color-primary-100);
+    color: var(--color-primary-500);
+    font-family: var(--font-body);
+    font-size: var(--font-size-12);
+    font-weight: var(--font-weight-bold);
+    line-height: 1;
+  }
+
+  .testimonial-card__identity {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    min-width: 0;
+  }
+
+  .testimonial-card__name {
+    margin: 0;
+    color: var(--color-primary-800);
+    font-family: var(--font-body);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-heading);
+    white-space: nowrap;
+  }
+
+  .testimonial-card__domain {
+    margin: 0;
+    color: var(--color-primary-800);
+    font-family: var(--font-body);
+    font-size: var(--font-size-body-small);
+    font-weight: var(--font-weight-regular);
+    line-height: 1.2;
+  }
+
+  .testimonial-card__rating {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    margin: 0;
+    flex-shrink: 0;
+  }
+
+  .testimonial-card__star {
+    display: flex;
+    color: var(--color-gray-300);
+  }
+
+  .testimonial-card__star--on {
+    color: #e1c318;
+  }
+
+  .testimonial-card__star :global(svg) {
+    display: block;
+    width: 32px;
+    height: 32px;
+  }
+
+  @media (max-width: 768px) {
+    .testimonial-card {
+      height: auto;
+      min-height: 0;
+      padding: var(--space-32);
+      gap: var(--space-32);
+    }
+  }
+</style>

@@ -1,0 +1,38 @@
+[
+  {
+    "name": "Théo Derache",
+    "role": "Analyste fonctionnel",
+    "company": "Auchan",
+    "domain": "E-commerce",
+    "quote": "Ganti est fondamental pour notre activité : il assure la cohérence des données et nous aide à prévenir les incidents.",
+    "rating": 5,
+    "logo": "/images/logos-clients/auchan.png"
+  },
+  {
+    "name": "Alain Coquelet",
+    "role": "Proxy Product Owner",
+    "company": "Auchan",
+    "domain": "Retail",
+    "quote": "S’assurer, sur une chaîne donnée, de la qualité de la donnée tout au long d’un processus.",
+    "rating": 4,
+    "logo": "/images/logos-clients/auchan.png"
+  },
+  {
+    "name": "Rémi Dejonghe",
+    "role": "Proxy Product Owner",
+    "company": "Auchan",
+    "domain": "SI Commerce",
+    "quote": "Avant, traiter notre supervision, c’était méchant. Maintenant, c’est Ganti !",
+    "rating": 5,
+    "logo": "/images/logos-clients/auchan.png"
+  },
+  {
+    "name": "Jacques Branchu",
+    "role": "Responsable d’application",
+    "company": "Extia, en mission chez Auchan",
+    "domain": "Retail",
+    "quote": "Ganti a simplifié mon analyse des déphasages de données, ainsi que des erreurs d’intégration rencontrées entre les applis Logistar / Synapse / Topase.",
+    "rating": 4,
+    "logo": "/images/logos-clients/auchan.png"
+  }
+]
