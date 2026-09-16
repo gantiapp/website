@@ -1,0 +1,66 @@
+{
+  "intro": "GANTI place la protection des données à caractère personnel au cœur de ses activités et des services qui vous sont proposés.\nLa présente Politique énonce les principes et lignes directrices pour la protection de vos Données Personnelles et a pour objectif de vous informer sur :",
+  "introPoints": [
+    "La façon dont GANTI collecte des Données Personnelles et les raisons de cette collecte",
+    "La façon dont GANTI utilise ces Données Personnelles",
+    "Vos droits sur les Données Personnelles vous concernant"
+  ],
+  "items": [
+    {
+      "heading": "Comment GANTI prend-elle en compte la protection des Données Personnelles ?",
+      "body": "GANTI s’engage à prendre en compte la protection de vos Données Personnelles et de votre vie privée. Pour assurer la sécurité et garantir le respect et le bon exercice de vos droits, les mesures permettant d’assurer la protection de vos données personnelles sont mises en œuvre."
+    },
+    {
+      "heading": "Quelles données personnelles sont utilisées par GANTI ?",
+      "body": "GANTI s’engage à ne collecter que des données strictement nécessaires à la réalisation des services souscrits lorsqu’ils nécessitent de traiter les données personnelles des clients. Dans le cas où des données facultatives vous seraient demandées, GANTI vous informera clairement sur les Données Personnelles nécessaires à la réalisation du service souscrit et celles volontairement fournies par vos soins. Les Données Personnelles sont collectées directement auprès de vous et ne sont utilisées que pour les usages qui ont été portés à votre connaissance. Les données personnelles sont utilisées pour vous proposer d’autres services, uniquement si vous avez accepté de recevoir des communications commerciales."
+    },
+    {
+      "heading": "A quels services ou entreprises sont communiquées vos Données Personnelles ?",
+      "body": "Vos données sont susceptibles d’être transmises :\n- à des services internes de GANTI : les directions qui sont en charge de l’exécution des services souscrits, notamment Service Clients, Administration des Ventes…\n- à des prestataires externes de GANTI : les prestataires techniques, y compris des sous-traitants."
+    },
+    {
+      "heading": "Utilisation des données Google",
+      "body": "Lorsque vous choisissez de vous connecter à GANTI à l’aide de votre compte Google, notre application utilise le protocole OAuth 2.0 fourni par Google.\n\nL’adresse e-mail Google est utilisée exclusivement pour :\n- créer ou identifier votre compte utilisateur GANTI ;\n- permettre votre authentification et votre connexion à l’application ;\n- sécuriser l’accès à votre espace personnel ;\n- communiquer avec vous concernant l’utilisation du service lorsque cela est nécessaire.\n\nLes données Google ne sont pas utilisées à des fins publicitaires et ne sont pas utilisées pour entraîner des modèles d’intelligence artificielle ou d’apprentissage automatique."
+    },
+    {
+      "heading": "Données Google collectées",
+      "body": "Dans le cadre de cette authentification, GANTI accède uniquement à l’adresse e-mail associée à votre compte Google. Aucune autre donnée Google (contacts, agenda, fichiers Google Drive, données Gmail ou autres informations personnelles) n’est consultée, collectée ou stockée par GANTI."
+    },
+    {
+      "heading": "Partage des données Google",
+      "body": "GANTI ne vend, ne loue et ne partage aucune donnée issue de votre compte Google avec des tiers à des fins commerciales ou publicitaires.\n\nL’adresse e-mail peut uniquement être accessible :\n- aux personnels habilités de GANTI lorsque cela est nécessaire à l’assistance ou à la maintenance du service ;\n- aux sous-traitants techniques intervenant pour l’hébergement ou l’exploitation de la plateforme, dans le respect de la réglementation applicable en matière de protection des données."
+    },
+    {
+      "heading": "Conservation des données Google",
+      "body": "L’adresse e-mail associée à votre compte est conservée pendant toute la durée d’existence de votre compte GANTI. En cas de suppression de votre compte ou sur demande expresse de votre part, cette donnée est supprimée dans les meilleurs délais, sauf obligation légale de conservation."
+    },
+    {
+      "heading": "Sécurité des données Google",
+      "body": "GANTI met en œuvre des mesures techniques et organisationnelles appropriées afin de protéger les données personnelles contre tout accès non autorisé, toute divulgation, modification ou destruction. Les échanges entre votre navigateur et les services de GANTI sont protégés par un chiffrement HTTPS."
+    },
+    {
+      "heading": "Suppression de vos données",
+      "body": "Vous pouvez à tout moment demander la suppression de votre compte et des données associées en contactant : rgpd@ganti.io\nToute demande de suppression sera traitée conformément aux exigences légales applicables."
+    },
+    {
+      "heading": "Vos Données Personnelles peuvent-elles être transférées en dehors de l’Union européenne ?",
+      "body": "GANTI réalise l’ensemble des traitements de vos Données Personnelles sur le territoire de l’Union européenne (UE). Toutefois, pour certaines prestations spécifiques, GANTI peut avoir recours à des sous-traitants établis en dehors de l’UE. Certaines Données Personnelles peuvent alors leur être communiquées pour les stricts besoins de leurs missions. Dans ce cas, conformément à la règlementation en vigueur, GANTI exige de ses sous-traitants qu’ils fournissent les garanties nécessaires à l’encadrement et à la sécurisation de ces transferts, notamment par la signature de clauses contractuelles types de la Commission européenne."
+    },
+    {
+      "heading": "Vos Données Personnelles sont-elles protégées ?",
+      "body": "GANTI s’engage à prendre toutes mesures afin d’assurer la disponibilité, l’intégrité et la confidentialité des Données Personnelles et surtout à empêcher qu’elles ne soient endommagées, effacées ou que des tiers non autorisés y aient accès.\n\nPar ailleurs, en cas d’incident de sécurité affectant vos Données Personnelles (destruction, perte, altération ou divulgation), GANTI s’engage à respecter l’obligation de notification des violations de Données Personnelles, notamment auprès de la CNIL."
+    },
+    {
+      "heading": "Quels sont vos droits sur vos Données Personnelles ?",
+      "body": "Vous disposez à tout moment de la faculté d’exercer auprès de GANTI les droits prévus par la réglementation en vigueur applicable en matière de données à caractère personnel, sous réserve d’en remplir les conditions :\n- Droit d’accès : vous pouvez avoir communication de vos Données Personnelles faisant l’objet d’un traitement par GANTI ;\n- Droit de rectification : vous pouvez mettre à jour vos Données Personnelles ou faire rectifier vos Données Personnelles traitées par GANTI ;\n- Droit d’opposition, particulièrement à recevoir des communications commerciales : vous pouvez exprimer votre souhait de ne plus recevoir de communication commerciale de la part de GANTI ou demander que vos Données Personnelles ne fassent plus l’objet d’un traitement ;\n- Droit à l’effacement : vous pouvez demander la suppression de vos Données Personnelles ;\n- Droit à la limitation : vous pouvez demander la suspension du traitement de vos Données Personnelles ;\n- Droit à la portabilité : vous pouvez demander à GANTI de récupérer vos Données Personnelles afin d’en disposer.\n\nVous pouvez exercer vos droits en justifiant de votre identité en précisant votre nom, prénom et adresse en vous adressant à rgpd@ganti.io. GANTI s’engage à répondre à vos demandes d’exercice de vos droits dans les meilleurs délais et en tout état de cause dans le respect du délai légal d’un mois.\n\nEn cas de difficulté en lien avec la gestion de vos données à caractère personnel, vous avez le droit d’introduire une réclamation auprès de la Commission Nationale de l’Informatique et des Libertés (CNIL) (3 place de Fontenoy – TSA 80715 – 75334 Paris cedex 07 ; tél. : 01 53 73 22 22)."
+    },
+    {
+      "heading": "GANTI a-t-elle désigné un Délégué à la Protection des Données ?",
+      "body": "La désignation d’un Délégué à la Protection des Données témoigne de l’attachement de GANTI à la protection, la sécurité et la confidentialité des Données Personnelles de ses clients. Vous pouvez contacter la Déléguée à la Protection des Données à l’adresse suivante :\n\nMonsieur Charly AGHETTI, 292 Rue Camille Guérin - 59000 Lille.\n\nEn cas de difficulté en lien avec la gestion de vos données à caractère personnel, vous avez le droit d’introduire une réclamation auprès de la Commission Nationale de l’Informatique et des Libertés (CNIL) (3 place de Fontenoy – TSA 80715 – 75334 Paris cedex 07 ; tél. : 01 53 73 22 22)."
+    }
+  ],
+  "glossary": {
+    "heading": "GLOSSAIRE",
+    "body": "Chaque terme débutant par une majuscule a le sens qui lui est donné ci-après.\n\n« Politique de confidentialité et de protection des Données Personnelles » et « Politique » : désigne la présente Politique décrivant les mesures prises pour le traitement, l’exploitation et la gestion de vos Données Personnelles et vos droits en tant que personne concernée par le traitement.\n\n« Données Personnelles » : Désigne toute information se rapportant à vous et permettant de vous identifier directement ou indirectement.\n\n« Traitement » : Désigne toute opération ou tout ensemble d’opérations appliquées à vos Données Personnelles.\n\n« Responsable du traitement » : Désigne Ganti qui réalise le traitement de vos Données Personnelles.\n\n« Violation de données à caractère personnel » : Désigne une violation de la sécurité entraînant, de manière accidentelle ou illicite, la destruction, la perte, l’altération, la divulgation ou l’accès non autorisés à vos Données Personnelles.\n\n« Destinataire » : Désigne le service ou l’entreprise qui reçoit communication et peut accéder à vos Données Personnelles."
+  }
+}
