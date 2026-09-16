@@ -1,16 +1,16 @@
 ---
+import modules from '../data/modules.json';
+
 const tagline =
   "L'excellence de la donnée, à chaque étape de votre métier.\nReprenez le contrôle total de votre patrimoine data.";
 
 const columns = [
   {
     title: 'Produit',
-    links: [
-      { href: '/produit', label: 'Query Manager' },
-      { href: '/produit', label: 'Bridge Query Manager' },
-      { href: '/produit', label: 'Data Manager' },
-      { href: '/produit', label: 'Command Manager' },
-    ],
+    links: modules.map((moduleItem) => ({
+      href: `/produit#${moduleItem.id}`,
+      label: moduleItem.name,
+    })),
   },
   {
     title: 'Solutions',

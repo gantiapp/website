@@ -1,0 +1,50 @@
+[
+  {
+    "id": "query-manager",
+    "name": "Query Manager",
+    "title": "Query Manager : L’accès universel",
+    "description": "Interrogez toutes vos sources de données (SQL, NoSQL, API, Google Sheets) depuis un point d'entrée unique. Une interface simple pour visualiser des résultats complexes.",
+    "impact": "Le désilotage instantané de l'information. Les équipes s'affranchissent de la complexité technique et des multiples outils pour se concentrer sur l'analyse pure.",
+    "useCase": "Un Business analyst visualise en quelques clics les données référentielles et identifie facilement les anomalies grâce aux fonctions de détections.",
+    "side": "left",
+    "tone": "query",
+    "characterSrc": "/images/personnages/scout.png",
+    "characterAlt": "Scout, mascotte du Query Manager"
+  },
+  {
+    "id": "bridge-query-manager",
+    "name": "Bridge Query Manager",
+    "title": "Bridge Query Manager : Le garant de la cohérence",
+    "description": "Le point de contrôle entre vos applications. Il compare et réconcilie automatiquement les flux de données issus de systèmes différents.",
+    "impact": "Une fiabilité absolue. Vous identifiez les écarts de données et les anomalies structurelles avant qu'elles n'impactent votre activité métier ou vos clients.",
+    "useCase": "Le service financier vérifie automatiquement en fin de mois que les factures générées dans l'ERP correspondent à la virgule près aux transactions enregistrées dans le CRM.",
+    "side": "right",
+    "tone": "bridge",
+    "characterSrc": "/images/personnages/link.png",
+    "characterAlt": "Link, mascotte du Bridge Query Manager"
+  },
+  {
+    "id": "data-manager",
+    "name": "Data Manager",
+    "title": "Data Manager : La vision à 360°",
+    "description": "La cartographie de votre patrimoine. Visualisez et explorez l'ensemble de vos données, organisées logiquement par domaine d'expertise métier.",
+    "impact": "La gouvernance par la clarté. Chaque collaborateur comprend instantanément le paysage de la donnée de l'entreprise et trouve l'information qualifiée dont il a besoin.",
+    "useCase": "Un Business analyst a besoin d’analyser le chemin complet de la donnée du référencement jusqu'au logiciel de e-commerce. Il configure un datamanager et permets a l’ensemble des collaborateurs de cibler l’origine des anomalies rapidement et facilement.",
+    "side": "left",
+    "tone": "data",
+    "characterSrc": "/images/personnages/atlas.png",
+    "characterAlt": "Atlas, mascotte du Data Manager"
+  },
+  {
+    "id": "command-manager",
+    "name": "Command Manager",
+    "title": "Command Manager : La vigie technique",
+    "description": "Le monitoring rendu transparent. Visualisez et analysez les fichiers de rejets et les logs serveurs directement depuis une interface lisible, sans ligne de commande.",
+    "impact": "Une réactivité maximale pour le support. Les erreurs silencieuses du système deviennent visibles, compréhensibles et qualifiables instantanément.",
+    "useCase": "L'équipe de support identifie la cause d'un échec d'importation de fichier en lisant le log traduit visuellement, l’incident est résolu rapidement et efficacement.",
+    "side": "right",
+    "tone": "command",
+    "characterSrc": "/images/personnages/termi.png",
+    "characterAlt": "Termi, mascotte du Command Manager"
+  }
+]
