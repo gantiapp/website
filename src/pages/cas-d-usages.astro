@@ -1,0 +1,208 @@
+---
+import { IconChevronLeft, IconChevronRight } from '@tabler/icons-astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import Highlight from '../components/Highlight.astro';
+import Tabs from '../components/Tabs.astro';
+import UseCasePanel from '../components/UseCasePanel.astro';
+import useCases from '../data/use-cases.json';
+
+const defaultId = useCases[0].id;
+const previousCase = useCases[useCases.length - 1];
+const nextCase = useCases[1];
+---
+
+<BaseLayout title="Cas d’usages — Ganti">
+  <section class="use-cases" data-tabs-root aria-label="Cas d’usages">
+    <h1 class="use-cases__title">
+      Une réponse précise pour<br class="break-desktop" />
+      <Highlight>chaque métier</Highlight>
+    </h1>
+
+    <Tabs
+      items={useCases.map((useCase) => ({ id: useCase.id, label: useCase.tabLabel }))}
+      currentId={defaultId}
+      ariaLabel="Profils"
+      name="use-cases"
+    />
+
+    {
+      useCases.map((useCase) => (
+        <UseCasePanel
+          id={useCase.id}
+          name="use-cases"
+          eyebrow={useCase.eyebrow}
+          title={useCase.title}
+          person={useCase.person}
+          problem={useCase.problem}
+          solution={useCase.solution}
+          quote={useCase.quote}
+          quoteAttribution={useCase.quoteAttribution}
+          hidden={useCase.id !== defaultId}
+        />
+      ))
+    }
+
+    <nav class="use-cases__switch" aria-label="Autres profils">
+      <a class="use-cases__switch-link" href={`#${previousCase.id}`} data-tab-prev>
+        <IconChevronLeft size={20} stroke={1.5} />
+        <span class="use-cases__switch-copy">
+          <span class="use-cases__switch-kind">Profil précédent</span>
+          <span data-tab-prev-label>{previousCase.tabLabel}</span>
+        </span>
+      </a>
+      <a class="use-cases__switch-link use-cases__switch-link--next" href={`#${nextCase.id}`} data-tab-next>
+        <span class="use-cases__switch-copy">
+          <span class="use-cases__switch-kind">Profil suivant</span>
+          <span data-tab-next-label>{nextCase.tabLabel}</span>
+        </span>
+        <IconChevronRight size={20} stroke={1.5} />
+      </a>
+    </nav>
+
+    <div class="use-cases__cta">
+      <p class="use-cases__cta-text">
+        Votre profil ne figure pas dans la liste ? Contactez-nous pour un cas d'usage sur-mesure.
+      </p>
+      <Button href="/contact">Discuter de mon cas</Button>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .use-cases {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-64);
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 1920px;
+    margin: 0 auto;
+    padding: var(--space-64) clamp(24px, 13.33vw, 256px) var(--space-128);
+  }
+
+  .use-cases__title {
+    margin: 0;
+    color: var(--color-base-black);
+    font-family: var(--font-display);
+    font-size: var(--font-size-h1);
+    font-weight: var(--font-weight-extrabold);
+    font-optical-sizing: none;
+    font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 800;
+    letter-spacing: 0;
+    line-height: var(--line-height-heading);
+    text-align: center;
+  }
+
+  .use-cases__switch {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-16);
+  }
+
+  .use-cases__switch-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-8);
+    min-width: 0;
+    color: var(--color-primary-500);
+    font-family: var(--font-body);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-heading);
+    text-decoration: none;
+  }
+
+  .use-cases__switch-copy {
+    display: inline;
+  }
+
+  .use-cases__switch-kind::after {
+    content: ' : ';
+  }
+
+  .use-cases__switch-link:hover,
+  .use-cases__switch-link:focus-visible {
+    color: var(--color-primary-600);
+  }
+
+  .use-cases__switch-link :global(svg) {
+    display: block;
+    flex-shrink: 0;
+  }
+
+  .use-cases__cta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-16);
+    padding-top: var(--space-64);
+    border-top: 1px solid var(--color-gray-300);
+    text-align: center;
+  }
+
+  .use-cases__cta :global(.button) {
+    align-self: center;
+  }
+
+  .use-cases__cta-text {
+    margin: 0;
+    max-width: 54em;
+    color: var(--color-gray-500);
+    font-family: var(--font-body);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-heading);
+  }
+
+  @media (max-width: 1024px) {
+    .use-cases__title {
+      font-size: var(--font-size-h2);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .use-cases {
+      gap: var(--space-32);
+      padding: var(--space-32) var(--space-page) var(--space-64);
+    }
+
+    .use-cases__switch {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
+      gap: var(--space-16);
+    }
+
+    .use-cases__switch-link {
+      align-items: flex-start;
+    }
+
+    .use-cases__switch-link--next {
+      justify-content: flex-end;
+      text-align: right;
+    }
+
+    .use-cases__switch-link--next .use-cases__switch-copy {
+      align-items: flex-end;
+    }
+
+    .use-cases__switch-copy {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+      min-width: 0;
+    }
+
+    .use-cases__switch-kind {
+      font-size: var(--font-size-body-small);
+      font-weight: var(--font-weight-regular);
+    }
+
+    .use-cases__switch-kind::after {
+      content: none;
+    }
+  }
+</style>

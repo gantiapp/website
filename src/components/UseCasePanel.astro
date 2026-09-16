@@ -1,0 +1,444 @@
+---
+import { IconBuilding, IconStarFilled, IconTag } from '@tabler/icons-astro';
+import Highlight from './Highlight.astro';
+
+interface Person {
+  name: string;
+  role: string;
+  company: string;
+  domain: string;
+  rating: number;
+}
+
+interface Props {
+  id: string;
+  name: string;
+  eyebrow: string;
+  title: string;
+  person: Person;
+  problem: string;
+  solution: string;
+  quote?: string | null;
+  quoteAttribution?: string | null;
+  hidden?: boolean;
+}
+
+const {
+  id,
+  name,
+  eyebrow,
+  title,
+  person,
+  problem,
+  solution,
+  quote,
+  quoteAttribution,
+  hidden = false,
+} = Astro.props;
+
+const initials = person.name
+  .split(' ')
+  .filter(Boolean)
+  .map((part) => part.replace(/[^A-Za-zÀ-ÿ]/g, '')[0])
+  .join('')
+  .slice(0, 2)
+  .toUpperCase();
+---
+
+<article
+  class="use-case-panel"
+  id={id}
+  role="tabpanel"
+  aria-labelledby={`${name}-tab-${id}`}
+  data-tab-panel
+  data-tab-id={id}
+  hidden={hidden}
+  aria-hidden={hidden ? 'true' : 'false'}
+>
+  <header class="use-case-panel__header">
+    <div class="use-case-panel__eyebrow">
+      <span class="use-case-panel__rule" aria-hidden="true"></span>
+      <p class="use-case-panel__eyebrow-label">{eyebrow}</p>
+    </div>
+    <h2 class="use-case-panel__title">{title}</h2>
+    <div class="use-case-panel__identity">
+      <span class="use-case-panel__avatar" aria-hidden="true">{initials}</span>
+      <div class="use-case-panel__who">
+        <p class="use-case-panel__name">{person.name}</p>
+        <p class="use-case-panel__role">{person.role}</p>
+      </div>
+      <p class="use-case-panel__meta">
+        <span class="use-case-panel__meta-item">
+          <IconBuilding size={20} stroke={1.5} />
+          <span>{person.company}</span>
+        </span>
+        <span class="use-case-panel__meta-item">
+          <IconTag size={20} stroke={1.5} />
+          <span>{person.domain}</span>
+        </span>
+      </p>
+      <p class="use-case-panel__rating" aria-label={`${person.rating} étoiles sur 5`}>
+        {
+          Array.from({ length: 5 }, (_, index) => (
+            <span class:list={['use-case-panel__star', index < person.rating && 'is-on']}>
+              <IconStarFilled size={32} />
+            </span>
+          ))
+        }
+      </p>
+    </div>
+  </header>
+
+  <div class="use-case-panel__blocks">
+    <div class="use-case-panel__block">
+      <h3 class="use-case-panel__label">
+        <Highlight
+          fill="var(--color-primary-50)"
+          color="var(--color-primary-500)"
+          rotate={-0.7}
+          padX={0.46}
+          height={1.85}
+          textPad={0.32}
+          seed={1}
+        >
+          Problématique
+        </Highlight>
+      </h3>
+      <div class="use-case-panel__card">
+        <p class="use-case-panel__text">{problem}</p>
+      </div>
+    </div>
+    <div class="use-case-panel__block">
+      <h3 class="use-case-panel__label">
+        <Highlight
+          fill="var(--color-primary-50)"
+          color="var(--color-primary-500)"
+          rotate={0.9}
+          padX={0.5}
+          height={1.9}
+          textPad={0.34}
+          seed={2}
+        >
+          Solution
+        </Highlight>
+      </h3>
+      <div class="use-case-panel__card">
+        <p class="use-case-panel__text">{solution}</p>
+      </div>
+    </div>
+  </div>
+
+  {
+    quote ? (
+      <figure class="use-case-panel__quote">
+        <blockquote class="use-case-panel__quote-text">{quote}</blockquote>
+        {quoteAttribution ? <figcaption class="use-case-panel__quote-caption">{quoteAttribution}</figcaption> : null}
+      </figure>
+    ) : null
+  }
+</article>
+
+<style>
+  .use-case-panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-64);
+    width: 100%;
+    min-width: 0;
+  }
+
+  .use-case-panel[hidden] {
+    display: none;
+  }
+
+  .use-case-panel__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-32);
+  }
+
+  .use-case-panel__eyebrow {
+    display: flex;
+    align-items: center;
+    gap: var(--space-48);
+  }
+
+  .use-case-panel__rule {
+    flex: 1;
+    height: 1px;
+    background: var(--color-gray-300);
+  }
+
+  .use-case-panel__eyebrow-label {
+    margin: 0;
+    color: var(--color-primary-500);
+    font-family: var(--font-display);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-medium);
+    font-optical-sizing: none;
+    font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 500;
+    line-height: var(--line-height-heading);
+    white-space: nowrap;
+  }
+
+  .use-case-panel__title {
+    margin: 0;
+    color: var(--color-primary-800);
+    font-family: var(--font-display);
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-weight-medium);
+    font-optical-sizing: none;
+    font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 500;
+    letter-spacing: 0;
+    line-height: var(--line-height-heading);
+  }
+
+  .use-case-panel__identity {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      "avatar who rating"
+      "avatar meta rating";
+    align-items: center;
+    column-gap: var(--space-32);
+    row-gap: var(--space-8);
+  }
+
+  .use-case-panel__avatar {
+    grid-area: avatar;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    width: 60px;
+    height: 60px;
+    border-radius: var(--radius-pill);
+    background: var(--color-primary-500);
+    color: var(--color-base-white);
+    font-family: var(--font-body);
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1;
+  }
+
+  .use-case-panel__who {
+    grid-area: who;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-8) var(--space-16);
+    min-width: 0;
+  }
+
+  .use-case-panel__name,
+  .use-case-panel__role {
+    margin: 0;
+  }
+
+  .use-case-panel__name {
+    color: var(--color-primary-800);
+    font-family: var(--font-body);
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-heading);
+  }
+
+  .use-case-panel__role {
+    color: var(--color-primary-500);
+    font-family: var(--font-body);
+    font-size: var(--font-size-body-large);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-heading);
+  }
+
+  .use-case-panel__meta {
+    grid-area: meta;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-16);
+    margin: 0;
+    color: var(--color-gray-500);
+    font-family: var(--font-body);
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-body);
+  }
+
+  .use-case-panel__meta-item {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: var(--space-4);
+    min-width: 0;
+  }
+
+  .use-case-panel__meta-item :global(svg) {
+    display: block;
+    flex-shrink: 0;
+    color: var(--color-gray-400);
+  }
+
+  .use-case-panel__rating {
+    grid-area: rating;
+    display: flex;
+    flex-shrink: 0;
+    align-self: center;
+    gap: var(--space-4);
+    margin: 0;
+  }
+
+  .use-case-panel__star {
+    display: flex;
+    color: var(--color-gray-300);
+  }
+
+  .use-case-panel__star.is-on {
+    color: #e1c318;
+  }
+
+  .use-case-panel__star :global(svg) {
+    display: block;
+    width: 32px;
+    height: 32px;
+  }
+
+  .use-case-panel__blocks {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-32);
+  }
+
+  .use-case-panel__block {
+    position: relative;
+    padding-top: 22px;
+  }
+
+  .use-case-panel__label {
+    position: absolute;
+    z-index: 1;
+    top: 22px;
+    left: var(--space-48);
+    margin: 0;
+    color: var(--color-primary-500);
+    font-family: var(--font-display);
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-weight-medium);
+    font-optical-sizing: none;
+    font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 500;
+    line-height: var(--line-height-heading);
+    transform: translateY(-50%);
+  }
+
+  .use-case-panel__card {
+    box-sizing: border-box;
+    width: 100%;
+    padding: var(--space-64) var(--space-48) var(--space-48);
+    border-radius: var(--radius-2xl);
+    background: var(--color-gray-100);
+  }
+
+  .use-case-panel__text {
+    margin: 0;
+    color: var(--color-primary-800);
+    font-family: var(--font-body);
+    font-size: var(--font-size-body-large);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-heading);
+  }
+
+  .use-case-panel__quote {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    margin: 0;
+    padding-left: var(--space-32);
+    border-left: 1px solid var(--color-gray-300);
+  }
+
+  .use-case-panel__quote-text {
+    margin: 0;
+    color: var(--color-primary-800);
+    font-family: var(--font-body);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-body);
+  }
+
+  .use-case-panel__quote-caption {
+    color: var(--color-gray-500);
+    font-family: var(--font-body);
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-body);
+  }
+
+  @media (max-width: 1024px) {
+    .use-case-panel__title,
+    .use-case-panel__label {
+      font-size: var(--font-size-large-text);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .use-case-panel {
+      gap: var(--space-32);
+    }
+
+    .use-case-panel__header {
+      gap: var(--space-32);
+    }
+
+    .use-case-panel__identity {
+      grid-template-columns: auto minmax(0, 1fr);
+      grid-template-areas:
+        "avatar who"
+        "meta meta"
+        "rating rating";
+      align-items: start;
+      column-gap: var(--space-16);
+      row-gap: var(--space-24);
+    }
+
+    .use-case-panel__avatar {
+      align-self: center;
+      width: 40px;
+      height: 40px;
+      font-size: var(--font-size-body);
+    }
+
+    .use-case-panel__who {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-4);
+    }
+
+    .use-case-panel__name {
+      font-size: var(--font-size-body-large);
+    }
+
+    .use-case-panel__role {
+      font-size: var(--font-size-body);
+    }
+
+    .use-case-panel__meta {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-16);
+      padding-top: var(--space-8);
+    }
+
+    .use-case-panel__meta-item {
+      align-items: center;
+    }
+
+    .use-case-panel__label {
+      left: var(--space-24);
+    }
+
+    .use-case-panel__card {
+      padding: var(--space-48) var(--space-32) var(--space-32);
+    }
+
+    .use-case-panel__text {
+      font-size: var(--font-size-body);
+    }
+  }
+</style>
