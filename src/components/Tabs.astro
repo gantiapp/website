@@ -1,0 +1,296 @@
+---
+import { IconChevronLeft, IconChevronRight } from '@tabler/icons-astro';
+
+interface TabItem {
+  id: string;
+  label: string;
+}
+
+interface Props {
+  items: TabItem[];
+  currentId: string;
+  ariaLabel?: string;
+  name?: string;
+}
+
+const { items, currentId, ariaLabel = 'Sections', name = 'tabs' } = Astro.props;
+---
+
+<div class="tabs" data-tabs data-tabs-name={name}>
+  <button
+    class="tabs__arrow"
+    type="button"
+    data-tabs-arrow="prev"
+    aria-label="Profil précédent"
+  >
+    <IconChevronLeft size={24} stroke={2} />
+  </button>
+  <div class="tabs__list" role="tablist" aria-label={ariaLabel}>
+    {
+      items.map((item) => (
+        <button
+          class="tabs__tab"
+          type="button"
+          role="tab"
+          id={`${name}-tab-${item.id}`}
+          data-tab
+          data-tab-id={item.id}
+          aria-controls={item.id}
+          aria-selected={item.id === currentId ? 'true' : 'false'}
+          tabindex={item.id === currentId ? 0 : -1}
+        >
+          {item.label}
+        </button>
+      ))
+    }
+  </div>
+  <button
+    class="tabs__arrow"
+    type="button"
+    data-tabs-arrow="next"
+    aria-label="Profil suivant"
+  >
+    <IconChevronRight size={24} stroke={2} />
+  </button>
+</div>
+
+<style>
+  .tabs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: var(--space-12);
+  }
+
+  .tabs__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-8);
+  }
+
+  .tabs__arrow {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: var(--stroke-width) solid var(--color-primary-100);
+    border-radius: var(--radius-pill);
+    background: var(--color-base-white);
+    color: var(--color-primary-500);
+    cursor: pointer;
+  }
+
+  .tabs__arrow:hover,
+  .tabs__arrow:focus-visible {
+    background: var(--color-primary-50);
+  }
+
+  .tabs__arrow :global(svg) {
+    display: block;
+  }
+
+  .tabs__tab {
+    padding: var(--space-16);
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: var(--color-gray-400);
+    font-family: var(--font-body);
+    font-size: var(--font-size-button);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.2;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .tabs__tab:hover,
+  .tabs__tab:focus-visible {
+    color: var(--color-primary-500);
+  }
+
+  .tabs__tab[aria-selected='true'] {
+    background: var(--color-primary-50);
+    color: var(--color-primary-500);
+  }
+
+  @media (max-width: 768px) {
+    .tabs {
+      display: grid;
+      grid-template-columns: 40px minmax(0, 1fr) 40px;
+      column-gap: var(--space-12);
+    }
+
+    .tabs__arrow {
+      display: inline-flex;
+    }
+
+    .tabs__list {
+      flex-wrap: nowrap;
+      justify-content: center;
+      gap: 0;
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    .tabs__tab {
+      display: none;
+      font-size: var(--font-size-body);
+    }
+
+    .tabs__tab[aria-selected='true'] {
+      display: block;
+    }
+  }
+</style>
+
+<script>
+  function setupTabs() {
+    const tabRoots = document.querySelectorAll('[data-tabs]');
+    tabRoots.forEach((tabRoot) => {
+      if (!(tabRoot instanceof HTMLElement) || tabRoot.hasAttribute('data-tabs-ready')) {
+        return;
+      }
+
+      const tabs = [...tabRoot.querySelectorAll('[data-tab]')];
+      if (!tabs.length) {
+        return;
+      }
+
+      tabRoot.setAttribute('data-tabs-ready', '');
+      const tablist = tabRoot.querySelector('[role="tablist"]') ?? tabRoot;
+      const root = tabRoot.closest('[data-tabs-root]') ?? document;
+      const allowedIds = tabs
+        .map((tab) => tab.getAttribute('data-tab-id'))
+        .filter((tabId) => Boolean(tabId));
+
+      const setCurrent = (nextId, { writeHash } = { writeHash: true }) => {
+        if (!nextId || !allowedIds.includes(nextId)) {
+          return;
+        }
+
+        tabs.forEach((tab) => {
+          const isCurrent = tab.getAttribute('data-tab-id') === nextId;
+          tab.setAttribute('aria-selected', isCurrent ? 'true' : 'false');
+          tab.setAttribute('tabindex', isCurrent ? '0' : '-1');
+        });
+
+        root.querySelectorAll('[data-tab-panel]').forEach((panel) => {
+          const isCurrent = panel.getAttribute('data-tab-id') === nextId;
+          panel.toggleAttribute('hidden', !isCurrent);
+          panel.setAttribute('aria-hidden', isCurrent ? 'false' : 'true');
+        });
+
+        const currentIndex = allowedIds.indexOf(nextId);
+        const previousId = allowedIds[(currentIndex - 1 + allowedIds.length) % allowedIds.length];
+        const nextTabId = allowedIds[(currentIndex + 1) % allowedIds.length];
+        const previousTab = tabs.find((tab) => tab.getAttribute('data-tab-id') === previousId);
+        const nextTab = tabs.find((tab) => tab.getAttribute('data-tab-id') === nextTabId);
+
+        const previousLink = root.querySelector('[data-tab-prev]');
+        const nextLink = root.querySelector('[data-tab-next]');
+        const previousLabel = root.querySelector('[data-tab-prev-label]');
+        const nextLabel = root.querySelector('[data-tab-next-label]');
+
+        if (previousLink instanceof HTMLAnchorElement && previousTab) {
+          previousLink.href = `#${previousId}`;
+        }
+        if (nextLink instanceof HTMLAnchorElement && nextTab) {
+          nextLink.href = `#${nextTabId}`;
+        }
+        if (previousLabel) {
+          previousLabel.textContent = previousTab?.textContent?.trim() ?? '';
+        }
+        if (nextLabel) {
+          nextLabel.textContent = nextTab?.textContent?.trim() ?? '';
+        }
+
+        if (writeHash) {
+          const nextHash = `#${nextId}`;
+          if (window.location.hash !== nextHash) {
+            history.replaceState(null, '', `${window.location.pathname}${nextHash}`);
+          }
+        }
+      };
+
+      const moveBy = (direction) => {
+        const currentIndex = tabs.findIndex((tab) => tab.getAttribute('aria-selected') === 'true');
+        if (currentIndex < 0) {
+          return;
+        }
+
+        const nextIndex = (currentIndex + direction + tabs.length) % tabs.length;
+        const nextTab = tabs[nextIndex];
+        setCurrent(nextTab?.getAttribute('data-tab-id'));
+      };
+
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', () => {
+          const tabId = tab.getAttribute('data-tab-id');
+          setCurrent(tabId);
+        });
+      });
+
+      tabRoot.querySelectorAll('[data-tabs-arrow]').forEach((arrow) => {
+        arrow.addEventListener('click', () => {
+          const direction = arrow.getAttribute('data-tabs-arrow') === 'prev' ? -1 : 1;
+          moveBy(direction);
+        });
+      });
+
+      tablist.addEventListener('keydown', (event) => {
+        const currentIndex = tabs.findIndex((tab) => tab.getAttribute('aria-selected') === 'true');
+        if (currentIndex < 0) {
+          return;
+        }
+
+        let nextIndex = currentIndex;
+        if (event.key === 'ArrowRight') {
+          nextIndex = (currentIndex + 1) % tabs.length;
+        } else if (event.key === 'ArrowLeft') {
+          nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+        } else if (event.key === 'Home') {
+          nextIndex = 0;
+        } else if (event.key === 'End') {
+          nextIndex = tabs.length - 1;
+        } else {
+          return;
+        }
+
+        event.preventDefault();
+        const nextTab = tabs[nextIndex];
+        const nextId = nextTab?.getAttribute('data-tab-id');
+        setCurrent(nextId);
+        if (nextTab instanceof HTMLElement) {
+          nextTab.focus();
+        }
+      });
+
+      root.querySelectorAll('[data-tab-prev], [data-tab-next]').forEach((link) => {
+        link.addEventListener('click', (event) => {
+          event.preventDefault();
+          const destination = link.getAttribute('href')?.replace('#', '');
+          setCurrent(destination);
+        });
+      });
+
+      window.addEventListener('hashchange', () => {
+        const hashId = window.location.hash.replace('#', '');
+        if (allowedIds.includes(hashId)) {
+          setCurrent(hashId, { writeHash: false });
+        }
+      });
+
+      const landingHash = window.location.hash.replace('#', '');
+      const initialId = allowedIds.includes(landingHash) ? landingHash : allowedIds[0];
+      setCurrent(initialId, { writeHash: Boolean(landingHash) });
+    });
+  }
+
+  setupTabs();
+</script>
