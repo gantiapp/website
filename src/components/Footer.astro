@@ -1,5 +1,6 @@
 ---
 import modules from '../data/modules.json';
+import useCases from '../data/use-cases.json';
 
 const tagline =
   "L'excellence de la donnée, à chaque étape de votre métier.\nReprenez le contrôle total de votre patrimoine data.";
@@ -14,12 +15,10 @@ const columns = [
   },
   {
     title: 'Solutions',
-    links: [
-      { href: '/cas-d-usages', label: 'Analyste fonctionnel' },
-      { href: '/cas-d-usages', label: 'Analyste d’exploitation' },
-      { href: '/cas-d-usages', label: 'Responsable d’application' },
-      { href: '/cas-d-usages', label: 'Product owner (PPO)' },
-    ],
+    links: useCases.map((useCase) => ({
+      href: `/cas-d-usages#${useCase.id}`,
+      label: useCase.tabLabel,
+    })),
   },
   {
     title: 'Tarifs',

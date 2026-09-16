@@ -1,0 +1,70 @@
+[
+  {
+    "id": "analyste-fonctionnel",
+    "tabLabel": "Analyste fonctionnel",
+    "eyebrow": "Cas client vérifié",
+    "title": "Détection des désynchronisations et fiabilisation E-commerce",
+    "person": {
+      "name": "Grégory Flenniau",
+      "role": "Analyste fonctionnel",
+      "company": "Auchan",
+      "domain": "DSI E-commerce / Fidélité",
+      "rating": 5
+    },
+    "problem": "Désynchronisation entre les différentes briques applicatives du système d'information. Le problème n'était pas géré de manière globale : seules des vérifications manuelles via des fichiers Excel étaient effectuées. Perte de temps estimée à environ un jour par personne, et perte de chiffre d'affaires liée à des produits non publiés ou publiés à tort, générant de la frustration chez les clients.",
+    "solution": "Ganti scanne les bases (WMS, plateforme e-commerce, outil de support / ticketing, data warehouse) et détecte les anomalies. Les équipes visualisent l'incidentologie à l'avance. Gain : l'équivalent d'un jour de travail par personne, une analyse plus rapide et une mise en production plus fiable.",
+    "quote": null,
+    "quoteAttribution": null
+  },
+  {
+    "id": "analyste-exploitation",
+    "tabLabel": "Analyste d’exploitation",
+    "eyebrow": "Cas client vérifié",
+    "title": "Contrôle quotidien des publications et proactivité",
+    "person": {
+      "name": "Théo Derache",
+      "role": "Analyste d'exploitation",
+      "company": "Auchan",
+      "domain": "E-commerce / Produit",
+      "rating": 5
+    },
+    "problem": "Désynchronisation entre les applications. Vérifications manuelles (Excel) ou requêtes SQL complexes, avec une autre application jugée moins performante. Impacts importants sur l'activité e-commerce et perte de temps significative.",
+    "solution": "Ganti contrôle quotidiennement le nombre de produits publiés sur chacun des sites auchan.fr et alerte en cas de variation suspecte grâce à un seuil de déclenchement. Forte proactivité : les incidents potentiels sont détectés avant qu'ils ne se produisent.",
+    "quote": "« Ganti est fondamental pour notre activité : il assure la cohérence des données et nous aide à prévenir les incidents. »",
+    "quoteAttribution": "Théo Derache, Analyste d'exploitation chez Auchan"
+  },
+  {
+    "id": "responsable-application",
+    "tabLabel": "Responsable d’application",
+    "eyebrow": "Cas client vérifié",
+    "title": "Contrôle des flux d'intégration et qualité des données",
+    "person": {
+      "name": "Luigi Caritchy",
+      "role": "Responsable d'application",
+      "company": "Auchan",
+      "domain": "Métier de bouche et référencement",
+      "rating": 5
+    },
+    "problem": "Désynchronisation entre les applications et difficulté à retrouver l'information rapidement. Vérifications manuelles Excel et requêtes SQL complexes. Beaucoup d'heures perdues : les équipes subissaient les incidents au lieu de les anticiper.",
+    "solution": "Ganti compare les fichiers envoyés (ERP, WMS) et vérifie qu'ils sont bien intégrés par le système destinataire, en croisant les données pour détecter les déphasages et contrôler la qualité en continu. Le temps d'analyse de certains incidents passe de 30 minutes à 5 minutes.",
+    "quote": "« Pour certains incidents, on est passé de 30 min d'analyse à 5 min car le contrôle est automatisé. »",
+    "quoteAttribution": "Luigi Caritchy, Responsable d'application chez Auchan"
+  },
+  {
+    "id": "product-owner",
+    "tabLabel": "Product owner (PPO)",
+    "eyebrow": "Cas client vérifié",
+    "title": "Fiabilité des données tout au long du processus logistique et commercial",
+    "person": {
+      "name": "A. Coquelet",
+      "role": "PPO Ganti",
+      "company": "Auchan",
+      "domain": "Retail",
+      "rating": 4
+    },
+    "problem": "Données déphasées entre applications ou au sein de tables d'une même application (pertes, référencement, tarifs). Vérifications manuelles, SQL, support monopolisé, mode pompier. Perte de temps, facturation fausse, erreurs logistiques, commandes non valorisées, retards en magasin, entrepôt et approvisionnement.",
+    "solution": "Contrôle ciblé sur la chaîne (WMS, e-commerce, ticketing, data warehouse, OMS, gestion commerciale point de vente), par exemple la commandabilité d'un produit pour un point de vente et une activité logistique. Gain de temps et recentrage des équipes sur des activités à plus forte valeur ajoutée.",
+    "quote": "« S'assurer, sur une chaîne donnée, de la qualité de la donnée tout au long d'un processus. »",
+    "quoteAttribution": "A. Coquelet, PPO Ganti chez Auchan"
+  }
+]
