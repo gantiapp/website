@@ -1,0 +1,228 @@
+---
+import modules from '../data/modules.json';
+
+interface Props {
+  currentId?: string;
+}
+
+const { currentId = modules[0]?.id } = Astro.props;
+---
+
+<nav class="character-dock" aria-label="Modules Ganti" data-character-dock>
+  <ul class="character-dock__list">
+    {
+      modules.map((moduleItem) => (
+        <li>
+          <a
+            class:list={['character-dock__link', moduleItem.id === currentId && 'is-current']}
+            href={`#${moduleItem.id}`}
+            data-dock-link
+            data-module-id={moduleItem.id}
+            aria-label={moduleItem.name}
+            aria-current={moduleItem.id === currentId ? 'true' : undefined}
+          >
+            <img
+              class="character-dock__image"
+              src={moduleItem.characterSrc}
+              alt={moduleItem.characterAlt}
+              width="64"
+              height="64"
+            />
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<style>
+  .character-dock {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 100%;
+    margin-top: auto;
+    padding: var(--space-64);
+  }
+
+  .character-dock__list {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: var(--space-32);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .character-dock__link {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    opacity: 0.25;
+    transition: opacity 0.2s ease;
+  }
+
+  .character-dock__link:hover,
+  .character-dock__link:focus-visible,
+  .character-dock__link.is-current {
+    opacity: 1;
+  }
+
+  .character-dock__link.is-current {
+    pointer-events: none;
+    cursor: default;
+  }
+
+  .character-dock__image {
+    display: block;
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+  }
+
+  @media (max-width: 768px) {
+    .character-dock {
+      padding: var(--space-16) var(--space-24) var(--space-24);
+    }
+
+    .character-dock__list {
+      gap: var(--space-16);
+    }
+
+    .character-dock__link,
+    .character-dock__image {
+      width: 48px;
+      height: 48px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .character-dock {
+      padding: var(--space-12) var(--space-16) var(--space-16);
+    }
+
+    .character-dock__link,
+    .character-dock__image {
+      width: 40px;
+      height: 40px;
+    }
+  }
+</style>
+
+<script>
+  function setupCharacterDocks() {
+    const stages = [...document.querySelectorAll('[data-product-stage]')];
+    const links = [...document.querySelectorAll('[data-dock-link]')];
+    if (!stages.length || !links.length) {
+      return;
+    }
+
+    const allowedIds = new Set(stages.map((stage) => stage.id));
+    let currentId = stages[0].id;
+    let hashLock = false;
+    let allowHashWrite = false;
+
+    const setCurrent = (nextId) => {
+      if (!nextId || !allowedIds.has(nextId)) {
+        return;
+      }
+
+      currentId = nextId;
+
+      links.forEach((link) => {
+        const isCurrent = link.getAttribute('data-module-id') === currentId;
+        link.classList.toggle('is-current', isCurrent);
+        if (isCurrent) {
+          link.setAttribute('aria-current', 'true');
+        } else {
+          link.removeAttribute('aria-current');
+        }
+      });
+
+      if (!allowHashWrite) {
+        return;
+      }
+
+      const nextHash = `#${currentId}`;
+      if (window.location.hash !== nextHash) {
+        history.replaceState(null, '', `${window.location.pathname}${nextHash}`);
+      }
+    };
+
+    const scrollToModule = (moduleId) => {
+      document.getElementById(moduleId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+
+    links.forEach((link) => {
+      link.addEventListener('click', (event) => {
+        const moduleId = link.getAttribute('data-module-id');
+        if (!moduleId || !allowedIds.has(moduleId)) {
+          return;
+        }
+
+        event.preventDefault();
+        if (moduleId === currentId) {
+          return;
+        }
+
+        allowHashWrite = true;
+        hashLock = true;
+        setCurrent(moduleId);
+        scrollToModule(moduleId);
+        window.setTimeout(() => {
+          hashLock = false;
+        }, 800);
+      });
+    });
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (hashLock) {
+          return;
+        }
+
+        const visibleEntries = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((left, right) => right.intersectionRatio - left.intersectionRatio);
+        const topEntry = visibleEntries[0];
+        if (!(topEntry?.target instanceof HTMLElement) || !topEntry.target.id) {
+          return;
+        }
+
+        setCurrent(topEntry.target.id);
+      },
+      {
+        threshold: [0.25, 0.5, 0.75],
+        rootMargin: '-8% 0px -8% 0px',
+      },
+    );
+
+    stages.forEach((stage) => observer.observe(stage));
+
+    window.addEventListener(
+      'scroll',
+      () => {
+        allowHashWrite = true;
+      },
+      { once: true, passive: true },
+    );
+
+    const landingHash = window.location.hash.replace('#', '');
+    if (landingHash && allowedIds.has(landingHash)) {
+      setCurrent(landingHash);
+      window.requestAnimationFrame(() => {
+        document.getElementById(landingHash)?.scrollIntoView({
+          behavior: 'auto',
+          block: 'start',
+        });
+      });
+    }
+  }
+
+  setupCharacterDocks();
+</script>

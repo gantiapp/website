@@ -5,9 +5,10 @@ import Footer from '../components/Footer.astro';
 
 interface Props {
   title?: string;
+  page?: string;
 }
 
-const { title = 'Ganti' } = Astro.props;
+const { title = 'Ganti', page } = Astro.props;
 ---
 
 <html lang="fr">
@@ -19,7 +20,7 @@ const { title = 'Ganti' } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
-  <body>
+  <body data-page={page}>
     <Navbar />
     <main>
       <slot />

@@ -1,0 +1,295 @@
+---
+import CharacterDock from './CharacterDock.astro';
+import Highlight from './Highlight.astro';
+
+interface Props {
+  id: string;
+  title: string;
+  description: string;
+  impact: string;
+  useCase: string;
+  side: 'left' | 'right';
+  tone: string;
+  characterSrc: string;
+  characterAlt: string;
+}
+
+const {
+  id,
+  title,
+  description,
+  impact,
+  useCase,
+  side,
+  tone,
+  characterSrc,
+  characterAlt,
+} = Astro.props;
+
+const highlightFills = {
+  query: 'color-mix(in srgb, var(--color-module-query-manager) 52%, white)',
+  bridge: 'color-mix(in srgb, var(--color-module-bridge-query-manager) 62%, white)',
+  data: 'color-mix(in srgb, var(--color-module-data-manager) 48%, white)',
+  command: 'color-mix(in srgb, var(--color-module-command-manager) 50%, white)',
+};
+
+const highlightFill = highlightFills[tone] ?? 'var(--module-highlight)';
+---
+
+<section
+  class:list={['product-stage', `product-stage--${tone}`, `product-stage--${side}`]}
+  id={id}
+  data-product-stage
+>
+  <div class="product-stage__copy">
+    <div class="product-stage__intro">
+      <h2 class="product-stage__title">{title}</h2>
+      <p class="product-stage__description">{description}</p>
+    </div>
+    <div class="product-stage__points">
+      <div class="product-stage__point">
+        <h3 class="product-stage__label">
+          <Highlight
+            fill={highlightFill}
+            color="currentColor"
+            rotate={-0.85}
+            padX={0.34}
+            height={1.52}
+            textPad={0.22}
+            seed={1}
+          >
+            Impact
+          </Highlight>
+        </h3>
+        <p class="product-stage__text">{impact}</p>
+      </div>
+      <div class="product-stage__point">
+        <h3 class="product-stage__label">
+          <Highlight
+            fill={highlightFill}
+            color="currentColor"
+            rotate={1.05}
+            padX={0.38}
+            height={1.56}
+            textPad={0.24}
+            seed={2}
+          >
+            Use case
+          </Highlight>
+        </h3>
+        <p class="product-stage__text">{useCase}</p>
+      </div>
+    </div>
+  </div>
+  <img
+    class="product-stage__character"
+    src={characterSrc}
+    alt={characterAlt}
+    width="642"
+    height="768"
+  />
+  <CharacterDock currentId={id} />
+</section>
+
+<style>
+  .product-stage {
+    --module-highlight: color-mix(in srgb, var(--module-accent) 28%, white);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    height: 100svh;
+    min-height: 100svh;
+    max-height: 100svh;
+    padding: min(var(--space-128), 8svh) var(--space-256) 0;
+    overflow: hidden;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    background: var(--module-bg);
+    color: var(--module-accent);
+  }
+
+  .product-stage--query {
+    --module-bg: var(--color-module-query-bg);
+    --module-accent: var(--color-module-query-accent);
+    --module-highlight: var(--color-module-query-manager);
+  }
+
+  .product-stage--bridge {
+    --module-bg: var(--color-module-bridge-bg);
+    --module-accent: var(--color-module-bridge-accent);
+    --module-highlight: var(--color-module-bridge-query-manager);
+  }
+
+  .product-stage--data {
+    --module-bg: var(--color-module-data-bg);
+    --module-accent: var(--color-module-data-accent);
+    --module-highlight: var(--color-module-data-manager);
+  }
+
+  .product-stage--command {
+    --module-bg: var(--color-module-command-bg);
+    --module-accent: var(--color-module-command-accent);
+    --module-highlight: var(--color-module-command-manager);
+  }
+
+  .product-stage__copy {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: min(var(--space-128), 6svh);
+    max-width: 1051px;
+  }
+
+  .product-stage--left .product-stage__copy {
+    margin-left: clamp(0px, 18vw, 280px);
+  }
+
+  .product-stage__intro,
+  .product-stage__points,
+  .product-stage__point {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+
+  .product-stage__points {
+    gap: min(var(--space-64), 4svh);
+    max-width: 900px;
+  }
+
+  .product-stage__title {
+    margin: 0;
+    color: var(--module-accent);
+    font-family: var(--font-display);
+    font-size: var(--font-size-h1);
+    font-weight: var(--font-weight-extrabold);
+    font-optical-sizing: none;
+    font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 800;
+    letter-spacing: 0;
+    line-height: var(--line-height-heading);
+  }
+
+  .product-stage__description,
+  .product-stage__text {
+    margin: 0;
+    color: var(--color-base-black);
+    font-family: var(--font-body);
+    font-size: var(--font-size-subtitle);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-heading);
+  }
+
+  .product-stage__label {
+    margin: 0;
+    color: var(--module-accent);
+    font-family: var(--font-display);
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-weight-medium);
+    font-optical-sizing: none;
+    font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 500;
+    letter-spacing: 0;
+    line-height: var(--line-height-heading);
+  }
+
+  .product-stage__character {
+    position: absolute;
+    z-index: 0;
+    bottom: 0;
+    width: auto;
+    height: min(70svh, 768px);
+    max-width: none;
+    pointer-events: none;
+    object-fit: contain;
+  }
+
+  .product-stage--left .product-stage__character {
+    left: -8%;
+  }
+
+  .product-stage--right .product-stage__character {
+    right: -7%;
+  }
+
+  @media (max-width: 1280px) {
+    .product-stage {
+      padding: var(--space-64) var(--space-page) 0;
+    }
+
+    .product-stage__copy {
+      gap: var(--space-64);
+    }
+
+    .product-stage__title {
+      font-size: var(--font-size-h2);
+    }
+
+    .product-stage__description,
+    .product-stage__text,
+    .product-stage__label {
+      font-size: var(--font-size-body-large);
+    }
+
+    .product-stage__character {
+      height: min(50svh, 520px);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .product-stage {
+      justify-content: flex-start;
+      gap: var(--space-32);
+      height: auto;
+      min-height: auto;
+      max-height: none;
+      padding: var(--space-48) var(--space-page) 0;
+      overflow: visible;
+      scroll-snap-align: none;
+      scroll-snap-stop: normal;
+    }
+
+    .product-stage__copy {
+      max-width: none;
+      gap: var(--space-32);
+      margin-left: 0;
+    }
+
+    .product-stage__points {
+      gap: var(--space-32);
+      max-width: none;
+    }
+
+    .product-stage__title {
+      font-size: var(--font-size-h3);
+    }
+
+    .product-stage__description,
+    .product-stage__text {
+      font-size: var(--font-size-body);
+    }
+
+    .product-stage__character {
+      position: relative;
+      left: auto;
+      right: auto;
+      bottom: auto;
+      align-self: center;
+      height: 220px;
+      max-width: 80%;
+    }
+
+    .product-stage--left .product-stage__character,
+    .product-stage--right .product-stage__character {
+      left: auto;
+      right: auto;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .product-stage__character {
+      height: 180px;
+    }
+  }
+</style>

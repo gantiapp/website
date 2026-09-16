@@ -1,0 +1,156 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProductStage from '../components/ProductStage.astro';
+import modules from '../data/modules.json';
+---
+
+<BaseLayout title="Produit — Ganti" page="produit">
+  <div class="product-stages">
+    {
+      modules.map((moduleItem) => (
+        <ProductStage
+          id={moduleItem.id}
+          title={moduleItem.title}
+          description={moduleItem.description}
+          impact={moduleItem.impact}
+          useCase={moduleItem.useCase}
+          side={moduleItem.side === 'right' ? 'right' : 'left'}
+          tone={moduleItem.tone}
+          characterSrc={moduleItem.characterSrc}
+          characterAlt={moduleItem.characterAlt}
+        />
+      ))
+    }
+  </div>
+</BaseLayout>
+
+<style>
+  .product-stages {
+    position: relative;
+  }
+</style>
+
+<script>
+  function setupProductPageSnap() {
+    const mediaQuery = window.matchMedia('(max-width: 768px)');
+    const navbar = document.querySelector('[data-navbar]');
+    const stages = [...document.querySelectorAll('[data-product-stage]')];
+    const footer = document.querySelector('footer');
+    if (!(navbar instanceof HTMLElement) || !stages.length) {
+      return;
+    }
+
+    const snapTargets = [navbar, ...stages];
+    if (footer instanceof HTMLElement) {
+      snapTargets.push(footer);
+    }
+
+    let activeIndex = 0;
+    let isAnimating = false;
+    let touchStartY = 0;
+
+    const goToIndex = (nextIndex) => {
+      const clampedIndex = Math.max(0, Math.min(snapTargets.length - 1, nextIndex));
+      const target = snapTargets[clampedIndex];
+      if (!(target instanceof HTMLElement) || isAnimating) {
+        return;
+      }
+
+      activeIndex = clampedIndex;
+      isAnimating = true;
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      window.setTimeout(() => {
+        isAnimating = false;
+      }, 750);
+    };
+
+    const moveBy = (direction) => {
+      goToIndex(activeIndex + direction);
+    };
+
+    const onWheel = (event) => {
+      if (mediaQuery.matches || event.ctrlKey) {
+        return;
+      }
+
+      event.preventDefault();
+      if (isAnimating || event.deltaY === 0) {
+        return;
+      }
+
+      moveBy(event.deltaY > 0 ? 1 : -1);
+    };
+
+    const onKeyDown = (event) => {
+      if (mediaQuery.matches) {
+        return;
+      }
+
+      const target = event.target;
+      if (target instanceof HTMLElement && /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName)) {
+        return;
+      }
+
+      if ((event.key === 'PageDown' || event.key === 'ArrowDown' || event.key === ' ') && !event.shiftKey) {
+        event.preventDefault();
+        moveBy(1);
+      }
+
+      if (event.key === 'PageUp' || event.key === 'ArrowUp' || (event.key === ' ' && event.shiftKey)) {
+        event.preventDefault();
+        moveBy(-1);
+      }
+
+      if (event.key === 'Home') {
+        event.preventDefault();
+        goToIndex(0);
+      }
+
+      if (event.key === 'End') {
+        event.preventDefault();
+        goToIndex(snapTargets.length - 1);
+      }
+    };
+
+    const onTouchStart = (event) => {
+      touchStartY = event.touches[0]?.clientY ?? 0;
+    };
+
+    const onTouchEnd = (event) => {
+      if (mediaQuery.matches) {
+        return;
+      }
+
+      const touchEndY = event.changedTouches[0]?.clientY ?? touchStartY;
+      const swipeDistance = touchStartY - touchEndY;
+      if (Math.abs(swipeDistance) < 48) {
+        return;
+      }
+
+      moveBy(swipeDistance > 0 ? 1 : -1);
+    };
+
+    window.addEventListener('wheel', onWheel, { passive: false });
+    window.addEventListener('keydown', onKeyDown);
+    window.addEventListener('touchstart', onTouchStart, { passive: true });
+    window.addEventListener('touchend', onTouchEnd, { passive: true });
+
+    document.querySelectorAll('[data-dock-link]').forEach((link) => {
+      link.addEventListener('click', () => {
+        const moduleId = link.getAttribute('data-module-id');
+        const stageIndex = stages.findIndex((stage) => stage.id === moduleId);
+        if (stageIndex >= 0) {
+          activeIndex = stageIndex + 1;
+        }
+      });
+    });
+
+    const landingHash = window.location.hash.replace('#', '');
+    const landingStageIndex = stages.findIndex((stage) => stage.id === landingHash);
+    if (landingStageIndex >= 0) {
+      activeIndex = landingStageIndex + 1;
+    }
+  }
+
+  setupProductPageSnap();
+</script>

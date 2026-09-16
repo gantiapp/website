@@ -158,6 +158,7 @@
   --font-heading: var(--font-display);
   --space-page: clamp(24px, 5vw, 64px);
   --space-page-wide: clamp(24px, 8vw, 128px);
+  --navbar-height: 116px;
   --radius-control: var(--radius-pill);
   --radius-card: var(--radius-2xl);
 }
@@ -177,7 +178,39 @@ body {
   overflow-x: hidden;
 }
 
+html:has(body[data-page='produit']) {
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
+body[data-page='produit'] {
+  scroll-snap-type: y mandatory;
+}
+
+body[data-page='produit'] [data-navbar] {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+@media (max-width: 1024px) {
+  :root {
+    --navbar-height: 104px;
+  }
+}
+
 @media (max-width: 768px) {
+  :root {
+    --navbar-height: 72px;
+  }
+
+  body[data-page='produit'] {
+    scroll-snap-type: none;
+  }
+
+  html:has(body[data-page='produit']) {
+    scroll-snap-type: none;
+  }
+
   .break-desktop {
     display: none;
   }
