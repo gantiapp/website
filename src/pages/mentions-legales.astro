@@ -1,0 +1,214 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import Highlight from '../components/Highlight.astro';
+import legalNotices from '../data/mentions-legales.json';
+
+const siteUrlPattern = /(www\.ganti\.io)/g;
+
+function splitBold(text: string) {
+  const parts: { text: string; bold: boolean }[] = [];
+  let lastIndex = 0;
+  const boldPattern = /\*\*(.+?)\*\*/g;
+
+  for (const match of text.matchAll(boldPattern)) {
+    const matchIndex = match.index ?? 0;
+    if (matchIndex > lastIndex) {
+      parts.push({ text: text.slice(lastIndex, matchIndex), bold: false });
+    }
+    parts.push({ text: match[1], bold: true });
+    lastIndex = matchIndex + match[0].length;
+  }
+
+  if (lastIndex < text.length) {
+    parts.push({ text: text.slice(lastIndex), bold: false });
+  }
+
+  return parts.length ? parts : [{ text, bold: false }];
+}
+
+function splitSiteUrls(text: string) {
+  return text.split(siteUrlPattern);
+}
+---
+
+<BaseLayout title="Mentions légales — Ganti">
+  <article class="legal" aria-label="Mentions légales">
+    <header class="legal__header">
+      <h1 class="legal__title">
+        Mentions légales <Highlight>Ganti</Highlight>
+      </h1>
+    </header>
+
+    <div class="legal__sections">
+      {
+        legalNotices.sections.map((section) => (
+          <section class="legal__section">
+            <div class="legal__intro">
+              <h2 class="legal__heading">
+                {splitBold(section.heading).map((part) =>
+                  part.bold ? <strong>{part.text}</strong> : part.text,
+                )}
+              </h2>
+              {'address' in section && section.address ? (
+                <p class="legal__address">{section.address}</p>
+              ) : null}
+            </div>
+            <p class="legal__body">
+              {splitBold(section.body).flatMap((part) =>
+                splitSiteUrls(part.text).map((fragment) => {
+                  const node =
+                    fragment === 'www.ganti.io' ? (
+                      <a class="legal__link" href="https://www.ganti.io">
+                        {fragment}
+                      </a>
+                    ) : (
+                      fragment
+                    );
+
+                  return part.bold ? <strong>{node}</strong> : node;
+                }),
+              )}
+            </p>
+          </section>
+        ))
+      }
+    </div>
+  </article>
+
+  <CtaBanner
+    title={legalNotices.cta.title}
+    subtitle={legalNotices.cta.subtitle}
+    primaryHref={legalNotices.cta.primaryHref}
+    primaryLabel={legalNotices.cta.primaryLabel}
+    secondaryHref=""
+    secondaryLabel=""
+  />
+</BaseLayout>
+
+<style>
+  .legal {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1920px;
+    margin: 0 auto;
+  }
+
+  .legal__header {
+    box-sizing: border-box;
+    padding: var(--space-64) clamp(24px, 3.33vw, 64px) 0;
+  }
+
+  .legal__title {
+    margin: 0;
+    color: var(--color-primary-800);
+    font-family: var(--font-display);
+    font-size: var(--font-size-h1);
+    font-weight: var(--font-weight-extrabold);
+    font-optical-sizing: none;
+    font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 800;
+    letter-spacing: 0;
+    line-height: var(--line-height-heading);
+    text-align: center;
+  }
+
+  .legal__sections {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-64);
+    box-sizing: border-box;
+    width: 100%;
+    padding: var(--space-64) clamp(24px, 13.33vw, 256px) var(--space-96);
+  }
+
+  .legal__section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-32);
+    min-width: 0;
+  }
+
+  .legal__intro {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    min-width: 0;
+  }
+
+  .legal__heading {
+    margin: 0;
+    color: var(--color-base-black);
+    font-family: var(--font-display);
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-weight-medium);
+    font-optical-sizing: none;
+    font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 500;
+    letter-spacing: 0;
+    line-height: var(--line-height-heading);
+  }
+
+  .legal__heading strong {
+    font-weight: var(--font-weight-bold);
+    font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 700;
+  }
+
+  .legal__address {
+    margin: 0;
+    color: var(--color-gray-500);
+    font-family: var(--font-display);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-heading);
+  }
+
+  .legal__body {
+    margin: 0;
+    color: var(--color-base-black);
+    font-family: var(--font-body);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-body);
+    white-space: pre-line;
+  }
+
+  .legal__body strong {
+    font-weight: var(--font-weight-bold);
+  }
+
+  .legal__link {
+    color: var(--color-primary-500);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
+  .legal__link:hover,
+  .legal__link:focus-visible {
+    color: var(--color-primary-600);
+  }
+
+  @media (max-width: 1024px) {
+    .legal__title {
+      font-size: var(--font-size-h2);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .legal__header {
+      padding: var(--space-32) var(--space-page) 0;
+    }
+
+    .legal__title {
+      font-size: var(--font-size-h2);
+    }
+
+    .legal__sections {
+      gap: var(--space-32);
+      padding: var(--space-32) var(--space-page) var(--space-64);
+    }
+
+    .legal__heading {
+      font-size: var(--font-size-large-text);
+    }
+  }
+</style>
