@@ -1,4 +1,6 @@
 ---
+import { IconChevronLeft, IconChevronRight } from '@tabler/icons-astro';
+
 const slides = [
   {
     id: 'observabilite',
@@ -35,21 +37,52 @@ const slides = [
     ))
   }
 
-  <div class="carousel__tabs" role="tablist" aria-label="Fonctionnalités">
+  <div class="carousel__nav">
+    <button
+      class="carousel__arrow"
+      type="button"
+      aria-label="Schéma précédent"
+      data-carousel-prev
+    >
+      <IconChevronLeft size={24} stroke={2} />
+    </button>
+    <div class="carousel__tabs" role="tablist" aria-label="Fonctionnalités">
+      {
+        slides.map((slide, index) => (
+          <button
+            class="carousel__tab"
+            type="button"
+            role="tab"
+            id={`carousel-tab-${slide.id}`}
+            aria-controls={`carousel-panel-${slide.id}`}
+            aria-selected={index === 0 ? 'true' : 'false'}
+            data-carousel-tab
+            data-index={String(index)}
+          >
+            {slide.label}
+          </button>
+        ))
+      }
+    </div>
+    <button
+      class="carousel__arrow"
+      type="button"
+      aria-label="Schéma suivant"
+      data-carousel-next
+    >
+      <IconChevronRight size={24} stroke={2} />
+    </button>
+  </div>
+  <div class="carousel__dots" role="group" aria-label="Pagination des schémas">
     {
       slides.map((slide, index) => (
         <button
-          class="carousel__tab"
+          class:list={['carousel__dot', index === 0 && 'is-active']}
           type="button"
-          role="tab"
-          id={`carousel-tab-${slide.id}`}
-          aria-controls={`carousel-panel-${slide.id}`}
-          aria-selected={index === 0 ? 'true' : 'false'}
-          data-carousel-tab
+          data-carousel-dot
           data-index={String(index)}
-        >
-          {slide.label}
-        </button>
+          aria-label={`Afficher ${slide.label}`}
+        ></button>
       ))
     }
   </div>
@@ -86,7 +119,14 @@ const slides = [
     carousels.forEach((carousel) => {
       const tabs = [...carousel.querySelectorAll('[data-carousel-tab]')];
       const slides = [...carousel.querySelectorAll('[data-carousel-slide]')];
+      const dots = [...carousel.querySelectorAll('[data-carousel-dot]')];
       const images = [...carousel.querySelectorAll('.carousel__image')];
+      const stage = carousel.querySelector('.carousel__stage');
+      const prevButton = carousel.querySelector('[data-carousel-prev]');
+      const nextButton = carousel.querySelector('[data-carousel-next]');
+      let currentIndex = 0;
+      let touchStartX = 0;
+      let touchStartY = 0;
 
       images.forEach((image) => {
         if (image.decode) {
@@ -95,9 +135,12 @@ const slides = [
       });
 
       const show = (nextIndex) => {
-        const currentIndex = (nextIndex + slides.length) % slides.length;
+        currentIndex = (nextIndex + slides.length) % slides.length;
         tabs.forEach((tab, index) => {
           tab.setAttribute('aria-selected', index === currentIndex ? 'true' : 'false');
+        });
+        dots.forEach((dot, index) => {
+          dot.classList.toggle('is-active', index === currentIndex);
         });
         slides.forEach((slide, index) => {
           const isActive = index === currentIndex;
@@ -109,6 +152,37 @@ const slides = [
       tabs.forEach((tab, index) => {
         tab.addEventListener('click', () => show(index));
       });
+
+      dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => show(index));
+      });
+
+      prevButton?.addEventListener('click', () => show(currentIndex - 1));
+      nextButton?.addEventListener('click', () => show(currentIndex + 1));
+
+      if (stage instanceof HTMLElement) {
+        stage.addEventListener(
+          'touchstart',
+          (event) => {
+            touchStartX = event.changedTouches[0].clientX;
+            touchStartY = event.changedTouches[0].clientY;
+          },
+          { passive: true },
+        );
+
+        stage.addEventListener(
+          'touchend',
+          (event) => {
+            const deltaX = event.changedTouches[0].clientX - touchStartX;
+            const deltaY = event.changedTouches[0].clientY - touchStartY;
+            if (Math.abs(deltaX) < 50 || Math.abs(deltaX) < Math.abs(deltaY)) {
+              return;
+            }
+            show(currentIndex + (deltaX < 0 ? 1 : -1));
+          },
+          { passive: true },
+        );
+      }
     });
   }
 
@@ -123,7 +197,37 @@ const slides = [
     gap: var(--space-16);
     width: 100%;
     box-sizing: border-box;
-    padding: 0 var(--space-page);
+    padding: 0;
+  }
+
+  .carousel__nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .carousel__arrow {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: var(--stroke-width) solid var(--color-primary-100);
+    border-radius: var(--radius-pill);
+    background: var(--color-base-white);
+    color: var(--color-primary-500);
+    cursor: pointer;
+  }
+
+  .carousel__arrow:hover,
+  .carousel__arrow:focus-visible {
+    background: var(--color-primary-50);
+  }
+
+  .carousel__arrow :global(svg) {
+    display: block;
   }
 
   .carousel__tabs {
@@ -132,6 +236,27 @@ const slides = [
     align-items: flex-start;
     justify-content: center;
     gap: var(--space-64);
+  }
+
+  .carousel__dots {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+  }
+
+  .carousel__dot {
+    width: 32px;
+    height: 6px;
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: var(--color-primary-100);
+    cursor: pointer;
+  }
+
+  .carousel__dot.is-active {
+    background: var(--color-primary-500);
   }
 
   .carousel__tab {
@@ -148,6 +273,7 @@ const slides = [
     font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 500;
     letter-spacing: 0;
     line-height: 1.2;
+    white-space: nowrap;
     cursor: pointer;
   }
 
@@ -208,8 +334,48 @@ const slides = [
   }
 
   @media (max-width: 768px) {
+    .carousel__nav {
+      display: grid;
+      grid-template-columns: 40px minmax(0, 1fr) 40px;
+      column-gap: var(--space-12);
+    }
+
+    .carousel__arrow {
+      display: inline-flex;
+    }
+
     .carousel__tabs {
-      gap: var(--space-16) var(--space-24);
+      flex-wrap: nowrap;
+      justify-content: center;
+      gap: 0;
+      overflow: hidden;
+    }
+
+    .carousel__tab {
+      display: none;
+      font-size: var(--font-size-body);
+    }
+
+    .carousel__tab[aria-selected='true'] {
+      display: block;
+    }
+
+    .carousel__tab[aria-selected='true']::after {
+      display: none;
+    }
+
+    .carousel__dots {
+      display: flex;
+    }
+
+    .carousel__stage {
+      width: calc(100% + 2 * var(--space-page) - 24px);
+      max-width: none;
+      margin-inline: calc(12px - var(--space-page));
+    }
+
+    .carousel__image {
+      border-radius: var(--radius-m);
     }
   }
 </style>

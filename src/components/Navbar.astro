@@ -46,6 +46,9 @@ const links = [
           </li>
         ))
       }
+      <li class="navbar__contact-item">
+        <a class="navbar__link" href="/contact">Nous contacter</a>
+      </li>
     </ul>
   </nav>
   <a class="navbar__cta" href="/contact">
@@ -205,6 +208,10 @@ const links = [
     white-space: nowrap;
   }
 
+  .navbar__contact-item {
+    display: none;
+  }
+
   .navbar__cta:hover,
   .navbar__cta:focus-visible {
     background: var(--color-primary-600);
@@ -217,25 +224,25 @@ const links = [
 
   @media (max-width: 1024px) {
     .navbar {
-      grid-template-columns: 1fr auto auto;
+      grid-template-columns: 1fr auto;
       column-gap: var(--space-12);
     }
 
     .navbar__toggle {
       display: inline-flex;
-      order: 2;
       justify-self: end;
     }
 
     .navbar__cta {
-      order: 3;
-      padding: var(--space-12) var(--space-16);
-      font-size: var(--font-size-body);
+      display: none;
+    }
+
+    .navbar__contact-item {
+      display: list-item;
     }
 
     .navbar__nav {
       display: none;
-      order: 4;
       grid-column: 1 / -1;
       justify-self: stretch;
     }
@@ -255,21 +262,6 @@ const links = [
   @media (max-width: 768px) {
     .navbar {
       padding: var(--space-16) var(--space-24);
-    }
-  }
-
-  @media (max-width: 480px) {
-    .navbar__cta span {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      overflow: hidden;
-      clip: rect(0 0 0 0);
-      white-space: nowrap;
-    }
-
-    .navbar__cta {
-      padding: var(--space-12);
     }
   }
 </style>

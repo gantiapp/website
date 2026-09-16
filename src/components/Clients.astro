@@ -105,11 +105,12 @@ const groupCount = 6;
     width: auto;
     max-width: 220px;
     object-fit: contain;
-    opacity: 0;
+    opacity: 1;
     transition: opacity 0.25s ease;
   }
 
   .clients__tint {
+    display: none;
     position: absolute;
     inset: 0;
     pointer-events: none;
@@ -126,12 +127,22 @@ const groupCount = 6;
     -webkit-mask-size: contain;
   }
 
-  .clients__item:hover .clients__logo {
-    opacity: 1;
-  }
+  @media (hover: hover) and (min-width: 769px) {
+    .clients__logo {
+      opacity: 0;
+    }
 
-  .clients__item:hover .clients__tint {
-    opacity: 0;
+    .clients__tint {
+      display: block;
+    }
+
+    .clients__item:hover .clients__logo {
+      opacity: 1;
+    }
+
+    .clients__item:hover .clients__tint {
+      opacity: 0;
+    }
   }
 
   @keyframes clients-scroll {
@@ -177,6 +188,21 @@ const groupCount = 6;
     .clients__group {
       gap: var(--space-48);
       padding-right: var(--space-48);
+    }
+
+    .clients__item {
+      height: 32px;
+    }
+
+    .clients__logo {
+      height: 32px;
+      max-width: 140px;
+      opacity: 1;
+      filter: none;
+    }
+
+    .clients__tint {
+      display: none;
     }
   }
 </style>
