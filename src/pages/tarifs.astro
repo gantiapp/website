@@ -1,0 +1,516 @@
+---
+import {
+  IconCheck,
+  IconMinus,
+  IconSparkles,
+  IconStack2,
+  IconTarget,
+  IconTool,
+} from '@tabler/icons-astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import Highlight from '../components/Highlight.astro';
+import PricingCard from '../components/PricingCard.astro';
+import pricing from '../data/tarifs.json';
+
+const planIcons = {
+  target: IconTarget,
+  sparkles: IconSparkles,
+  stack: IconStack2,
+  tool: IconTool,
+};
+---
+
+<BaseLayout title="Tarifs — Ganti">
+  <article class="pricing" aria-label="Tarifs">
+    <header class="pricing__hero">
+      <h1 class="pricing__title">
+        {pricing.hero.line1}
+        <br />
+        {pricing.hero.line2Before}<Highlight>{pricing.hero.highlight}</Highlight>{pricing.hero.line2After}
+      </h1>
+    </header>
+
+    <section class="pricing__offers" aria-labelledby="pricing-offers-title">
+      <div class="pricing__offers-intro">
+        <h2 class="pricing__offers-title" id="pricing-offers-title">{pricing.intro.title}</h2>
+        <p class="pricing__offers-subtitle">{pricing.intro.subtitle}</p>
+      </div>
+
+      <div class="pricing__cards">
+        {
+          pricing.plans.map((plan) => {
+            const PlanIcon = planIcons[plan.icon];
+            return (
+              <PricingCard
+                id={plan.id}
+                eyebrow={plan.eyebrow}
+                name={plan.name}
+                description={plan.description}
+                features={plan.features}
+                ctaLabel={plan.ctaLabel}
+                ctaHref={plan.ctaHref}
+                featured={plan.featured}
+                badge={'badge' in plan ? plan.badge : undefined}
+              >
+                <PlanIcon slot="icon" size={24} stroke={1.75} />
+              </PricingCard>
+            );
+          })
+        }
+      </div>
+    </section>
+
+    <section class="pricing__compare" aria-labelledby="pricing-compare-title">
+      <div class="pricing__compare-intro">
+        <h2 class="pricing__compare-title" id="pricing-compare-title">
+          {pricing.comparison.title}
+        </h2>
+        <p class="pricing__compare-subtitle">{pricing.comparison.subtitle}</p>
+      </div>
+
+      <div class="pricing-table" role="region" aria-label="Comparatif des formules" tabindex="0">
+        <div class="pricing-table__grid">
+          <div class="pricing-table__row pricing-table__row--header">
+            <div class="pricing-table__cell pricing-table__cell--feature">Fonctionnalité</div>
+            {
+              pricing.comparison.columns.map((column) => (
+                <div class="pricing-table__cell pricing-table__cell--plan">{column}</div>
+              ))
+            }
+          </div>
+
+          {
+            pricing.comparison.groups.map((group) => (
+              <>
+                <div class="pricing-table__row pricing-table__row--group">
+                  <div class="pricing-table__cell pricing-table__cell--group">{group.label}</div>
+                </div>
+                {group.rows.map((row) => (
+                  <div class="pricing-table__row">
+                    <div class="pricing-table__cell pricing-table__cell--feature">
+                      <span class="pricing-table__label">{row.label}</span>
+                      {'hint' in row && row.hint ? (
+                        <span class="pricing-table__hint">{row.hint}</span>
+                      ) : null}
+                    </div>
+                    {row.values.map((value, valueIndex) => (
+                      <div class="pricing-table__cell">
+                        <span class="pricing-table__plan-name">
+                          {pricing.comparison.columns[valueIndex]}
+                        </span>
+                        {value === 'check' ? (
+                          <span class="pricing-table__status pricing-table__status--check">
+                            <span class="visually-hidden">Inclus</span>
+                            <IconCheck size={20} stroke={2.5} />
+                          </span>
+                        ) : value === 'dash' ? (
+                          <span class="pricing-table__status pricing-table__status--dash">
+                            <span class="visually-hidden">Non inclus</span>
+                            <IconMinus size={16} stroke={2} />
+                          </span>
+                        ) : (
+                          <span class="pricing-table__value">{value}</span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+  </article>
+
+  <CtaBanner
+    title={pricing.cta.title}
+    subtitle={pricing.cta.subtitle}
+    primaryHref={pricing.cta.primaryHref}
+    primaryLabel={pricing.cta.primaryLabel}
+    primaryIcon="arrow"
+    secondaryHref=""
+    secondaryLabel=""
+  />
+</BaseLayout>
+
+<style>
+  .pricing {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1920px;
+    margin: 0 auto;
+  }
+
+  .pricing__hero {
+    box-sizing: border-box;
+    padding: var(--space-64) var(--space-page);
+  }
+
+  .pricing__title {
+    margin: 0;
+    color: var(--color-base-black);
+    font-family: var(--font-display);
+    font-size: var(--font-size-h1);
+    font-weight: var(--font-weight-extrabold);
+    font-optical-sizing: none;
+    font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 800;
+    letter-spacing: 0;
+    line-height: var(--line-height-heading);
+    text-align: center;
+  }
+
+  .pricing__offers {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-64);
+    box-sizing: border-box;
+    padding: var(--space-96) clamp(24px, 13.33vw, 256px);
+    background: var(--color-bg-muted);
+  }
+
+  .pricing__offers-intro {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+    max-width: 790px;
+  }
+
+  .pricing__offers-title {
+    margin: 0;
+    color: var(--color-primary-700);
+    font-family: var(--font-display);
+    font-size: var(--font-size-h1);
+    font-weight: var(--font-weight-extrabold);
+    font-optical-sizing: none;
+    font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 800;
+    letter-spacing: 0;
+    line-height: var(--line-height-heading);
+  }
+
+  .pricing__offers-subtitle {
+    margin: 0;
+    color: var(--color-primary-700);
+    font-family: var(--font-display);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-heading);
+    white-space: pre-line;
+  }
+
+  .pricing__cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-32);
+    padding-top: var(--space-16);
+  }
+
+  @media (min-width: 1600px) {
+    .pricing__cards {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--space-16);
+    }
+  }
+
+  .pricing__compare {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-64);
+    box-sizing: border-box;
+    padding: var(--space-96) clamp(24px, 13.33vw, 256px);
+  }
+
+  .pricing__compare-intro {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+
+  .pricing__compare-title {
+    margin: 0;
+    color: var(--color-primary-800);
+    font-family: var(--font-display);
+    font-size: var(--font-size-h2);
+    font-weight: var(--font-weight-bold);
+    font-optical-sizing: none;
+    font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 700;
+    letter-spacing: 0;
+    line-height: var(--line-height-heading);
+  }
+
+  .pricing__compare-subtitle {
+    margin: 0;
+    color: var(--color-primary-800);
+    font-family: var(--font-display);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-heading);
+  }
+
+  .pricing-table {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border: var(--stroke-width) solid var(--color-gray-400);
+    border-radius: var(--radius-l);
+  }
+
+  .pricing-table:focus-visible {
+    outline: 2px solid var(--color-primary-500);
+    outline-offset: 4px;
+  }
+
+  .pricing-table__grid {
+    display: flex;
+    flex-direction: column;
+    min-width: 900px;
+  }
+
+  .pricing-table__row {
+    display: grid;
+    grid-template-columns: minmax(220px, 2fr) repeat(4, minmax(140px, 1fr));
+    background: var(--color-base-white);
+  }
+
+  .pricing-table__row + .pricing-table__row {
+    border-top: var(--stroke-width) solid var(--color-gray-400);
+  }
+
+  .pricing-table__row--header {
+    background: var(--color-gray-100);
+  }
+
+  .pricing-table__row--header .pricing-table__cell--plan {
+    align-items: center;
+    text-align: center;
+  }
+
+  .pricing-table__row--group {
+    grid-template-columns: 1fr;
+    background: var(--color-gray-200);
+  }
+
+  .pricing-table__cell {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: var(--space-4);
+    box-sizing: border-box;
+    min-width: 0;
+    padding: var(--space-32);
+    color: var(--color-base-black);
+    font-family: var(--font-body);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-body);
+  }
+
+  .pricing-table__cell--plan {
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .pricing-table__cell--feature {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background: inherit;
+  }
+
+  .pricing-table__cell--group {
+    color: var(--color-gray-700);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .pricing-table__label {
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .pricing-table__hint {
+    color: var(--color-gray-600);
+    font-weight: var(--font-weight-regular);
+  }
+
+  .pricing-table__value {
+    color: var(--color-base-black);
+  }
+
+  .pricing-table__plan-name {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .pricing-table__row:not(.pricing-table__row--header):not(.pricing-table__row--group)
+    .pricing-table__cell:not(.pricing-table__cell--feature) {
+    align-items: center;
+  }
+
+  .pricing-table__status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-pill);
+  }
+
+  .pricing-table__status--check {
+    background: #a5e5b3;
+    color: #066b1c;
+  }
+
+  .pricing-table__status--dash {
+    background: var(--color-gray-100);
+    color: var(--color-gray-600);
+  }
+
+  .pricing-table__status :global(svg) {
+    display: block;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  @media (max-width: 1200px) {
+    .pricing-table {
+      overflow: visible;
+      border: none;
+      border-radius: 0;
+    }
+
+    .pricing-table__grid {
+      min-width: 0;
+      gap: var(--space-32);
+    }
+
+    .pricing-table__row--group {
+      margin-bottom: calc(var(--space-8) - var(--space-32));
+      background: transparent;
+    }
+
+    .pricing-table__row:not(.pricing-table__row--header):not(.pricing-table__row--group)
+      + .pricing-table__row--group {
+      margin-top: var(--space-16);
+    }
+
+    .pricing-table__row + .pricing-table__row {
+      border-top: none;
+    }
+
+    .pricing-table__row--header {
+      display: none;
+    }
+
+    .pricing-table__row--group .pricing-table__cell {
+      padding: 0;
+    }
+
+    .pricing-table__cell--group {
+      color: var(--color-primary-800);
+      font-family: var(--font-display);
+      font-size: var(--font-size-body-large);
+      font-weight: var(--font-weight-bold);
+      font-optical-sizing: none;
+      font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 700;
+    }
+
+    .pricing-table__row:not(.pricing-table__row--header):not(.pricing-table__row--group) {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      overflow: hidden;
+      border: var(--stroke-width) solid var(--color-gray-400);
+      border-radius: var(--radius-l);
+    }
+
+    .pricing-table__cell--feature {
+      grid-column: 1 / -1;
+      position: static;
+      z-index: auto;
+      padding: var(--space-16);
+      background: var(--color-gray-100);
+      border-bottom: var(--stroke-width) solid var(--color-gray-400);
+    }
+
+    .pricing-table__row:not(.pricing-table__row--header):not(.pricing-table__row--group)
+      .pricing-table__cell:not(.pricing-table__cell--feature) {
+      align-items: center;
+      gap: var(--space-8);
+      padding: var(--space-16);
+    }
+
+    .pricing-table__row:not(.pricing-table__row--header):not(.pricing-table__row--group)
+      .pricing-table__cell:nth-child(2),
+    .pricing-table__row:not(.pricing-table__row--header):not(.pricing-table__row--group)
+      .pricing-table__cell:nth-child(4) {
+      border-right: var(--stroke-width) solid var(--color-gray-400);
+    }
+
+    .pricing-table__row:not(.pricing-table__row--header):not(.pricing-table__row--group)
+      .pricing-table__cell:nth-child(2),
+    .pricing-table__row:not(.pricing-table__row--header):not(.pricing-table__row--group)
+      .pricing-table__cell:nth-child(3) {
+      border-bottom: var(--stroke-width) solid var(--color-gray-400);
+    }
+
+    .pricing-table__plan-name {
+      position: static;
+      width: auto;
+      height: auto;
+      overflow: visible;
+      clip: auto;
+      color: var(--color-gray-600);
+      font-size: var(--font-size-body-small);
+      font-weight: var(--font-weight-semibold);
+      line-height: var(--line-height-heading);
+      white-space: nowrap;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .pricing__title,
+    .pricing__offers-title {
+      font-size: var(--font-size-h2);
+    }
+
+    .pricing__cards {
+      padding-top: var(--space-24);
+    }
+
+    .pricing__compare-title {
+      font-size: var(--font-size-h3);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .pricing__hero {
+      padding: var(--space-32) var(--space-page);
+    }
+
+    .pricing__offers,
+    .pricing__compare {
+      gap: var(--space-32);
+      padding: var(--space-64) var(--space-page);
+    }
+
+    .pricing__cards {
+      grid-template-columns: 1fr;
+      gap: var(--space-32);
+    }
+
+    .pricing__offers-title,
+    .pricing__title {
+      font-size: var(--font-size-h2);
+    }
+  }
+</style>

@@ -7,6 +7,7 @@ interface Props {
   subtitle?: string;
   primaryHref?: string;
   primaryLabel?: string;
+  primaryIcon?: 'mail' | 'arrow';
   secondaryHref?: string;
   secondaryLabel?: string;
 }
@@ -16,6 +17,7 @@ const {
   subtitle = 'Demandez une démo personnalisée.\nNous étudions votre stack et vous montrons ce que Ganti peut faire dès la première semaine.',
   primaryHref = '/contact',
   primaryLabel = 'Demander une démo',
+  primaryIcon = 'mail',
   secondaryHref = '/tarifs',
   secondaryLabel = 'Voir les tarifs',
 } = Astro.props;
@@ -27,10 +29,18 @@ const {
     <p class="cta-banner__subtitle">{subtitle}</p>
   </div>
   <div class="cta-banner__actions">
-    <Button href={primaryHref} variant="inverse">
-      <IconMail slot="icon" size={20} stroke={1.5} />
-      {primaryLabel}
-    </Button>
+    {
+      primaryIcon === 'mail' ? (
+        <Button href={primaryHref} variant="inverse">
+          <IconMail slot="icon" size={20} stroke={1.5} />
+          {primaryLabel}
+        </Button>
+      ) : (
+        <Button href={primaryHref} variant="inverse">
+          {primaryLabel}
+        </Button>
+      )
+    }
     {
       secondaryHref && secondaryLabel ? (
         <Button href={secondaryHref} variant="inverse-outline" hideIcon>
