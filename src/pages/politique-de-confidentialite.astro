@@ -1,0 +1,239 @@
+---
+import { IconChevronRight } from '@tabler/icons-astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Highlight from '../components/Highlight.astro';
+import privacyPolicy from '../data/politique-de-confidentialite.json';
+
+const emailPattern = /(rgpd@ganti\.io)/g;
+
+function splitEmails(text: string) {
+  return text.split(emailPattern);
+}
+---
+
+<BaseLayout title="Politique de confidentialité — Ganti">
+  <article class="privacy" aria-label="Politique de confidentialité">
+    <header class="privacy__header">
+      <h1 class="privacy__title">
+        Politique de <Highlight>confidentialité</Highlight>
+      </h1>
+    </header>
+
+    <div class="privacy__content">
+      <div class="privacy__intro">
+        <p class="privacy__body">{privacyPolicy.intro}</p>
+        <ul class="privacy__points">
+          {privacyPolicy.introPoints.map((point) => <li>{point}</li>)}
+        </ul>
+      </div>
+
+      <div class="privacy__accordion">
+        {
+          privacyPolicy.items.map((item) => (
+            <details class="privacy__item">
+              <summary class="privacy__summary">
+                <span class="privacy__heading">{item.heading}</span>
+                <span class="privacy__chevron" aria-hidden="true">
+                  <IconChevronRight size={16} stroke={2} />
+                </span>
+              </summary>
+              <p class="privacy__panel">
+                {splitEmails(item.body).map((fragment) =>
+                  fragment === 'rgpd@ganti.io' ? (
+                    <a class="privacy__link" href="mailto:rgpd@ganti.io">
+                      {fragment}
+                    </a>
+                  ) : (
+                    fragment
+                  ),
+                )}
+              </p>
+            </details>
+          ))
+        }
+      </div>
+
+      <section class="privacy__glossary">
+        <h2 class="privacy__heading">{privacyPolicy.glossary.heading}</h2>
+        <p class="privacy__body">{privacyPolicy.glossary.body}</p>
+      </section>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .privacy {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1920px;
+    margin: 0 auto;
+  }
+
+  .privacy__header {
+    box-sizing: border-box;
+    padding: var(--space-64) clamp(24px, 3.33vw, 64px) 0;
+  }
+
+  .privacy__title {
+    margin: 0;
+    color: var(--color-primary-800);
+    font-family: var(--font-display);
+    font-size: var(--font-size-h1);
+    font-weight: var(--font-weight-extrabold);
+    font-optical-sizing: none;
+    font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 800;
+    letter-spacing: 0;
+    line-height: var(--line-height-heading);
+    text-align: center;
+  }
+
+  .privacy__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-64);
+    box-sizing: border-box;
+    width: 100%;
+    padding: var(--space-64) clamp(24px, 13.33vw, 256px) var(--space-96);
+  }
+
+  .privacy__intro,
+  .privacy__glossary {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+    min-width: 0;
+  }
+
+  .privacy__glossary {
+    gap: var(--space-32);
+  }
+
+  .privacy__body,
+  .privacy__panel {
+    margin: 0;
+    color: var(--color-base-black);
+    font-family: var(--font-body);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-body);
+    white-space: pre-line;
+  }
+
+  .privacy__points {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    margin: 0;
+    padding-left: 1.25em;
+    color: var(--color-base-black);
+    font-family: var(--font-body);
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-body);
+  }
+
+  .privacy__accordion {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-64);
+    min-width: 0;
+  }
+
+  .privacy__item {
+    min-width: 0;
+  }
+
+  .privacy__summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-32);
+    box-sizing: border-box;
+    width: 100%;
+    min-height: var(--space-32);
+    padding: 0 0 var(--space-32);
+    border-bottom: 1px solid var(--color-primary-500);
+    list-style: none;
+    cursor: pointer;
+  }
+
+  .privacy__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .privacy__chevron {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: var(--space-32);
+    height: var(--space-32);
+    color: var(--color-gray-400);
+  }
+
+  .privacy__chevron :global(svg) {
+    display: block;
+    transition: transform 0.2s ease;
+  }
+
+  .privacy__item[open] .privacy__chevron :global(svg) {
+    transform: rotate(90deg);
+  }
+
+  .privacy__heading {
+    margin: 0;
+    min-width: 0;
+    color: var(--color-base-black);
+    font-family: var(--font-display);
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-weight-medium);
+    font-optical-sizing: none;
+    font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 500;
+    letter-spacing: 0;
+    line-height: var(--line-height-heading);
+  }
+
+  .privacy__panel {
+    padding: var(--space-32) 0 0;
+  }
+
+  .privacy__link {
+    color: var(--color-primary-500);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
+  .privacy__link:hover,
+  .privacy__link:focus-visible {
+    color: var(--color-primary-600);
+  }
+
+  @media (max-width: 1024px) {
+    .privacy__title {
+      font-size: var(--font-size-h2);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .privacy__header {
+      padding: var(--space-32) var(--space-page) 0;
+    }
+
+    .privacy__title {
+      font-size: var(--font-size-h2);
+    }
+
+    .privacy__content {
+      gap: var(--space-32);
+      padding: var(--space-32) var(--space-page) var(--space-64);
+    }
+
+    .privacy__heading {
+      font-size: var(--font-size-large-text);
+    }
+
+    .privacy__summary {
+      gap: var(--space-16);
+    }
+  }
+</style>
