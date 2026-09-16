@@ -1,0 +1,51 @@
+{
+  "cta": {
+    "title": "Contactez-nous",
+    "subtitle": "Ganti est à votre disposition pour tous vos commentaires ou suggestions.\nVous pouvez nous écrire par courrier électronique contact (at) ganti.io.",
+    "primaryHref": "/contact",
+    "primaryLabel": "Nous contacter"
+  },
+  "sections": [
+    {
+      "heading": "**GANTI** — Editeur du site & responsable éditorial",
+      "address": "292, rue Camille Guérin - 59 800 LILLE - France",
+      "body": "Ganti est une Société par Actions Simplifiées au capital de 50.000€  immatriculée au Tribunal de Lille Métropole sous le numéro B 848 304 499 - SIREN 848304499 - NAF/APE :6201Z"
+    },
+    {
+      "heading": "Crédits",
+      "body": "Webdesign : **Ganti**\nDéveloppement technique : **Ganti** \nHébergement : **Netlify**"
+    },
+    {
+      "heading": "Conditions d’utilisation",
+      "body": "Le site accessible par l’URL suivant : www.ganti.io, site qui est exploité dans le respect de la législation française. L’utilisation de ce site  est régie par les présentes conditions générales. En utilisant le site, vous reconnaissez avoir pris connaissance de ces conditions et les avoir acceptées. Celles-ci pourront être modifiées à tout moment et sans  préavis par la société Ganti. D’autre part, Ganti ne saurait être tenu  pour responsable en aucune manière d’une mauvaise utilisation du service."
+    },
+    {
+      "heading": "Informations techniques",
+      "body": "Il est rappelé que le secret des correspondances n’est pas garanti sur le  réseau Internet et qu’il appartient à chaque utilisateur d’Internet de  prendre toutes les mesures appropriées de façon à protéger ses propres  données et/ou logiciels de la contamination d’éventuels virus circulant  sur Internet."
+    },
+    {
+      "heading": "Propriété intellectuelle et reproduction",
+      "body": "Tout le contenu du présent site, incluant, de manière non limitative, les  graphismes, images, textes, vidéos, animations, sons, logos, gifs et  icônes ainsi que leur mise en forme sont la propriété exclusive de la  société Ganti à l’exception des marques, logos ou contenus appartenant à d’autres sociétés partenaires ou auteurs. Toute reproduction totale ou  partielle de ce site, par quelque procédé que ce soit, sans autorisation expresse de Ganti, est interdite et constituerait une contrefaçon  sanctionnée par les articles L335-2 et suivants du Code de la propriété  intellectuelle. Les liens hypertextes mis en place dans le cadre du  présent site web en direction d’autres ressources présentes sur le  réseau internet, ne sauraient engager la responsabilité de Ganti."
+    },
+    {
+      "heading": "Informations et limite de responsabilité",
+      "body": "Ganti met en œuvre tous les moyens dont elle dispose, pour assurer une  information fiable et une mise à jour fiable de son/ses site(s)  internet. Ainsi, les informations contenues sur ce site sont aussi  précises que possibles et le site est périodiquement remis à jour, mais  peut toutefois contenir des erreurs, inexactitudes, omissions ou  lacunes. Si vous constatez une lacune, erreur ou ce qui paraît être un  dysfonctionnement, merci de bien vouloir le signaler par email en  décrivant le problème de la manière la plus précise possible (page  posant un problème, action déclenchante, type d’ordinateur et de  navigateur utilisé…). En tout état de cause, Ganti n’est et ne sera en  aucun cas responsable de l’utilisation faite de ces informations, et de  tout préjudice direct ou indirect pouvant en découler. Tout contenu  téléchargé se fait aux risques et périls de l’utilisateur et sous sa  seule responsabilité. En conséquence, Ganti ne saurait être tenu  responsable d’un quelconque dommage subi par l’ordinateur de  l’utilisateur ou d’une quelconque perte de données consécutives au  téléchargement. Les photos sont non contractuelles."
+    },
+    {
+      "heading": "Litiges et lois applicables",
+      "body": "Les présentes conditions sont régies par les lois françaises et toute  contestation ou litiges qui pourraient naître de l’interprétation ou de  l’exécution de celles-ci seront de la compétence exclusive des tribunaux dont dépend le siège social de la société Ganti. La langue de  référence, pour le règlements de contentieux éventuels, est le français.\nTout internaute qui accède et utilise le site Ganti dispose d’un droit  d’accès, de modification, de rectification et de suppression des données qui le concerne. Pour exercer ce droit d’accès, il doit adresser sa  demande à Ganti. Ce droit peut être exercé par voie postale auprès de  Ganti 292, rue Camille Guérin 59 800 LILLE ou par voie électronique à  l’adresse email suivante : contact (at) ganti.io."
+    },
+    {
+      "heading": "Confidentialité",
+      "body": "Vos données personnelles sont confidentielles et ne seront en aucun cas  communiquées à des tiers hormis pour la bonne exécution de la prestation."
+    },
+    {
+      "heading": "Cookies",
+      "body": "Pour des besoins de statistiques et d’affichage, le présent site pourra  utiliser des cookies. Il s’agit de petits fichiers textes stockés sur  votre disque dur afin d’enregistrer des données techniques sur votre  navigation, certaines parties de ce site ne peuvent être fonctionnelles  sans l’acceptation de cookies."
+    },
+    {
+      "heading": "Liens hypertextes",
+      "body": "Le site internet www.ganti.io peut offrir des liens vers d’autres sites  internet ou d’autres ressources disponibles sur Internet. Les liens  hypertextes mis en place dans le cadre du présent site internet en  direction d’autres ressources présentes sur le réseau Internet ne  sauraient engager la responsabilité de Ganti. En outre, les  utilisateurs, les abonnés et les visiteurs des sites internet de Ganti  ne peuvent mettre en place un hyperlien en direction de ce site sans  l’autorisation expresse et préalable de Ganti. Dans l’hypothèse où un  utilisateur ou visiteur souhaiterait mettre en place un hyperlien en  direction d’un des sites internet de Ganti, il lui appartiendra  d’adresser un email accessible sur le site afin de formuler sa demande  de mise en place d’un hyperlien. Ganti se réserve le droit d’accepter ou de refuser un hyperlien sans avoir à en justifier sa décision."
+    }
+  ]
+}
