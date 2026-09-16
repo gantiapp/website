@@ -1,0 +1,151 @@
+{
+  "hero": {
+    "line1": "Des formules,",
+    "line2Before": "alignée sur ",
+    "highlight": "vos besoins",
+    "line2After": "."
+  },
+  "intro": {
+    "title": "POC sans engagement",
+    "subtitle": "Profitez d’un POC sans engagement pour tester Ganti !\nChoissisez un plan ci-dessous pour prendre rendez-vous avec un expert Ganti et estimer la mise en place."
+  },
+  "plans": [
+    {
+      "id": "essentiel",
+      "icon": "target",
+      "eyebrow": "Pour démarrer",
+      "name": "Essentiel",
+      "description": "L'essentiel de notre solution pour explorer et fiabiliser votre patrimoine data.",
+      "features": [
+        "Accès complet aux modules",
+        "2 jours d’accompagnement / an",
+        "2.500 contrôles / mois",
+        "Sources et utilisateurs illimités"
+      ],
+      "ctaLabel": "Commencer",
+      "ctaHref": "/contact",
+      "featured": false
+    },
+    {
+      "id": "business",
+      "icon": "sparkles",
+      "eyebrow": "Le plus choisi",
+      "name": "Business",
+      "description": "Le bon équilibre pour les équipes data qui industrialisent leur qualité au quotidien.",
+      "features": [
+        "Pack Essentiel",
+        "4 jours d’accompagnement / an",
+        "5.000 contrôles / mois",
+        "Connexion SSO et API ticketing"
+      ],
+      "ctaLabel": "Choisir Business",
+      "ctaHref": "/contact",
+      "featured": true,
+      "badge": "Recommandé"
+    },
+    {
+      "id": "business-plus",
+      "icon": "stack",
+      "eyebrow": "Pour passer à l’échelle",
+      "name": "Business+",
+      "description": "Pour les organisations qui multiplient les domaines d'analyse et les équipes contributrices.",
+      "features": [
+        "Pack Business",
+        "6 jours d’accompagnement / an",
+        "10.000 contrôles / mois",
+        "Connexion SSO et API ticketing"
+      ],
+      "ctaLabel": "Choisir Business+",
+      "ctaHref": "/contact",
+      "featured": false
+    },
+    {
+      "id": "custom",
+      "icon": "tool",
+      "eyebrow": "Sur mesure",
+      "name": "Custom",
+      "description": "Une offre co-construite pour vous selon vos besoins.",
+      "features": [
+        "Intégrations specifiques",
+        "Accompagnement adaptés",
+        "Volumétrie sur mesure",
+        "Engagement et SLA dédiés"
+      ],
+      "ctaLabel": "Parler à un expert",
+      "ctaHref": "/contact",
+      "featured": false
+    }
+  ],
+  "comparison": {
+    "title": "Comparez les formules",
+    "subtitle": "Tous les détails inclus dans chaque offre, sans surprise.",
+    "columns": ["Essentiel", "Business", "Business +", "Custom"],
+    "groups": [
+      {
+        "label": "Plateforme",
+        "rows": [
+          {
+            "label": "Accès aux modules",
+            "hint": "Tous les modules Ganti",
+            "values": ["check", "check", "check", "check"]
+          },
+          {
+            "label": "Source de données",
+            "values": ["Illimitées", "Illimitées", "Illimitées", "Illimitées"]
+          },
+          {
+            "label": "Utilisateurs",
+            "values": ["Illimité", "Illimité", "Illimité", "Illimité"]
+          },
+          {
+            "label": "Contrôles par mois",
+            "hint": "Nombre de contrôles executables chaque mois",
+            "values": ["2.500", "5.000", "10.000", "Adapté"]
+          }
+        ]
+      },
+      {
+        "label": "Accompagnement",
+        "rows": [
+          {
+            "label": "Support & mises à jour",
+            "values": ["check", "check", "check", "check"]
+          },
+          {
+            "label": "Jours d'accompagnement / an",
+            "values": ["2 jours", "4 jours", "6 jours", "Sur devis"]
+          },
+          {
+            "label": "Support prioritaire",
+            "values": ["dash", "dash", "check", "check"]
+          }
+        ]
+      },
+      {
+        "label": "Sécurité & intégrations",
+        "rows": [
+          {
+            "label": "Connexion SSO",
+            "hint": "Authentification unique via votre IdP (SAML, OIDC)",
+            "values": ["dash", "check", "check", "check"]
+          },
+          {
+            "label": "Flux API ticketing",
+            "hint": "Création automatique de tickets dans votre outil ITSM",
+            "values": ["dash", "check", "check", "check"]
+          },
+          {
+            "label": "Intégrations sur mesure",
+            "values": ["dash", "dash", "dash", "check"]
+          }
+        ]
+      }
+    ]
+  },
+  "cta": {
+    "title": "Pas sûr de la formule à choisir ?",
+    "subtitle": "Prenez un rendez-vous avec un expert Ganti pour cadrer votre volumétrie,\nvos sources critiques et la formule la plus juste pour votre équipe.",
+    "primaryHref": "/contact",
+    "primaryLabel": "Réserver un échange"
+  }
+}
