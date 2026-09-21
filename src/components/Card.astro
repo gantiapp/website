@@ -7,6 +7,7 @@ interface Props {
 }
 
 const { stat, statLabel, title, description } = Astro.props;
+const hasStatMedia = Astro.slots.has('stat-media');
 ---
 
 <article class="card">
@@ -15,10 +16,19 @@ const { stat, statLabel, title, description } = Astro.props;
     <span class="card__icon">
       <slot name="icon" />
     </span>
-    <p class="card__stat">
-      <span class="card__stat-value">{stat}</span>
+    <div class="card__stat">
+      <span class="card__stat-row">
+        {
+          hasStatMedia && (
+            <span class="card__stat-media">
+              <slot name="stat-media" />
+            </span>
+          )
+        }
+        <span class="card__stat-value">{stat}</span>
+      </span>
       <span class="card__stat-label">{statLabel}</span>
-    </p>
+    </div>
   </div>
   <div class="card__body">
     <h3 class="card__title">{title}</h3>
@@ -122,6 +132,18 @@ const { stat, statLabel, title, description } = Astro.props;
     text-align: right;
   }
 
+  .card__stat-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--space-8);
+  }
+
+  .card__stat-media {
+    display: flex;
+    align-items: center;
+  }
+
   .card__stat-value {
     font-family: var(--font-display);
     font-size: var(--font-size-h2);
@@ -191,11 +213,6 @@ const { stat, statLabel, title, description } = Astro.props;
       min-height: 0;
       gap: var(--space-32);
       padding: var(--space-32);
-    }
-
-    .card__stat-value,
-    .card__title {
-      font-size: var(--font-size-h3);
     }
 
     .card__stat-label {

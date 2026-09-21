@@ -1,17 +1,31 @@
 ---
 import {
+  IconBell,
   IconBolt,
   IconChartBar,
   IconCircleCheck,
-  IconDatabase,
-  IconPlugConnected,
-  IconSparkles,
 } from '@tabler/icons-astro';
 import Button from './Button.astro';
 import Card from './Card.astro';
 import SectionHeading from './SectionHeading.astro';
 
-const cards = [
+const integrationLogos = [
+  { name: 'Slack', src: '/images/logos-integrations/slack.png', tone: 'slack' },
+  { name: 'Microsoft Teams', src: '/images/logos-integrations/teams.png' },
+  { name: 'Google Chat', src: '/images/logos-integrations/google-chat.png' },
+  { name: 'Discord', src: '/images/logos-integrations/discord.png', tone: 'discord' },
+];
+
+type FeatureCard = {
+  stat: string;
+  statLabel: string;
+  title: string;
+  description: string;
+  icon: 'chart' | 'bell' | 'check' | 'bolt';
+  showIntegrations?: boolean;
+};
+
+const cards: FeatureCard[] = [
   {
     stat: '+50%',
     statLabel: 'd’accès aux données',
@@ -26,7 +40,8 @@ const cards = [
     title: 'Intégré à votre écosystème',
     description:
       'Slack, Teams, ServiceNow, EasyVista, Discord — recevez les bonnes alertes au bon endroit.',
-    icon: 'plug',
+    icon: 'bell',
+    showIntegrations: true,
   },
   {
     stat: '95%',
@@ -35,22 +50,6 @@ const cards = [
     description:
       'Analyse continue, scoring et alertes automatiques sur la qualité de vos données critiques.',
     icon: 'check',
-  },
-  {
-    stat: '10',
-    statLabel: 'sources intégrées',
-    title: '10 connecteurs natifs',
-    description:
-      'PostgreSQL, Oracle, Snowflake, MongoDB, IBM DB2, AS/400… connectez vos sources en quelques minutes.',
-    icon: 'database',
-  },
-  {
-    stat: '−50%',
-    statLabel: 'temps d’analyse',
-    title: 'Agent IA intégré',
-    description:
-      'Un copilote intelligent vous accompagne tout au long du processus, de la création à l’analyse.',
-    icon: 'sparkles',
   },
   {
     stat: '−80%',
@@ -81,20 +80,29 @@ const cards = [
             {card.icon === 'chart' && (
               <IconChartBar slot="icon" size={32} stroke={3} />
             )}
-            {card.icon === 'plug' && (
-              <IconPlugConnected slot="icon" size={32} stroke={3} />
+            {card.icon === 'bell' && (
+              <IconBell slot="icon" size={32} stroke={3} />
             )}
             {card.icon === 'check' && (
               <IconCircleCheck slot="icon" size={32} stroke={3} />
             )}
-            {card.icon === 'database' && (
-              <IconDatabase slot="icon" size={32} stroke={3} />
-            )}
-            {card.icon === 'sparkles' && (
-              <IconSparkles slot="icon" size={32} stroke={3} />
-            )}
             {card.icon === 'bolt' && (
               <IconBolt slot="icon" size={32} stroke={3} />
+            )}
+            {card.showIntegrations && (
+              <ul class="features__integrations" slot="stat-media">
+                {integrationLogos.map((logo, index) => (
+                  <li
+                    class:list={[
+                      'features__integration',
+                      logo.tone && `features__integration--${logo.tone}`,
+                    ]}
+                    style={`--stack-index: ${index}`}
+                  >
+                    <img src={logo.src} alt={logo.name} width="32" height="32" />
+                  </li>
+                ))}
+              </ul>
             )}
           </Card>
         ))
@@ -110,7 +118,7 @@ const cards = [
 <style>
   .features {
     background: var(--color-bg-muted);
-    padding: var(--space-96) var(--space-page);
+    padding: var(--space-section-y) var(--space-page);
   }
 
   .features__inner {
@@ -124,12 +132,61 @@ const cards = [
   .features__grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    gap: var(--space-gap);
   }
 
   .features__cta {
     display: flex;
     justify-content: flex-end;
+  }
+
+  .features__integrations {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .features__integration {
+    position: relative;
+    z-index: var(--stack-index);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    margin-left: -10px;
+    overflow: hidden;
+    box-sizing: border-box;
+    border: 2px solid var(--color-base-white);
+    border-radius: var(--radius-pill);
+    background: var(--color-gray-100);
+  }
+
+  .features__integration:first-child {
+    margin-left: 0;
+  }
+
+  .features__integration img {
+    display: block;
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+  }
+
+  .features__integration--slack img {
+    width: 18px;
+    height: 18px;
+  }
+
+  .features__integration--discord {
+    background: #5865f2;
+  }
+
+  .features__integration--discord img {
+    width: 20px;
+    height: 20px;
   }
 
   @media (max-width: 1024px) {
@@ -139,10 +196,6 @@ const cards = [
   }
 
   @media (max-width: 768px) {
-    .features {
-      padding: var(--space-64) var(--space-page);
-    }
-
     .features__inner {
       gap: var(--space-32);
     }
