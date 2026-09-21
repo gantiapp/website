@@ -10,8 +10,7 @@ const logos = [
 const groupCount = 6;
 ---
 
-<section class="clients">
-  <h2 class="clients__title">Ils nous font confiance</h2>
+<div class="clients" role="region" aria-label="Ils nous font confiance">
   <div class="clients__marquee">
     <div class="clients__track" style={`--clients-groups: ${groupCount}`}>
       {
@@ -28,7 +27,7 @@ const groupCount = 6;
                   class="clients__logo"
                   src={logo.src}
                   alt={groupIndex === 0 ? logo.alt : ''}
-                  height="48"
+                  height="36"
                 />
               </li>
             ))}
@@ -37,28 +36,11 @@ const groupCount = 6;
       }
     </div>
   </div>
-</section>
+</div>
 
 <style>
   .clients {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--space-48);
-    padding: var(--space-96) 0;
-  }
-
-  .clients__title {
-    margin: 0;
-    color: var(--color-base-black);
-    font-family: var(--font-display);
-    font-size: var(--font-size-h2);
-    font-weight: var(--font-weight-bold);
-    font-optical-sizing: none;
-    font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 700;
-    letter-spacing: 0;
-    line-height: 1.2;
-    text-align: center;
+    width: 100%;
   }
 
   .clients__marquee {
@@ -95,15 +77,15 @@ const groupCount = 6;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 48px;
+    height: 36px;
     pointer-events: auto;
   }
 
   .clients__logo {
     display: block;
-    height: 48px;
+    height: 36px;
     width: auto;
-    max-width: 220px;
+    max-width: 165px;
     object-fit: contain;
     opacity: 1;
     transition: opacity 0.25s ease;
@@ -175,28 +157,18 @@ const groupCount = 6;
   }
 
   @media (max-width: 768px) {
-    .clients {
-      gap: var(--space-32);
-      padding: var(--space-64) 0;
-    }
-
-    .clients__title {
-      font-size: var(--font-size-h3);
-      padding: 0 var(--space-page);
-    }
-
     .clients__group {
       gap: var(--space-48);
       padding-right: var(--space-48);
     }
 
     .clients__item {
-      height: 32px;
+      height: 24px;
     }
 
     .clients__logo {
-      height: 32px;
-      max-width: 140px;
+      height: 24px;
+      max-width: 105px;
       opacity: 1;
       filter: none;
     }

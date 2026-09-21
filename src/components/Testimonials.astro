@@ -1,18 +1,22 @@
 ---
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons-astro';
+import Clients from './Clients.astro';
 import SectionHeading from './SectionHeading.astro';
 import TestimonialCard from './TestimonialCard.astro';
 import testimonials from '../data/testimonials.json';
 ---
 
 <section class="testimonials" data-testimonials aria-label="Ce que disent nos clients">
-  <div class="testimonials__heading">
-    <SectionHeading
-      align="center"
-      subtitle="Des résultats concrets pour les leaders de la data"
-    >
-      Ce que disent nos clients
-    </SectionHeading>
+  <div class="testimonials__intro">
+    <div class="testimonials__heading">
+      <SectionHeading
+        align="center"
+        subtitle="Des résultats concrets pour les leaders de la data"
+      >
+        Ce que disent nos clients
+      </SectionHeading>
+    </div>
+    <Clients />
   </div>
 
   <div class="testimonials__viewport" data-testimonials-viewport>
@@ -365,8 +369,14 @@ import testimonials from '../data/testimonials.json';
     display: flex;
     flex-direction: column;
     gap: var(--space-64);
-    padding: var(--space-96) 0;
+    padding: var(--space-section-y) 0;
     background: var(--color-bg-muted);
+  }
+
+  .testimonials__intro {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-48);
   }
 
   .testimonials__heading {
@@ -477,8 +487,11 @@ import testimonials from '../data/testimonials.json';
 
   @media (max-width: 768px) {
     .testimonials {
-      padding: var(--space-64) 0;
       gap: var(--space-48);
+    }
+
+    .testimonials__intro {
+      gap: var(--space-32);
     }
   }
 </style>
