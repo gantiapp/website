@@ -25,6 +25,7 @@ const relValue = rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined
   href={href}
   target={target}
   rel={relValue}
+  data-wave-hover
 >
   {
     !hideIcon && iconAtStart ? (
@@ -68,46 +69,52 @@ const relValue = rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined
   }
 
   .button--primary {
+    --wave-color: var(--color-primary-600);
     background: var(--color-action);
     color: var(--color-primary-50);
   }
 
-  .button--primary:hover,
-  .button--primary:focus-visible {
-    background: var(--color-primary-600);
-  }
-
   .button--module {
+    --wave-color: color-mix(in srgb, var(--button-bg) 88%, black);
     align-self: stretch;
     width: 100%;
     background: var(--button-bg);
     color: var(--button-fg);
   }
 
-  .button--module:hover,
-  .button--module:focus-visible {
-    filter: brightness(0.92);
-  }
-
   .button--inverse {
+    --wave-color: var(--color-primary-100);
     background: var(--color-primary-50);
     color: var(--color-primary-700);
   }
 
-  .button--inverse:hover,
-  .button--inverse:focus-visible {
-    background: var(--color-primary-100);
-  }
-
   .button--inverse-outline {
+    --wave-color: rgb(255 255 255 / 0.18);
     background: rgb(255 255 255 / 0.1);
     color: var(--color-primary-50);
     border: 1.5px solid var(--color-primary-50);
   }
 
-  .button--inverse-outline:hover,
-  .button--inverse-outline:focus-visible {
-    background: rgb(255 255 255 / 0.18);
+  @media (prefers-reduced-motion: reduce), (hover: none) {
+    .button--primary:hover,
+    .button--primary:focus-visible {
+      background: var(--color-primary-600);
+    }
+
+    .button--module:hover,
+    .button--module:focus-visible {
+      filter: brightness(0.92);
+    }
+
+    .button--inverse:hover,
+    .button--inverse:focus-visible {
+      background: var(--color-primary-100);
+    }
+
+    .button--inverse-outline:hover,
+    .button--inverse-outline:focus-visible {
+      background: rgb(255 255 255 / 0.18);
+    }
   }
 
   .button__icon {

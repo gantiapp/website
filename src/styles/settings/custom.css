@@ -229,3 +229,54 @@ body[data-page='produit'] [data-navbar] {
     display: none;
   }
 }
+
+[data-wave-hover] {
+  --wave-x: 50%;
+  --wave-y: 50%;
+  --wave-scale: 40;
+  --wave-color: var(--color-primary-600);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+[data-wave-hover]::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  left: var(--wave-x);
+  top: var(--wave-y);
+  width: 8px;
+  height: 8px;
+  pointer-events: none;
+  border-radius: 50%;
+  background: var(--wave-color);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0);
+  transition:
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.2s ease;
+}
+
+[data-wave-hover].is-wave::after,
+[data-wave-hover]:focus-visible::after {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(var(--wave-scale));
+}
+
+[data-wave-hover].is-wave-out::after {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(var(--wave-scale));
+  transition: opacity 0.32s ease;
+}
+
+[data-wave-hover] > * {
+  position: relative;
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-wave-hover]::after {
+    content: none;
+  }
+}
