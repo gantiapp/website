@@ -36,7 +36,7 @@ const {
       <span class="pricing-card__badge">{badge}</span>
     ) : null
   }
-  <div class="pricing-card__header">
+  <div class="pricing-card__identity">
     <span class="pricing-card__icon" aria-hidden="true">
       <slot name="icon" />
     </span>
@@ -44,8 +44,8 @@ const {
       <p class="pricing-card__eyebrow">{eyebrow}</p>
       <h3 class="pricing-card__name">{name}</h3>
     </div>
-    <p class="pricing-card__description">{description}</p>
   </div>
+  <p class="pricing-card__description">{description}</p>
   <ul class="pricing-card__features">
     {
       features.map((feature) => (
@@ -64,17 +64,26 @@ const {
 <style>
   .pricing-card {
     position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-64);
+    display: grid;
+    grid-template-rows: auto auto 1fr auto;
+    align-items: start;
+    row-gap: var(--space-24);
     box-sizing: border-box;
     min-width: 0;
     height: 100%;
-    padding: var(--space-32);
+    padding: var(--space-pad-card);
     scroll-margin-top: calc(var(--navbar-height) + var(--space-16));
     border: var(--stroke-width) solid var(--color-gray-300);
     border-radius: var(--radius-2xl);
     background: var(--color-base-white);
+  }
+
+  @supports (grid-template-rows: subgrid) {
+    .pricing-card {
+      grid-template-rows: subgrid;
+      grid-row: span 4;
+      height: auto;
+    }
   }
 
   .pricing-card--featured {
@@ -100,10 +109,10 @@ const {
     white-space: nowrap;
   }
 
-  .pricing-card__header {
+  .pricing-card__identity {
     display: flex;
-    flex-direction: column;
-    gap: var(--space-24);
+    align-items: center;
+    gap: var(--space-16);
     min-width: 0;
   }
 
@@ -111,6 +120,7 @@ const {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
     width: 48px;
     height: 48px;
     border-radius: var(--radius-pill);
@@ -159,13 +169,13 @@ const {
     flex-direction: column;
     gap: var(--space-16);
     margin: 0;
-    padding: 0;
+    padding: var(--space-32) 0 0;
     list-style: none;
   }
 
   .pricing-card__features li {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: var(--space-8);
     min-width: 0;
     color: var(--color-base-black);
@@ -173,17 +183,13 @@ const {
     font-size: var(--font-size-body-small);
     font-weight: var(--font-weight-regular);
     line-height: var(--line-height-body);
-    white-space: nowrap;
+    overflow-wrap: anywhere;
   }
 
   .pricing-card__features :global(svg) {
     display: block;
     flex-shrink: 0;
     color: var(--color-primary-500);
-  }
-
-  .pricing-card__cta {
-    margin-top: auto;
   }
 
   .pricing-card__cta :global(.button) {

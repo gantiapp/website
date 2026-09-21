@@ -8,6 +8,7 @@ import {
   IconTool,
 } from '@tabler/icons-astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
 import CtaBanner from '../components/CtaBanner.astro';
 import Highlight from '../components/Highlight.astro';
 import PricingCard from '../components/PricingCard.astro';
@@ -21,20 +22,44 @@ const planIcons = {
 };
 ---
 
-<BaseLayout title="Tarifs — Ganti">
-  <article class="pricing" aria-label="Tarifs">
+<BaseLayout title="Formules — Ganti">
+  <article class="pricing" aria-label="Formules">
     <header class="pricing__hero">
       <h1 class="pricing__title">
         {pricing.hero.line1}
         <br />
-        {pricing.hero.line2Before}<Highlight>{pricing.hero.highlight}</Highlight>{pricing.hero.line2After}
+        {pricing.hero.line2Before}<span class="pricing__title-end"><Highlight>{pricing.hero.highlight}</Highlight>{pricing.hero.line2After}</span>
       </h1>
     </header>
 
+    <section class="pricing__poc" id="poc" aria-labelledby="pricing-poc-title">
+      <div class="pricing__poc-main">
+        <div class="pricing__poc-copy">
+          <h2 class="pricing__poc-title" id="pricing-poc-title">{pricing.poc.title}</h2>
+          <p class="pricing__poc-subtitle">{pricing.poc.subtitle}</p>
+        </div>
+        <ul class="pricing__poc-points">
+          {
+            pricing.poc.points.map((point) => (
+              <li class="pricing__poc-point">
+                <span class="pricing__poc-point-icon" aria-hidden="true">
+                  <IconCheck size={20} stroke={2} />
+                </span>
+                {point}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div class="pricing__poc-action">
+        <Button href={pricing.poc.ctaHref}>{pricing.poc.ctaLabel}</Button>
+      </div>
+    </section>
+
     <section class="pricing__offers" aria-labelledby="pricing-offers-title">
       <div class="pricing__offers-intro">
-        <h2 class="pricing__offers-title" id="pricing-offers-title">{pricing.intro.title}</h2>
-        <p class="pricing__offers-subtitle">{pricing.intro.subtitle}</p>
+        <h2 class="pricing__offers-title" id="pricing-offers-title">{pricing.offers.title}</h2>
+        <p class="pricing__offers-subtitle">{pricing.offers.subtitle}</p>
       </div>
 
       <div class="pricing__cards">
@@ -140,8 +165,6 @@ const planIcons = {
     display: flex;
     flex-direction: column;
     width: 100%;
-    max-width: 1920px;
-    margin: 0 auto;
   }
 
   .pricing__hero {
@@ -162,12 +185,101 @@ const planIcons = {
     text-align: center;
   }
 
+  .pricing__title-end {
+    white-space: nowrap;
+  }
+
+  .pricing__poc {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-32);
+    box-sizing: border-box;
+    padding: var(--space-64) var(--space-page-marketing);
+    background: var(--color-primary-50);
+  }
+
+  .pricing__poc-main {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-32);
+    min-width: 0;
+  }
+
+  .pricing__poc-action {
+    flex-shrink: 0;
+  }
+
+  .pricing__poc-copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    max-width: 720px;
+  }
+
+  .pricing__poc-title {
+    margin: 0;
+    color: var(--color-primary-800);
+    font-family: var(--font-display);
+    font-size: var(--font-size-h2);
+    font-weight: var(--font-weight-bold);
+    font-optical-sizing: none;
+    font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 700;
+    letter-spacing: 0;
+    line-height: var(--line-height-heading);
+  }
+
+  .pricing__poc-subtitle {
+    margin: 0;
+    color: var(--color-primary-700);
+    font-family: var(--font-body);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-body);
+  }
+
+  .pricing__poc-points {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .pricing__poc-point {
+    display: flex;
+    align-items: center;
+    gap: var(--space-16);
+    color: var(--color-primary-800);
+    font-family: var(--font-body);
+    font-size: var(--font-size-button);
+    font-weight: var(--font-weight-regular);
+    line-height: 1.2;
+  }
+
+  .pricing__poc-point-icon {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-pill);
+    background: var(--color-base-white);
+    color: var(--color-primary-500);
+  }
+
+  .pricing__poc-point-icon :global(svg) {
+    display: block;
+  }
+
   .pricing__offers {
     display: flex;
     flex-direction: column;
     gap: var(--space-64);
     box-sizing: border-box;
-    padding: var(--space-96) clamp(24px, 13.33vw, 256px);
+    padding: var(--space-section-y) var(--space-page-marketing);
     background: var(--color-bg-muted);
   }
 
@@ -180,12 +292,12 @@ const planIcons = {
 
   .pricing__offers-title {
     margin: 0;
-    color: var(--color-primary-700);
+    color: var(--color-primary-800);
     font-family: var(--font-display);
-    font-size: var(--font-size-h1);
-    font-weight: var(--font-weight-extrabold);
+    font-size: var(--font-size-h2);
+    font-weight: var(--font-weight-bold);
     font-optical-sizing: none;
-    font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 800;
+    font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 700;
     letter-spacing: 0;
     line-height: var(--line-height-heading);
   }
@@ -203,14 +315,15 @@ const planIcons = {
   .pricing__cards {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space-32);
+    column-gap: var(--space-32);
+    row-gap: var(--space-32);
     padding-top: var(--space-16);
   }
 
   @media (min-width: 1600px) {
     .pricing__cards {
       grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: var(--space-16);
+      column-gap: var(--space-16);
     }
   }
 
@@ -219,7 +332,7 @@ const planIcons = {
     flex-direction: column;
     gap: var(--space-64);
     box-sizing: border-box;
-    padding: var(--space-96) clamp(24px, 13.33vw, 256px);
+    padding: var(--space-section-y) var(--space-page-marketing);
   }
 
   .pricing__compare-intro {
@@ -478,17 +591,17 @@ const planIcons = {
   }
 
   @media (max-width: 1024px) {
-    .pricing__title,
-    .pricing__offers-title {
-      font-size: var(--font-size-h2);
+    .pricing__poc {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .pricing__poc-action {
+      align-self: flex-end;
     }
 
     .pricing__cards {
       padding-top: var(--space-24);
-    }
-
-    .pricing__compare-title {
-      font-size: var(--font-size-h3);
     }
   }
 
@@ -497,20 +610,45 @@ const planIcons = {
       padding: var(--space-32) var(--space-page);
     }
 
+    .pricing__poc,
     .pricing__offers,
     .pricing__compare {
       gap: var(--space-32);
-      padding: var(--space-64) var(--space-page);
+      padding: var(--space-section-y) var(--space-page);
+    }
+
+    .pricing__poc-main {
+      gap: var(--space-24);
+    }
+
+    .pricing__poc-points {
+      gap: var(--space-12);
+    }
+
+    .pricing__poc-point {
+      gap: var(--space-12);
+    }
+
+    .pricing__poc-point-icon {
+      width: 24px;
+      height: 24px;
+    }
+
+    .pricing__poc-point-icon :global(svg) {
+      width: 14px;
+      height: 14px;
     }
 
     .pricing__cards {
       grid-template-columns: 1fr;
-      gap: var(--space-32);
+      column-gap: var(--space-32);
+      row-gap: var(--space-32);
     }
+  }
 
-    .pricing__offers-title,
-    .pricing__title {
-      font-size: var(--font-size-h2);
+  @media (max-width: 480px) {
+    .pricing__poc-action :global(.button) {
+      width: 100%;
     }
   }
 </style>

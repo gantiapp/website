@@ -18,8 +18,8 @@ const {
   primaryHref = '/contact',
   primaryLabel = 'Demander une démo',
   primaryIcon = 'mail',
-  secondaryHref = '/tarifs',
-  secondaryLabel = 'Voir les tarifs',
+  secondaryHref = '/formules',
+  secondaryLabel = 'Voir les formules',
 } = Astro.props;
 ---
 
@@ -111,11 +111,7 @@ const {
   @media (max-width: 768px) {
     .cta-banner {
       gap: var(--space-32);
-      padding: var(--space-64) var(--space-page);
-    }
-
-    .cta-banner__title {
-      font-size: var(--font-size-h3);
+      padding: var(--space-section-y) var(--space-page);
     }
   }
 

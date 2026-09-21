@@ -5,9 +5,20 @@
     "highlight": "vos besoins",
     "line2After": "."
   },
-  "intro": {
+  "poc": {
     "title": "POC sans engagement",
-    "subtitle": "Profitez d’un POC sans engagement pour tester Ganti !\nChoissisez un plan ci-dessous pour prendre rendez-vous avec un expert Ganti et estimer la mise en place."
+    "subtitle": "Testez Ganti sur vos données réelles, sans engagement commercial ni durée minimale.",
+    "points": [
+      "Aucun engagement commercial",
+      "Accès complet aux modules",
+      "Cadrage avec un expert Ganti"
+    ],
+    "ctaLabel": "Nous contacter",
+    "ctaHref": "/contact"
+  },
+  "offers": {
+    "title": "Choisissez votre formule",
+    "subtitle": "Chaque licence ouvre l’accès à l’ensemble de la plateforme. Un expert Ganti vous aide à estimer la mise en place."
   },
   "plans": [
     {
