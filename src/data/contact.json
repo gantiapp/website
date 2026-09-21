@@ -1,0 +1,92 @@
+{
+  "hero": {
+    "before": "Échangeons sur vos ",
+    "highlight": "enjeux data"
+  },
+  "sentMessage": "Message envoyé",
+  "tabs": [
+    {
+      "id": "formulaire",
+      "label": "Formulaire"
+    },
+    {
+      "id": "creneau",
+      "label": "Réserver un créneau"
+    }
+  ],
+  "form": {
+    "name": "contact",
+    "submitLabel": "Envoyer le message",
+    "honeypotLabel": "Ne pas remplir ce champ",
+    "fields": {
+      "name": {
+        "label": "Nom et prénom",
+        "required": true,
+        "placeholder": "John Doe",
+        "autocomplete": "name"
+      },
+      "company": {
+        "label": "Société",
+        "required": true,
+        "placeholder": "Google",
+        "autocomplete": "organization"
+      },
+      "role": {
+        "label": "Fonction",
+        "required": true,
+        "placeholder": "Sélectionnez votre fonction",
+        "help": "Si votre fonction n’apparaît pas dans la liste, vous pouvez la noter manuellement."
+      },
+      "email": {
+        "label": "Email",
+        "required": true,
+        "placeholder": "johndoe@mail.com",
+        "autocomplete": "email"
+      },
+      "phone": {
+        "label": "Téléphone",
+        "required": true,
+        "placeholder": "+33 00 00 00 00 00",
+        "autocomplete": "tel"
+      },
+      "license": {
+        "label": "Licence envisagée",
+        "required": false,
+        "optionalLabel": "(optionnel)",
+        "placeholder": "Sélectionnez une formule"
+      },
+      "message": {
+        "label": "Votre besoin",
+        "required": false,
+        "optionalLabel": "(optionnel)",
+        "placeholder": "Décrivez en quelques lignes votre contexte, vos sources de données, vos délais…"
+      }
+    },
+    "roleOptions": [
+      { "id": "data-engineer", "label": "Data Engineer" },
+      { "id": "analyste-fonctionnel", "label": "Analyste fonctionnel" },
+      { "id": "analyste-exploitation", "label": "Analyste d’exploitation" },
+      { "id": "responsable-application", "label": "Responsable d’application" },
+      { "id": "product-owner", "label": "Product owner" }
+    ],
+    "licenseOptions": [
+      { "id": "essentiel", "label": "Essentiel" },
+      { "id": "business", "label": "Business" },
+      { "id": "business-plus", "label": "Business+" },
+      { "id": "custom", "label": "Custom" }
+    ]
+  },
+  "calendar": {
+    "title": "Réservez un échange avec un expert",
+    "subtitle": "Un créneau dédié pour cadrer vos besoins, vous montrer la plateforme et estimer la mise en route.",
+    "points": [
+      "Cadrage de vos sources et cas d'usage",
+      "Démo personnalisée selon votre rôle",
+      "Estimation des licences adaptées"
+    ],
+    "cardTitle": "Ouvrir Google Agenda",
+    "cardSubtitle": "Choisissez le créneau qui vous arrange dans le calendrier partagé.",
+    "ctaLabel": "Voir les créneaux disponibles",
+    "calendarHref": "https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ1FdD8ckxnnrVNxgeehoR_2KuLoOrNOlqmXJXU_KMOY_zWwypZhtQVE5jncyki6NpMM3OywAXYL"
+  }
+}
