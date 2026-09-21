@@ -22,8 +22,8 @@ import Highlight from './Highlight.astro';
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--space-96);
-    padding: var(--space-96) var(--space-page);
+    gap: var(--space-section-y);
+    padding: var(--space-section-y) var(--space-page);
     box-sizing: border-box;
     text-align: center;
   }
@@ -53,32 +53,11 @@ import Highlight from './Highlight.astro';
     max-width: 932px;
     color: var(--color-base-black);
     font-family: var(--font-display);
-    font-size: var(--font-size-h3);
+    font-size: var(--font-size-subtitle);
     font-weight: var(--font-weight-medium);
     font-optical-sizing: none;
     font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 500;
     letter-spacing: 0;
     line-height: 1.2;
-  }
-
-  @media (max-width: 1024px) {
-    .hero {
-      gap: var(--space-64);
-    }
-
-    .hero__title {
-      font-size: var(--font-size-h2);
-    }
-
-    .hero__subtitle {
-      font-size: var(--font-size-body-large);
-    }
-  }
-
-  @media (max-width: 768px) {
-    .hero {
-      gap: var(--space-48);
-      padding: var(--space-64) var(--space-page);
-    }
   }
 </style>

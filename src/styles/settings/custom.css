@@ -134,6 +134,7 @@
   --space-pad-card: var(--space-32);
   --space-pad-nav: var(--space-64);
   --space-pad-footer: var(--space-96);
+  --space-section-y: var(--space-96);
 
   /* Radius — Maquettes */
   --radius-s: 8px;
@@ -158,6 +159,7 @@
   --font-heading: var(--font-display);
   --space-page: clamp(24px, 5vw, 64px);
   --space-page-wide: clamp(24px, 8vw, 128px);
+  --space-page-marketing: clamp(24px, 13.33vw, 256px);
   --navbar-height: 116px;
   --radius-control: var(--radius-pill);
   --radius-card: var(--radius-2xl);
@@ -195,12 +197,25 @@ body[data-page='produit'] [data-navbar] {
 @media (max-width: 1024px) {
   :root {
     --navbar-height: 104px;
+    --font-size-h1: var(--font-size-32);
+    --font-size-subtitle: var(--font-size-18);
+    --font-size-large-text: var(--font-size-18);
+    --space-section-y: var(--space-64);
   }
 }
 
 @media (max-width: 768px) {
   :root {
     --navbar-height: 72px;
+    --font-size-h1: 28px;
+    --font-size-h2: var(--font-size-24);
+    --font-size-h3: var(--font-size-20);
+    --font-size-subtitle: var(--font-size-18);
+    --font-size-large-text: var(--font-size-18);
+    --font-size-button: var(--font-size-16);
+    --space-section-y: var(--space-48);
+    --space-pad-footer: var(--space-48);
+    --space-pad-card: var(--space-24);
   }
 
   body[data-page='produit'] {

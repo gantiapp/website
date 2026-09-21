@@ -178,7 +178,7 @@ const initials = person.name
     font-optical-sizing: none;
     font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 500;
     line-height: var(--line-height-heading);
-    white-space: nowrap;
+    overflow-wrap: anywhere;
   }
 
   .use-case-panel__title {
@@ -368,13 +368,6 @@ const initials = person.name
     font-family: var(--font-body);
     font-size: var(--font-size-body);
     line-height: var(--line-height-body);
-  }
-
-  @media (max-width: 1024px) {
-    .use-case-panel__title,
-    .use-case-panel__label {
-      font-size: var(--font-size-large-text);
-    }
   }
 
   @media (max-width: 768px) {

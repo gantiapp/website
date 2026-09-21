@@ -101,11 +101,7 @@ const steps = [
     overflow: hidden;
     isolation: isolate;
     background-color: var(--color-base-white);
-    background-image:
-      radial-gradient(ellipse 52% 70% at 12% 8%, rgb(238 225 241 / 0.9) 0%, transparent 58%),
-      radial-gradient(ellipse 46% 64% at 92% 78%, rgb(214 194 255 / 0.55) 0%, transparent 62%),
-      radial-gradient(ellipse 38% 50% at 78% 18%, rgb(195 163 202 / 0.28) 0%, transparent 55%);
-    padding: var(--space-96) var(--space-page);
+    padding: var(--space-section-y) var(--space-page);
   }
 
   .assistant__glow {
@@ -290,10 +286,6 @@ const steps = [
   }
 
   @media (max-width: 768px) {
-    .assistant {
-      padding: var(--space-64) var(--space-page);
-    }
-
     .assistant__copy {
       gap: var(--space-32);
     }

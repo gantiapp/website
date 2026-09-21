@@ -72,7 +72,7 @@ function splitEmails(text: string) {
 
   .privacy__header {
     box-sizing: border-box;
-    padding: var(--space-64) clamp(24px, 3.33vw, 64px) 0;
+    padding: var(--space-64) var(--space-page) 0;
   }
 
   .privacy__title {
@@ -94,7 +94,7 @@ function splitEmails(text: string) {
     gap: var(--space-64);
     box-sizing: border-box;
     width: 100%;
-    padding: var(--space-64) clamp(24px, 13.33vw, 256px) var(--space-96);
+    padding: var(--space-64) var(--space-page-marketing) var(--space-section-y);
   }
 
   .privacy__intro,
@@ -208,28 +208,14 @@ function splitEmails(text: string) {
     color: var(--color-primary-600);
   }
 
-  @media (max-width: 1024px) {
-    .privacy__title {
-      font-size: var(--font-size-h2);
-    }
-  }
-
   @media (max-width: 768px) {
     .privacy__header {
       padding: var(--space-32) var(--space-page) 0;
     }
 
-    .privacy__title {
-      font-size: var(--font-size-h2);
-    }
-
     .privacy__content {
       gap: var(--space-32);
-      padding: var(--space-32) var(--space-page) var(--space-64);
-    }
-
-    .privacy__heading {
-      font-size: var(--font-size-large-text);
+      padding: var(--space-32) var(--space-page) var(--space-section-y);
     }
 
     .privacy__summary {
