@@ -1,10 +1,10 @@
 ---
 const logos = [
-  { src: '/images/logos-clients/auchan.png', alt: 'Auchan' },
-  { src: '/images/logos-clients/carrefour.png', alt: 'Carrefour' },
-  { src: '/images/logos-clients/idkids.png', alt: 'IDKids' },
-  { src: '/images/logos-clients/leroy-merlin.png?v=2', alt: 'Leroy Merlin' },
-  { src: '/images/logos-clients/carter-cash.png', alt: 'Carter Cash' },
+  { src: '/images/logos-clients/auchan.png', alt: 'Auchan', height: 36 },
+  { src: '/images/logos-clients/carrefour.png', alt: 'Carrefour', height: 48 },
+  { src: '/images/logos-clients/idkids.png', alt: 'IDKids', height: 48 },
+  { src: '/images/logos-clients/leroy-merlin.png?v=2', alt: 'Leroy Merlin', height: 48 },
+  { src: '/images/logos-clients/carter-cash.png', alt: 'Carter Cash', height: 36 },
 ];
 
 const groupCount = 6;
@@ -17,7 +17,7 @@ const groupCount = 6;
         Array.from({ length: groupCount }, (_, groupIndex) => (
           <ul class="clients__group" aria-hidden={groupIndex > 0 ? 'true' : undefined}>
             {logos.map((logo) => (
-              <li class="clients__item">
+              <li class:list={['clients__item', logo.height > 36 && 'clients__item--lg']}>
                 <span
                   class="clients__tint"
                   style={`--logo-mask: url('${logo.src}')`}
@@ -27,7 +27,7 @@ const groupCount = 6;
                   class="clients__logo"
                   src={logo.src}
                   alt={groupIndex === 0 ? logo.alt : ''}
-                  height="36"
+                  height={logo.height}
                 />
               </li>
             ))}
@@ -73,17 +73,22 @@ const groupCount = 6;
   }
 
   .clients__item {
+    --logo-height: 36px;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 36px;
+    height: var(--logo-height);
     pointer-events: auto;
+  }
+
+  .clients__item--lg {
+    --logo-height: 48px;
   }
 
   .clients__logo {
     display: block;
-    height: 36px;
+    height: var(--logo-height, 36px);
     width: auto;
     max-width: 165px;
     object-fit: contain;
@@ -163,11 +168,14 @@ const groupCount = 6;
     }
 
     .clients__item {
-      height: 24px;
+      --logo-height: 24px;
+    }
+
+    .clients__item--lg {
+      --logo-height: 32px;
     }
 
     .clients__logo {
-      height: 24px;
       max-width: 105px;
       opacity: 1;
       filter: none;
