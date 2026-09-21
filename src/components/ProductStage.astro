@@ -94,16 +94,18 @@ const highlightFill = highlightFills[tone] ?? 'var(--module-highlight)';
 <style>
   .product-stage {
     --module-highlight: color-mix(in srgb, var(--module-accent) 28%, white);
+    --stage-title-size: clamp(var(--font-size-h1), 2.5vw, 999px);
+    --stage-body-size: clamp(var(--font-size-subtitle), 1.25vw, 999px);
+    --stage-label-size: clamp(var(--font-size-h3), 1.55vw, 999px);
+    --stage-copy-gap: clamp(var(--space-32), 4vw, 999px);
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
     box-sizing: border-box;
-    height: 100svh;
     min-height: 100svh;
-    max-height: 100svh;
-    padding: min(var(--space-128), 8svh) var(--space-256) 0;
-    overflow: hidden;
+    padding: clamp(24px, 6svh, 8vw) clamp(var(--space-page), 6vw, 10vw) 0;
+    overflow: visible;
     scroll-snap-align: start;
     scroll-snap-stop: always;
     background: var(--module-bg);
@@ -139,12 +141,17 @@ const highlightFill = highlightFills[tone] ?? 'var(--module-highlight)';
     z-index: 1;
     display: flex;
     flex-direction: column;
-    gap: min(var(--space-128), 6svh);
-    max-width: 1051px;
+    gap: var(--stage-copy-gap);
+    max-width: 52vw;
+    margin-block: auto;
   }
 
   .product-stage--left .product-stage__copy {
-    margin-left: clamp(0px, 18vw, 280px);
+    margin-left: max(26vw, 12rem);
+  }
+
+  .product-stage--right .product-stage__copy {
+    margin-right: max(8vw, 4rem);
   }
 
   .product-stage__intro,
@@ -156,15 +163,15 @@ const highlightFill = highlightFills[tone] ?? 'var(--module-highlight)';
   }
 
   .product-stage__points {
-    gap: min(var(--space-64), 4svh);
-    max-width: 900px;
+    gap: clamp(var(--space-24), 3vw, 999px);
+    max-width: none;
   }
 
   .product-stage__title {
     margin: 0;
     color: var(--module-accent);
     font-family: var(--font-display);
-    font-size: var(--font-size-h1);
+    font-size: var(--stage-title-size);
     font-weight: var(--font-weight-extrabold);
     font-optical-sizing: none;
     font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 800;
@@ -177,7 +184,7 @@ const highlightFill = highlightFills[tone] ?? 'var(--module-highlight)';
     margin: 0;
     color: var(--color-base-black);
     font-family: var(--font-body);
-    font-size: var(--font-size-subtitle);
+    font-size: var(--stage-body-size);
     font-weight: var(--font-weight-regular);
     line-height: var(--line-height-heading);
   }
@@ -186,7 +193,7 @@ const highlightFill = highlightFills[tone] ?? 'var(--module-highlight)';
     margin: 0;
     color: var(--module-accent);
     font-family: var(--font-display);
-    font-size: var(--font-size-h3);
+    font-size: var(--stage-label-size);
     font-weight: var(--font-weight-medium);
     font-optical-sizing: none;
     font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 500;
@@ -199,7 +206,8 @@ const highlightFill = highlightFills[tone] ?? 'var(--module-highlight)';
     z-index: 0;
     bottom: 0;
     width: auto;
-    height: min(70svh, 768px);
+    height: 34vw;
+    max-height: 78%;
     max-width: none;
     pointer-events: none;
     object-fit: contain;
@@ -213,37 +221,53 @@ const highlightFill = highlightFills[tone] ?? 'var(--module-highlight)';
     right: -7%;
   }
 
-  @media (max-width: 1280px) {
+  @media (max-width: 1440px) {
     .product-stage {
-      padding: var(--space-64) var(--space-page) 0;
+      --stage-title-size: var(--font-size-h2);
+      --stage-body-size: var(--font-size-body-large);
+      --stage-label-size: var(--font-size-body-large);
+      --stage-copy-gap: var(--space-64);
+      padding: min(var(--space-64), 6svh) var(--space-page) 0;
     }
 
     .product-stage__copy {
-      gap: var(--space-64);
+      max-width: min(58vw, 900px);
     }
 
-    .product-stage__title {
-      font-size: var(--font-size-h2);
-    }
-
-    .product-stage__description,
-    .product-stage__text,
-    .product-stage__label {
-      font-size: var(--font-size-body-large);
+    .product-stage--left .product-stage__copy {
+      margin-left: clamp(0px, 12vw, 180px);
     }
 
     .product-stage__character {
-      height: min(50svh, 520px);
+      height: min(52svh, 34vw);
     }
   }
 
-  @media (max-width: 768px) {
+  @media (max-height: 800px) and (min-width: 1025px) {
+    .product-stage {
+      padding-top: var(--space-32);
+      scroll-snap-align: none;
+      scroll-snap-stop: normal;
+    }
+
+    .product-stage__copy {
+      gap: var(--space-32);
+    }
+
+    .product-stage__points {
+      gap: var(--space-24);
+    }
+
+    .product-stage__character {
+      height: min(48svh, 30vw);
+    }
+  }
+
+  @media (max-width: 1024px) {
     .product-stage {
       justify-content: flex-start;
       gap: var(--space-32);
-      height: auto;
       min-height: auto;
-      max-height: none;
       padding: var(--space-48) var(--space-page) 0;
       overflow: visible;
       scroll-snap-align: none;
@@ -254,6 +278,8 @@ const highlightFill = highlightFills[tone] ?? 'var(--module-highlight)';
       max-width: none;
       gap: var(--space-32);
       margin-left: 0;
+      margin-right: 0;
+      margin-block: 0;
     }
 
     .product-stage__points {

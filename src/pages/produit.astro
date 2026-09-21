@@ -32,7 +32,7 @@ import modules from '../data/modules.json';
 
 <script>
   function setupProductPageSnap() {
-    const mediaQuery = window.matchMedia('(max-width: 768px)');
+    const snapQuery = window.matchMedia('(min-width: 1025px) and (min-height: 801px)');
     const navbar = document.querySelector('[data-navbar]');
     const stages = [...document.querySelectorAll('[data-product-stage]')];
     const footer = document.querySelector('footer');
@@ -48,6 +48,17 @@ import modules from '../data/modules.json';
     let activeIndex = 0;
     let isAnimating = false;
     let touchStartY = 0;
+
+    const canSnap = () => snapQuery.matches;
+
+    const currentTargetOverflows = () => {
+      const target = snapTargets[activeIndex];
+      if (!(target instanceof HTMLElement)) {
+        return false;
+      }
+
+      return target.getBoundingClientRect().height > window.innerHeight + 1;
+    };
 
     const goToIndex = (nextIndex) => {
       const clampedIndex = Math.max(0, Math.min(snapTargets.length - 1, nextIndex));
@@ -69,7 +80,7 @@ import modules from '../data/modules.json';
     };
 
     const onWheel = (event) => {
-      if (mediaQuery.matches || event.ctrlKey) {
+      if (!canSnap() || event.ctrlKey || currentTargetOverflows()) {
         return;
       }
 
@@ -82,7 +93,7 @@ import modules from '../data/modules.json';
     };
 
     const onKeyDown = (event) => {
-      if (mediaQuery.matches) {
+      if (!canSnap()) {
         return;
       }
 
@@ -117,7 +128,7 @@ import modules from '../data/modules.json';
     };
 
     const onTouchEnd = (event) => {
-      if (mediaQuery.matches) {
+      if (!canSnap()) {
         return;
       }
 

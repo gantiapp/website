@@ -194,6 +194,13 @@ body[data-page='produit'] [data-navbar] {
   scroll-snap-stop: always;
 }
 
+@media (max-width: 1024px), (max-height: 800px) {
+  body[data-page='produit'],
+  html:has(body[data-page='produit']) {
+    scroll-snap-type: none;
+  }
+}
+
 @media (max-width: 1024px) {
   :root {
     --navbar-height: 104px;
@@ -216,14 +223,6 @@ body[data-page='produit'] [data-navbar] {
     --space-section-y: var(--space-48);
     --space-pad-footer: var(--space-48);
     --space-pad-card: var(--space-24);
-  }
-
-  body[data-page='produit'] {
-    scroll-snap-type: none;
-  }
-
-  html:has(body[data-page='produit']) {
-    scroll-snap-type: none;
   }
 
   .break-desktop {
