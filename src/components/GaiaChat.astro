@@ -1,63 +1,80 @@
 ---
 import {
-  IconArrowsMaximize,
-  IconChevronDown,
-  IconCode,
-  IconFlag,
-  IconRefresh,
-  IconShare2,
+  IconRobot,
+  IconSend,
+  IconSparkles,
   IconUser,
   IconX,
 } from '@tabler/icons-astro';
 ---
 
-<div class="gaia-chat" aria-hidden="true">
+<div class="gaia-chat" data-gaia-chat aria-hidden="true">
   <header class="gaia-chat__toolbar">
-      <img
-        class="gaia-chat__logo"
-        src="/images/ganti/ganti.svg"
-        alt=""
-        width="23"
-        height="20"
-      />
-      <div class="gaia-chat__toolbar-group">
-        <IconShare2 size={20} stroke={1.5} />
-        <IconRefresh size={20} stroke={1.5} />
-      </div>
-      <div class="gaia-chat__toolbar-group gaia-chat__toolbar-group--end">
-        <IconArrowsMaximize size={20} stroke={1.5} />
-        <IconX size={20} stroke={1.5} />
-      </div>
-    </header>
+    <img
+      class="gaia-chat__favicon"
+      src="/favicon-32x32.png"
+      alt=""
+      width="20"
+      height="20"
+    />
+    <span class="gaia-chat__close">
+      <IconX size={20} stroke={1.5} />
+    </span>
+  </header>
 
     <div class="gaia-chat__thread">
-      <article class="gaia-chat__message">
+      <div class="gaia-chat__empty" data-gaia-empty>
+        <span class="gaia-chat__empty-icon">
+          <IconSparkles size={22} stroke={1.5} />
+        </span>
+        <p class="gaia-chat__empty-title">Aucun message pour le moment</p>
+        <p class="gaia-chat__empty-text">
+          Posez une question à GAIA pour générer un contrôle SQL.
+        </p>
+      </div>
+
+      <article class="gaia-chat__message gaia-chat__message--user" data-gaia-user>
         <div class="gaia-chat__meta">
           <span class="gaia-chat__avatar">
             <IconUser size={16} stroke={1.5} />
           </span>
           <span class="gaia-chat__author">John Doe</span>
-          <time class="gaia-chat__time" datetime="16:12">16:12</time>
+          <time class="gaia-chat__time" data-gaia-time="user" datetime="16:12">16:12</time>
         </div>
-        <p class="gaia-chat__prompt">
+        <p class="gaia-chat__prompt" data-gaia-user-text>
           Génère-moi un contrôle permettant d'identifier les produits actifs ayant un
           taux de taxe incohérent dans le référentiel central.
         </p>
       </article>
 
-      <article class="gaia-chat__message">
+      <article class="gaia-chat__message gaia-chat__message--loading" data-gaia-loading>
         <div class="gaia-chat__meta">
           <span class="gaia-chat__avatar">
-            <IconFlag size={16} stroke={1.5} />
+            <IconRobot size={16} stroke={1.5} />
           </span>
           <span class="gaia-chat__author">GAIA</span>
-          <time class="gaia-chat__time" datetime="16:13">16:13</time>
+          <time class="gaia-chat__time" data-gaia-time="loading" datetime="16:13">16:13</time>
         </div>
-        <p class="gaia-chat__answer">
+        <div class="gaia-chat__dots">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </article>
+
+      <article class="gaia-chat__message gaia-chat__message--assistant" data-gaia-assistant>
+        <div class="gaia-chat__meta">
+          <span class="gaia-chat__avatar">
+            <IconRobot size={16} stroke={1.5} />
+          </span>
+          <span class="gaia-chat__author">GAIA</span>
+          <time class="gaia-chat__time" data-gaia-time="assistant" datetime="16:13">16:13</time>
+        </div>
+        <p class="gaia-chat__answer" data-gaia-answer-text>
           Voici la requête SQL pour identifier les produits actifs avec un taux de taxe
           incohérent :
         </p>
-        <pre class="gaia-chat__sql"><code><span class="gaia-chat__kw">SELECT</span>
+        <pre class="gaia-chat__sql" data-gaia-sql><code><span class="gaia-chat__kw">SELECT</span>
     p.product_id,
     p.name,
     p.tax_rate,
@@ -78,20 +95,193 @@ import {
     </div>
 
     <div class="gaia-chat__composer">
-      <p class="gaia-chat__placeholder">Ask anything to GAIA...</p>
-      <div class="gaia-chat__actions">
-        <span class="gaia-chat__pill">
-          <IconCode size={16} stroke={1.5} />
-          SQL Assistant
-          <IconChevronDown size={16} stroke={1.5} />
-        </span>
-        <span class="gaia-chat__actions-end">
-          <span class="gaia-chat__pill">🇫🇷 FR <IconChevronDown size={16} stroke={1.5} /></span>
-          <span class="gaia-chat__pill gaia-chat__pill--muted">Send</span>
+      <div class="gaia-chat__field">
+        <p class="gaia-chat__placeholder" data-gaia-composer>
+          <span class="gaia-chat__placeholder-label">Ask anything to GAIA...</span>
+          <span class="gaia-chat__typed" data-gaia-composer-text></span>
+          <span class="gaia-chat__caret"></span>
+        </p>
+        <span class="gaia-chat__send">
+          <IconSend size={16} stroke={1.5} />
         </span>
       </div>
     </div>
 </div>
+
+<script>
+  function collapseWhitespace(value) {
+    return value.replace(/\s+/g, ' ').trim();
+  }
+
+  function formatClock(date) {
+    return new Intl.DateTimeFormat(undefined, {
+      hour: '2-digit',
+      minute: '2-digit',
+    }).format(date);
+  }
+
+  function stampTime(timeElement, date = new Date()) {
+    if (!(timeElement instanceof HTMLElement)) {
+      return;
+    }
+
+    timeElement.textContent = formatClock(date);
+    timeElement.setAttribute('datetime', date.toISOString());
+  }
+
+  function setupGaiaChat() {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const chats = document.querySelectorAll('[data-gaia-chat]');
+
+    chats.forEach((chat) => {
+      if (!(chat instanceof HTMLElement)) {
+        return;
+      }
+
+      const userText = chat.querySelector('[data-gaia-user-text]');
+      const answerText = chat.querySelector('[data-gaia-answer-text]');
+      const composerText = chat.querySelector('[data-gaia-composer-text]');
+      const sqlBlock = chat.querySelector('[data-gaia-sql]');
+      const userTime = chat.querySelector('[data-gaia-time="user"]');
+      const loadingTime = chat.querySelector('[data-gaia-time="loading"]');
+      const assistantTime = chat.querySelector('[data-gaia-time="assistant"]');
+      const now = new Date();
+
+      stampTime(userTime, now);
+      stampTime(loadingTime, now);
+      stampTime(assistantTime, now);
+
+      if (reduceMotion) {
+        return;
+      }
+
+      if (
+        !(userText instanceof HTMLElement) ||
+        !(answerText instanceof HTMLElement) ||
+        !(composerText instanceof HTMLElement) ||
+        !(sqlBlock instanceof HTMLElement)
+      ) {
+        return;
+      }
+
+      const promptText = collapseWhitespace(userText.textContent ?? '');
+      const answerFullText = collapseWhitespace(answerText.textContent ?? '');
+      const animationClasses = ['is-animating', 'is-typing', 'is-sending', 'is-sent', 'is-loading', 'is-answered'];
+      let timeoutIds = [];
+      let running = false;
+
+      const wait = (duration) =>
+        new Promise((resolve) => {
+          const timeoutId = window.setTimeout(resolve, duration);
+          timeoutIds.push(timeoutId);
+        });
+
+      const clearTimers = () => {
+        timeoutIds.forEach((timeoutId) => window.clearTimeout(timeoutId));
+        timeoutIds = [];
+      };
+
+      const reset = () => {
+        animationClasses.forEach((className) => chat.classList.remove(className));
+        chat.classList.add('is-animating');
+        composerText.textContent = '';
+        userText.textContent = '';
+        answerText.textContent = '';
+        sqlBlock.classList.remove('is-visible');
+      };
+
+      const typeInto = async (element, text, delay) => {
+        element.textContent = '';
+        for (let index = 0; index < text.length; index += 1) {
+          if (!running) {
+            return;
+          }
+          element.textContent = text.slice(0, index + 1);
+          await wait(delay);
+        }
+      };
+
+      const play = async () => {
+        reset();
+        await wait(500);
+        if (!running) {
+          return;
+        }
+
+        chat.classList.add('is-typing');
+        await typeInto(composerText, promptText, 32);
+        if (!running) {
+          return;
+        }
+
+        await wait(320);
+        if (!running) {
+          return;
+        }
+
+        chat.classList.remove('is-typing');
+        chat.classList.add('is-sending');
+        await wait(240);
+        if (!running) {
+          return;
+        }
+
+        userText.textContent = promptText;
+        composerText.textContent = '';
+        stampTime(userTime);
+        chat.classList.remove('is-sending');
+        chat.classList.add('is-sent');
+        await wait(380);
+        if (!running) {
+          return;
+        }
+
+        stampTime(loadingTime);
+        chat.classList.add('is-loading');
+        await wait(1400);
+        if (!running) {
+          return;
+        }
+
+        stampTime(assistantTime);
+        chat.classList.remove('is-loading');
+        chat.classList.add('is-answered');
+        await typeInto(answerText, answerFullText, 28);
+        if (!running) {
+          return;
+        }
+
+        sqlBlock.classList.add('is-visible');
+        await wait(8000);
+        if (running) {
+          play();
+        }
+      };
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              if (!running) {
+                running = true;
+                play();
+              }
+              return;
+            }
+
+            running = false;
+            clearTimers();
+          });
+        },
+        { threshold: 0.25 },
+      );
+
+      observer.observe(chat);
+    });
+  }
+
+  setupGaiaChat();
+</script>
 
 <style>
   .gaia-chat {
@@ -127,41 +317,105 @@ import {
   }
 
   .gaia-chat__toolbar {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
+    display: flex;
     align-items: center;
+    justify-content: space-between;
     padding-bottom: var(--space-16);
     border-bottom: var(--stroke-width) solid var(--color-gray-400);
     color: var(--color-gray-400);
   }
 
-  .gaia-chat__logo {
+  .gaia-chat__favicon {
     display: block;
-    width: 23px;
+    width: 20px;
     height: 20px;
-    justify-self: start;
+    border-radius: 4px;
   }
 
-  .gaia-chat__toolbar-group {
+  .gaia-chat__close {
     display: flex;
     align-items: center;
-    gap: var(--space-8);
-  }
-
-  .gaia-chat__toolbar-group--end {
-    justify-self: end;
+    justify-content: center;
   }
 
   .gaia-chat__thread {
     display: flex;
     flex-direction: column;
     gap: var(--space-16);
+    min-height: 31.5rem;
+  }
+
+  .gaia-chat__empty {
+    display: none;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-8);
+    padding: var(--space-24);
+    border: var(--stroke-width) dashed var(--color-gray-300);
+    border-radius: var(--radius-l);
+    background: var(--color-bg-muted);
+    text-align: center;
+  }
+
+  .gaia-chat.is-animating:not(.is-sent) .gaia-chat__empty {
+    display: flex;
+    animation: gaia-reveal 0.4s ease;
+  }
+
+  .gaia-chat__empty-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    margin-bottom: var(--space-4);
+    border-radius: var(--radius-m);
+    background: var(--color-primary-50);
+    color: var(--color-primary-500);
+  }
+
+  .gaia-chat__empty-title {
+    margin: 0;
+    color: var(--color-gray-800);
+    font-family: var(--font-body);
+    font-size: var(--font-size-12);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1.25;
+  }
+
+  .gaia-chat__empty-text {
+    margin: 0;
+    max-width: 16rem;
+    color: var(--color-gray-500);
+    font-family: var(--font-body);
+    font-size: var(--font-size-12);
+    font-weight: var(--font-weight-regular);
+    line-height: 1.35;
   }
 
   .gaia-chat__message {
     display: flex;
     flex-direction: column;
     gap: var(--space-8);
+  }
+
+  .gaia-chat.is-animating .gaia-chat__message--user,
+  .gaia-chat.is-animating .gaia-chat__message--loading,
+  .gaia-chat.is-animating .gaia-chat__message--assistant {
+    display: none;
+  }
+
+  .gaia-chat.is-animating.is-sent .gaia-chat__message--user,
+  .gaia-chat.is-animating.is-loading .gaia-chat__message--loading,
+  .gaia-chat.is-animating.is-answered .gaia-chat__message--assistant {
+    display: flex;
+    animation: gaia-reveal 0.4s ease;
+  }
+
+  .gaia-chat__message--loading {
+    display: none;
   }
 
   .gaia-chat__meta {
@@ -193,7 +447,7 @@ import {
   .gaia-chat__time {
     color: var(--color-gray-600);
     font-family: var(--font-body);
-    font-size: 10px;
+    font-size: var(--font-size-12);
     font-weight: 300;
     line-height: 1.2;
   }
@@ -203,8 +457,12 @@ import {
     margin: 0 0 0 40px;
     color: var(--color-base-black);
     font-family: var(--font-body);
-    font-size: 10px;
+    font-size: var(--font-size-12);
     line-height: 1.2;
+  }
+
+  .gaia-chat.is-animating .gaia-chat__answer {
+    min-height: 2.4em;
   }
 
   .gaia-chat__answer {
@@ -219,66 +477,127 @@ import {
     background: var(--color-gray-100);
     color: var(--color-gray-800);
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    font-size: 10px;
+    font-size: var(--font-size-12);
     font-weight: var(--font-weight-regular);
     line-height: 1.45;
     white-space: pre;
+  }
+
+  .gaia-chat.is-animating .gaia-chat__sql {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.45s ease, transform 0.45s ease;
+  }
+
+  .gaia-chat.is-animating .gaia-chat__sql.is-visible {
+    opacity: 1;
+    transform: none;
   }
 
   .gaia-chat__kw {
     color: var(--color-primary-500);
   }
 
-  .gaia-chat__composer {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-8);
-  }
-
-  .gaia-chat__placeholder {
-    margin: 0;
-    padding: var(--space-16);
-    border-radius: var(--radius-l);
-    background: var(--color-gray-100);
-    color: var(--color-gray-500);
-    font-family: var(--font-body);
-    font-size: 10px;
-    font-weight: var(--font-weight-medium);
-    line-height: 1.2;
-  }
-
-  .gaia-chat__actions {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: var(--space-10);
-  }
-
-  .gaia-chat__actions-end {
+  .gaia-chat__dots {
     display: flex;
     align-items: center;
     gap: 6px;
+    margin: 0 0 0 40px;
+    min-height: 16px;
   }
 
-  .gaia-chat__pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 6px 12px;
-    border: var(--stroke-width) solid var(--color-border);
+  .gaia-chat__dots span {
+    width: 6px;
+    height: 6px;
     border-radius: var(--radius-pill);
+    background: var(--color-primary-500);
+    animation: gaia-dot 1s ease-in-out infinite;
+  }
+
+  .gaia-chat__dots span:nth-child(2) {
+    animation-delay: 0.16s;
+  }
+
+  .gaia-chat__dots span:nth-child(3) {
+    animation-delay: 0.32s;
+  }
+
+  .gaia-chat__composer {
+    display: flex;
+  }
+
+  .gaia-chat__field {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--space-8);
+    width: 100%;
+    padding: var(--space-8) var(--space-8) var(--space-8) var(--space-16);
+    border-radius: var(--radius-l);
     background: var(--color-gray-100);
-    color: var(--color-gray-800);
+  }
+
+  .gaia-chat__placeholder {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    padding: var(--space-6) 0;
+    min-height: calc(var(--space-6) * 2 + 1.2em);
+    color: var(--color-gray-500);
     font-family: var(--font-body);
-    font-size: 10px;
+    font-size: var(--font-size-12);
     font-weight: var(--font-weight-medium);
     line-height: 1.2;
-    white-space: nowrap;
   }
 
-  .gaia-chat__pill--muted {
+  .gaia-chat.is-typing .gaia-chat__placeholder {
+    color: var(--color-base-black);
+  }
+
+  .gaia-chat__placeholder-label {
+    display: inline;
+  }
+
+  .gaia-chat.is-typing .gaia-chat__placeholder-label {
+    display: none;
+  }
+
+  .gaia-chat__typed {
+    white-space: pre-wrap;
+  }
+
+  .gaia-chat__caret {
+    display: none;
+    width: 2px;
+    height: 0.95em;
+    margin-left: 2px;
+    background: var(--color-primary-500);
+    vertical-align: -0.12em;
+    animation: gaia-caret 0.9s steps(1) infinite;
+  }
+
+  .gaia-chat.is-typing .gaia-chat__caret {
+    display: inline-block;
+  }
+
+  .gaia-chat__send {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-pill);
+    background: var(--color-gray-200);
     color: var(--color-gray-400);
+    transition:
+      color 0.2s ease,
+      background-color 0.2s ease;
+  }
+
+  .gaia-chat.is-typing .gaia-chat__send,
+  .gaia-chat.is-sending .gaia-chat__send {
+    color: var(--color-primary-50);
+    background: var(--color-primary-500);
   }
 
   .gaia-chat :global(svg) {
@@ -286,11 +605,68 @@ import {
     flex-shrink: 0;
   }
 
+  @keyframes gaia-reveal {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes gaia-caret {
+    0%,
+    50% {
+      opacity: 1;
+    }
+
+    50.01%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes gaia-dot {
+    0%,
+    80%,
+    100% {
+      opacity: 0.28;
+      transform: translateY(0);
+    }
+
+    40% {
+      opacity: 1;
+      transform: translateY(-3px);
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .gaia-chat,
     .gaia-chat:hover {
       transform: none;
       transition: box-shadow 0.4s ease;
+    }
+
+    .gaia-chat__message--user,
+    .gaia-chat__message--assistant {
+      display: flex;
+      animation: none;
+    }
+
+    .gaia-chat__message--loading,
+    .gaia-chat.is-animating:not(.is-sent) .gaia-chat__empty,
+    .gaia-chat__empty,
+    .gaia-chat__caret {
+      display: none;
+    }
+
+    .gaia-chat__sql {
+      opacity: 1;
+      transform: none;
+      transition: none;
     }
   }
 
@@ -307,7 +683,8 @@ import {
 
     .gaia-chat__sql,
     .gaia-chat__prompt,
-    .gaia-chat__answer {
+    .gaia-chat__answer,
+    .gaia-chat__dots {
       margin-left: 0;
     }
   }
