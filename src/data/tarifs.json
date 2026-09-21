@@ -145,7 +145,7 @@
   "cta": {
     "title": "Pas sûr de la formule à choisir ?",
     "subtitle": "Prenez un rendez-vous avec un expert Ganti pour cadrer votre volumétrie,\nvos sources critiques et la formule la plus juste pour votre équipe.",
-    "primaryHref": "/contact",
+    "primaryHref": "/contact#creneau",
     "primaryLabel": "Réserver un échange"
   }
 }
