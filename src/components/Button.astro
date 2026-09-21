@@ -5,10 +5,13 @@ interface Props {
   href: string;
   variant?: 'primary' | 'module' | 'inverse' | 'inverse-outline';
   hideIcon?: boolean;
+  target?: string;
+  rel?: string;
 }
 
-const { href, variant = 'primary', hideIcon = false } = Astro.props;
+const { href, variant = 'primary', hideIcon = false, target, rel } = Astro.props;
 const iconAtStart = variant === 'inverse';
+const relValue = rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined);
 ---
 
 <a
@@ -20,6 +23,8 @@ const iconAtStart = variant === 'inverse';
     variant === 'inverse-outline' && 'button--inverse-outline',
   ]}
   href={href}
+  target={target}
+  rel={relValue}
 >
   {
     !hideIcon && iconAtStart ? (
@@ -34,7 +39,9 @@ const iconAtStart = variant === 'inverse';
   {
     !hideIcon && !iconAtStart ? (
       <span class="button__icon">
-        <IconArrowUpRight size={20} stroke={1.5} />
+        <slot name="icon">
+          <IconArrowUpRight size={20} stroke={1.5} />
+        </slot>
       </span>
     ) : null
   }
