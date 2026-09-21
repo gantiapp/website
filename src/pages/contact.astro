@@ -1,0 +1,1257 @@
+---
+import {
+  IconArrowRight,
+  IconArrowUpRight,
+  IconBriefcase,
+  IconBuilding,
+  IconCalendarEvent,
+  IconCheck,
+  IconChevronDown,
+  IconClipboardList,
+  IconLicense,
+  IconMail,
+  IconPhone,
+  IconUser,
+} from '@tabler/icons-astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import Highlight from '../components/Highlight.astro';
+import contact from '../data/contact.json';
+
+const defaultTabId = contact.tabs[0].id;
+const formFields = contact.form.fields;
+---
+
+<BaseLayout title="Contact — Ganti">
+  <article class="contact" aria-label="Contact" data-contact-tabs>
+    <header class="contact__hero">
+      <h1 class="contact__title">
+        {contact.hero.before}<Highlight>{contact.hero.highlight}</Highlight>
+      </h1>
+    </header>
+
+    <div class="contact__body">
+      <div class="contact__tabs" role="tablist" aria-label="Modes de contact">
+        {
+          contact.tabs.map((tab) => (
+            <button
+              class="contact__tab"
+              type="button"
+              role="tab"
+              id={`contact-tab-${tab.id}`}
+              data-contact-tab
+              data-tab-id={tab.id}
+              aria-controls={`contact-panel-${tab.id}`}
+              aria-selected={tab.id === defaultTabId ? 'true' : 'false'}
+              tabindex={tab.id === defaultTabId ? 0 : -1}
+            >
+              {tab.id === 'formulaire' ? (
+                <IconClipboardList size={20} stroke={1.5} />
+              ) : (
+                <IconCalendarEvent size={20} stroke={1.5} />
+              )}
+              {tab.label}
+            </button>
+          ))
+        }
+      </div>
+
+      <p class="contact__sent" role="status" hidden data-contact-sent>
+        {contact.sentMessage}
+      </p>
+
+      <section
+        class="contact__panel"
+        id="contact-panel-formulaire"
+        role="tabpanel"
+        data-tab-panel
+        data-tab-id="formulaire"
+        aria-labelledby="contact-tab-formulaire"
+      >
+        <form
+          class="contact__form"
+          name={contact.form.name}
+          method="POST"
+          action="/contact?sent=1"
+          data-netlify="true"
+          netlify-honeypot="bot-field"
+        >
+          <input type="hidden" name="form-name" value={contact.form.name} />
+          <p class="visually-hidden">
+            <label>
+              {contact.form.honeypotLabel}
+              <input name="bot-field" tabindex="-1" autocomplete="off" />
+            </label>
+          </p>
+
+          <div class="contact__row">
+            <div class="contact__field">
+              <label class="contact__label" for="contact-name">
+                <IconUser size={24} stroke={1.5} />
+                <span>
+                  {formFields.name.label}<span class="contact__required"> *</span>
+                </span>
+              </label>
+              <input
+                class="contact__control"
+                id="contact-name"
+                name="name"
+                type="text"
+                required
+                placeholder={formFields.name.placeholder}
+                autocomplete={formFields.name.autocomplete}
+              />
+            </div>
+            <div class="contact__field">
+              <label class="contact__label" for="contact-company">
+                <IconBuilding size={24} stroke={1.5} />
+                <span>
+                  {formFields.company.label}<span class="contact__required"> *</span>
+                </span>
+              </label>
+              <input
+                class="contact__control"
+                id="contact-company"
+                name="company"
+                type="text"
+                required
+                placeholder={formFields.company.placeholder}
+                autocomplete={formFields.company.autocomplete}
+              />
+            </div>
+          </div>
+
+          <div class="contact__field">
+            <label class="contact__label" for="contact-role">
+              <IconBriefcase size={24} stroke={1.5} />
+              <span>
+                {formFields.role.label}<span class="contact__required"> *</span>
+              </span>
+            </label>
+            <div class="contact__select" data-contact-combobox>
+              <input
+                class="contact__control"
+                id="contact-role"
+                name="role"
+                type="text"
+                required
+                role="combobox"
+                aria-expanded="false"
+                aria-autocomplete="list"
+                aria-controls="contact-role-list"
+                placeholder={formFields.role.placeholder}
+                autocomplete="off"
+                data-contact-combobox-input
+              />
+              <button
+                class="contact__chevron"
+                type="button"
+                tabindex="-1"
+                aria-label="Afficher les fonctions"
+                data-contact-combobox-toggle
+              >
+                <IconChevronDown size={24} stroke={1.5} />
+              </button>
+              <ul
+                class="contact__options"
+                id="contact-role-list"
+                role="listbox"
+                hidden
+                data-contact-combobox-list
+              >
+                {
+                  contact.form.roleOptions.map((option) => (
+                    <li role="presentation">
+                      <button
+                        class="contact__option"
+                        type="button"
+                        role="option"
+                        data-contact-combobox-option
+                      >
+                        {option.label}
+                      </button>
+                    </li>
+                  ))
+                }
+              </ul>
+            </div>
+            <p class="contact__help">{formFields.role.help}</p>
+          </div>
+
+          <div class="contact__row">
+            <div class="contact__field">
+              <label class="contact__label" for="contact-email">
+                <IconMail size={24} stroke={1.5} />
+                <span>
+                  {formFields.email.label}<span class="contact__required"> *</span>
+                </span>
+              </label>
+              <input
+                class="contact__control"
+                id="contact-email"
+                name="email"
+                type="email"
+                required
+                placeholder={formFields.email.placeholder}
+                autocomplete={formFields.email.autocomplete}
+              />
+            </div>
+            <div class="contact__field">
+              <label class="contact__label" for="contact-phone">
+                <IconPhone size={24} stroke={1.5} />
+                <span>
+                  {formFields.phone.label}<span class="contact__required"> *</span>
+                </span>
+              </label>
+              <input
+                class="contact__control"
+                id="contact-phone"
+                name="phone"
+                type="tel"
+                required
+                placeholder={formFields.phone.placeholder}
+                autocomplete={formFields.phone.autocomplete}
+              />
+            </div>
+          </div>
+
+          <div class="contact__field">
+            <label class="contact__label" for="contact-license">
+              <IconLicense size={24} stroke={1.5} />
+              <span>
+                {formFields.license.label}
+                <span class="contact__optional"> {formFields.license.optionalLabel}</span>
+              </span>
+            </label>
+            <div class="contact__select" data-contact-combobox data-contact-combobox-select>
+              <input
+                class="contact__control"
+                id="contact-license"
+                name="license"
+                type="text"
+                readonly
+                role="combobox"
+                aria-expanded="false"
+                aria-autocomplete="list"
+                aria-controls="contact-license-list"
+                placeholder={formFields.license.placeholder}
+                autocomplete="off"
+                data-contact-combobox-input
+              />
+              <button
+                class="contact__chevron"
+                type="button"
+                tabindex="-1"
+                aria-label="Afficher les licences"
+                data-contact-combobox-toggle
+              >
+                <IconChevronDown size={24} stroke={1.5} />
+              </button>
+              <ul
+                class="contact__options"
+                id="contact-license-list"
+                role="listbox"
+                hidden
+                data-contact-combobox-list
+              >
+                {
+                  contact.form.licenseOptions.map((option) => (
+                    <li role="presentation">
+                      <button
+                        class="contact__option"
+                        type="button"
+                        role="option"
+                        data-contact-combobox-option
+                      >
+                        {option.label}
+                      </button>
+                    </li>
+                  ))
+                }
+              </ul>
+            </div>
+          </div>
+
+          <div class="contact__field">
+            <label class="contact__label" for="contact-message">
+              <span>
+                {formFields.message.label}
+                <span class="contact__optional"> {formFields.message.optionalLabel}</span>
+              </span>
+            </label>
+            <textarea
+              class="contact__control contact__control--area"
+              id="contact-message"
+              name="message"
+              rows="5"
+              placeholder={formFields.message.placeholder}
+            />
+          </div>
+
+          <button class="contact__submit" type="submit">
+            <span class="contact__submit-label">{contact.form.submitLabel}</span>
+            <span class="contact__submit-icon">
+              <IconArrowUpRight size={24} stroke={1.5} />
+            </span>
+          </button>
+        </form>
+      </section>
+
+      <section
+        class="contact__panel"
+        id="contact-panel-creneau"
+        role="tabpanel"
+        data-tab-panel
+        data-tab-id="creneau"
+        aria-labelledby="contact-tab-creneau"
+        hidden
+      >
+        <div class="contact__slot">
+          <div class="contact__slot-intro">
+            <h2 class="contact__slot-title">{contact.calendar.title}</h2>
+            <p class="contact__slot-subtitle">{contact.calendar.subtitle}</p>
+          </div>
+          <ul class="contact__points">
+            {
+              contact.calendar.points.map((point) => (
+                <li class="contact__point">
+                  <span class="contact__point-icon" aria-hidden="true">
+                    <IconCheck size={20} stroke={2} />
+                  </span>
+                  {point}
+                </li>
+              ))
+            }
+          </ul>
+          <div class="contact__calendar">
+            <div class="contact__calendar-copy">
+              <p class="contact__calendar-title">
+                {contact.calendar.cardTitle}
+                <img
+                  class="contact__calendar-logo"
+                  src="/images/brands/google-calendar.png"
+                  alt=""
+                  width="30"
+                  height="32"
+                />
+              </p>
+              <p class="contact__calendar-subtitle">{contact.calendar.cardSubtitle}</p>
+            </div>
+            <Button href={contact.calendar.calendarHref} target="_blank">
+              <IconArrowRight slot="icon" size={20} stroke={1.5} />
+              {contact.calendar.ctaLabel}
+            </Button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .contact {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1920px;
+    margin: 0 auto;
+  }
+
+  .contact__hero {
+    box-sizing: border-box;
+    padding: var(--space-64) var(--space-page);
+  }
+
+  .contact__title {
+    margin: 0;
+    color: var(--color-primary-800);
+    font-family: var(--font-display);
+    font-size: var(--font-size-h1);
+    font-weight: var(--font-weight-extrabold);
+    font-optical-sizing: none;
+    font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 800;
+    letter-spacing: 0;
+    line-height: var(--line-height-heading);
+    text-align: center;
+  }
+
+  .contact__body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-64);
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0 var(--space-page) var(--space-128);
+  }
+
+  .contact__tabs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-4);
+    width: 100%;
+  }
+
+  .contact__tab {
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-8);
+    min-height: 54px;
+    padding: var(--space-16);
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: var(--color-gray-400);
+    font-family: var(--font-body);
+    font-size: var(--font-size-button);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.2;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .contact__tab:hover,
+  .contact__tab:focus-visible {
+    color: var(--color-primary-500);
+  }
+
+  .contact__tab[aria-selected='true'] {
+    background: var(--color-primary-50);
+    color: var(--color-primary-500);
+  }
+
+  .contact__tab :global(svg) {
+    display: block;
+    flex-shrink: 0;
+  }
+
+  .contact__sent {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 981px;
+    margin: 0;
+    padding: var(--space-16) var(--space-24);
+    border-radius: var(--radius-l);
+    background: var(--color-primary-50);
+    color: var(--color-primary-700);
+    font-family: var(--font-body);
+    font-size: var(--font-size-body-large);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-heading);
+    text-align: center;
+  }
+
+  .contact__panel {
+    width: 100%;
+    max-width: 981px;
+  }
+
+  .contact__panel[hidden] {
+    display: none;
+  }
+
+  .contact__form,
+  .contact__slot {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-32);
+    width: 100%;
+  }
+
+  .contact__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 19px;
+  }
+
+  .contact__field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    min-width: 0;
+  }
+
+  .contact__label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-16);
+    color: var(--color-primary-800);
+    font-family: var(--font-body);
+    font-size: var(--font-size-20);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-heading);
+  }
+
+  .contact__label :global(svg) {
+    display: block;
+    flex-shrink: 0;
+    color: var(--color-primary-800);
+  }
+
+  .contact__required {
+    color: var(--color-primary-500);
+  }
+
+  .contact__optional {
+    color: var(--color-gray-400);
+    font-weight: var(--font-weight-regular);
+  }
+
+  .contact__help {
+    margin: 0;
+    color: var(--color-gray-500);
+    font-family: var(--font-body);
+    font-size: var(--font-size-body-small);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-heading);
+  }
+
+  .contact__control {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 72px;
+    padding: var(--space-24);
+    border: var(--stroke-width) solid var(--color-gray-200);
+    border-radius: var(--radius-l);
+    background: #f9f9f9;
+    color: var(--color-gray-800);
+    font-family: var(--font-body);
+    font-size: var(--font-size-20);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-heading);
+  }
+
+  .contact__control::placeholder {
+    color: var(--color-gray-400);
+  }
+
+  .contact__control:focus-visible {
+    outline: 2px solid var(--color-primary-500);
+    outline-offset: 2px;
+  }
+
+  .contact__control--area {
+    min-height: 203px;
+    resize: vertical;
+  }
+
+  .contact__select {
+    position: relative;
+  }
+
+  .contact__select .contact__control {
+    appearance: none;
+    padding-right: 64px;
+  }
+
+  .contact__select .contact__control[readonly] {
+    cursor: pointer;
+  }
+
+  .contact__chevron {
+    position: absolute;
+    top: 50%;
+    right: var(--space-16);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--color-gray-800);
+    cursor: pointer;
+    transform: translateY(-50%);
+  }
+
+  .contact__select[data-open] .contact__chevron {
+    transform: translateY(-50%) rotate(180deg);
+  }
+
+  .contact__chevron :global(svg) {
+    display: block;
+  }
+
+  span.contact__chevron {
+    pointer-events: none;
+  }
+
+  .contact__options {
+    position: absolute;
+    z-index: 3;
+    top: calc(100% + var(--space-8));
+    right: 0;
+    left: 0;
+    margin: 0;
+    padding: var(--space-8);
+    overflow: auto;
+    max-height: 280px;
+    list-style: none;
+    border-radius: var(--radius-l);
+    background: var(--color-base-white);
+    box-shadow: 0 12px 32px rgb(24 2 29 / 0.12);
+  }
+
+  .contact__options[hidden] {
+    display: none;
+  }
+
+  .contact__option {
+    display: block;
+    width: 100%;
+    padding: var(--space-12) var(--space-16);
+    border: 0;
+    border-radius: var(--radius-m);
+    background: transparent;
+    color: var(--color-gray-800);
+    font-family: var(--font-body);
+    font-size: var(--font-size-18);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-heading);
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .contact__option:hover,
+  .contact__option[aria-selected='true'] {
+    background: var(--color-primary-50);
+    color: var(--color-primary-500);
+  }
+
+  .contact__submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-20);
+    width: 100%;
+    min-height: 56px;
+    padding: var(--space-16) var(--space-20);
+    border: none;
+    border-radius: var(--radius-pill);
+    background: var(--color-action);
+    color: var(--color-primary-50);
+    font-family: var(--font-body);
+    font-size: var(--font-size-button);
+    font-weight: var(--font-weight-medium);
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .contact__submit:hover,
+  .contact__submit:focus-visible {
+    background: var(--color-primary-600);
+  }
+
+  .contact__submit-icon {
+    display: flex;
+    flex-shrink: 0;
+  }
+
+  .contact__submit :global(svg) {
+    display: block;
+  }
+
+  .contact__slot-intro {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    max-width: 742px;
+  }
+
+  .contact__slot-title {
+    margin: 0;
+    color: var(--color-primary-800);
+    font-family: var(--font-display);
+    font-size: var(--font-size-h2);
+    font-weight: var(--font-weight-bold);
+    font-optical-sizing: none;
+    font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 700;
+    letter-spacing: 0;
+    line-height: 1.25;
+  }
+
+  .contact__slot-subtitle {
+    margin: 0;
+    color: var(--color-primary-800);
+    font-family: var(--font-body);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-heading);
+  }
+
+  .contact__points {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .contact__point {
+    display: flex;
+    align-items: center;
+    gap: var(--space-16);
+    color: var(--color-primary-800);
+    font-family: var(--font-body);
+    font-size: var(--font-size-button);
+    font-weight: var(--font-weight-regular);
+    line-height: 1.2;
+  }
+
+  .contact__point-icon {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-pill);
+    background: var(--color-primary-50);
+    color: var(--color-primary-500);
+  }
+
+  .contact__point-icon :global(svg) {
+    display: block;
+  }
+
+  .contact__calendar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-64);
+    box-sizing: border-box;
+    padding: var(--space-64);
+    border: 2px dashed var(--color-primary-400);
+    border-radius: var(--radius-2xl);
+    background: #fbf9fc;
+  }
+
+  .contact__calendar-copy {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-8);
+    text-align: center;
+  }
+
+  .contact__calendar-title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-8);
+    margin: 0;
+    color: var(--color-primary-800);
+    font-family: var(--font-display);
+    font-size: 21px;
+    font-weight: var(--font-weight-semibold);
+    font-optical-sizing: none;
+    font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 600;
+    line-height: var(--line-height-heading);
+  }
+
+  .contact__calendar-logo {
+    display: block;
+    flex-shrink: 0;
+    width: 30px;
+    height: 32px;
+    object-fit: contain;
+  }
+
+  .contact__calendar-subtitle {
+    margin: 0;
+    color: var(--color-gray-600);
+    font-family: var(--font-body);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-heading);
+  }
+
+  .contact__calendar :global(.button) {
+    width: 100%;
+    align-self: stretch;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  @media (max-width: 1024px) {
+    .contact__title {
+      font-size: var(--font-size-h2);
+    }
+
+    .contact__slot-title {
+      font-size: var(--font-size-h3);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .contact__hero {
+      padding: var(--space-32) var(--space-page) var(--space-16);
+    }
+
+    .contact__body {
+      gap: var(--space-32);
+      padding: 0 var(--space-page) var(--space-64);
+    }
+
+    .contact__slot-intro {
+      max-width: none;
+    }
+
+    .contact__calendar {
+      gap: var(--space-32);
+      padding: var(--space-32);
+    }
+
+    .contact__calendar :global(.button) {
+      width: 100%;
+      max-width: 100%;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .contact__title {
+      font-size: var(--font-size-h3);
+    }
+
+    .contact__body {
+      gap: var(--space-32);
+    }
+
+    .contact__form {
+      gap: var(--space-20);
+    }
+
+    .contact__slot {
+      gap: var(--space-32);
+    }
+
+    .contact__slot-title {
+      font-size: var(--font-size-20);
+    }
+
+    .contact__slot-subtitle {
+      font-size: var(--font-size-body-small);
+      line-height: 1.4;
+    }
+
+    .contact__points {
+      gap: var(--space-12);
+    }
+
+    .contact__point {
+      gap: var(--space-12);
+    }
+
+    .contact__point-icon {
+      width: 24px;
+      height: 24px;
+    }
+
+    .contact__point-icon :global(svg) {
+      width: 14px;
+      height: 14px;
+    }
+
+    .contact__row {
+      grid-template-columns: 1fr;
+      gap: var(--space-20);
+    }
+
+    .contact__tabs {
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-items: stretch;
+      gap: var(--space-8);
+    }
+
+    .contact__tab {
+      width: 100%;
+      min-height: 44px;
+      padding: var(--space-10) var(--space-16);
+      background: var(--color-gray-100);
+      font-size: var(--font-size-body-small);
+      white-space: nowrap;
+    }
+
+    .contact__tab :global(svg) {
+      width: 18px;
+      height: 18px;
+    }
+
+    .contact__tab[aria-selected='true'] {
+      background: var(--color-primary-50);
+    }
+
+    .contact__label {
+      gap: var(--space-8);
+      font-size: var(--font-size-body);
+    }
+
+    .contact__label :global(svg) {
+      width: 20px;
+      height: 20px;
+    }
+
+    .contact__control {
+      min-height: 52px;
+      padding: var(--space-16);
+      font-size: var(--font-size-body);
+    }
+
+    .contact__control--area {
+      min-height: 140px;
+    }
+
+    .contact__select .contact__control {
+      padding-right: 48px;
+    }
+
+    .contact__help {
+      line-height: 1.4;
+    }
+
+    .contact__option {
+      padding: var(--space-12);
+      font-size: var(--font-size-body);
+    }
+
+    .contact__submit {
+      min-height: 52px;
+      gap: var(--space-8);
+    }
+
+    .contact__point {
+      align-items: flex-start;
+      font-size: var(--font-size-body-small);
+    }
+
+    .contact__calendar {
+      gap: var(--space-16);
+      padding: var(--space-16);
+      border-radius: var(--radius-xl);
+    }
+
+    .contact__calendar-title {
+      font-size: var(--font-size-body-small);
+    }
+
+    .contact__calendar-logo {
+      width: 18px;
+      height: 20px;
+    }
+
+    .contact__calendar-subtitle {
+      font-size: var(--font-size-12);
+      line-height: 1.4;
+    }
+
+    .contact__calendar :global(.button) {
+      min-height: 44px;
+      padding: var(--space-12) var(--space-16);
+      font-size: var(--font-size-body-small);
+    }
+
+    .contact__calendar :global(.button__label) {
+      white-space: nowrap;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .contact__calendar :global(.button__label) {
+      white-space: normal;
+      text-align: center;
+    }
+  }
+</style>
+
+<script>
+  function setupContactTabs() {
+    const root = document.querySelector('[data-contact-tabs]');
+    if (!(root instanceof HTMLElement) || root.hasAttribute('data-contact-tabs-ready')) {
+      return;
+    }
+
+    const tabs = [...root.querySelectorAll('[data-contact-tab]')];
+    if (!tabs.length) {
+      return;
+    }
+
+    root.setAttribute('data-contact-tabs-ready', '');
+    const tablist = root.querySelector('[role="tablist"]') ?? root;
+    const allowedIds = tabs
+      .map((tab) => tab.getAttribute('data-tab-id'))
+      .filter((tabId) => Boolean(tabId));
+
+    const setCurrent = (nextId, { writeHash } = { writeHash: true }) => {
+      if (!nextId || !allowedIds.includes(nextId)) {
+        return;
+      }
+
+      tabs.forEach((tab) => {
+        const isCurrent = tab.getAttribute('data-tab-id') === nextId;
+        tab.setAttribute('aria-selected', isCurrent ? 'true' : 'false');
+        tab.setAttribute('tabindex', isCurrent ? '0' : '-1');
+      });
+
+      root.querySelectorAll('[data-tab-panel]').forEach((panel) => {
+        const isCurrent = panel.getAttribute('data-tab-id') === nextId;
+        panel.toggleAttribute('hidden', !isCurrent);
+        panel.setAttribute('aria-hidden', isCurrent ? 'false' : 'true');
+      });
+
+      if (writeHash) {
+        const nextHash = `#${nextId}`;
+        if (window.location.hash !== nextHash) {
+          history.replaceState(null, '', `${window.location.pathname}${window.location.search}${nextHash}`);
+        }
+      }
+    };
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        setCurrent(tab.getAttribute('data-tab-id'));
+      });
+    });
+
+    tablist.addEventListener('keydown', (event) => {
+      const currentIndex = tabs.findIndex((tab) => tab.getAttribute('aria-selected') === 'true');
+      if (currentIndex < 0) {
+        return;
+      }
+
+      let nextIndex = currentIndex;
+      if (event.key === 'ArrowRight') {
+        nextIndex = (currentIndex + 1) % tabs.length;
+      } else if (event.key === 'ArrowLeft') {
+        nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+      } else if (event.key === 'Home') {
+        nextIndex = 0;
+      } else if (event.key === 'End') {
+        nextIndex = tabs.length - 1;
+      } else {
+        return;
+      }
+
+      event.preventDefault();
+      const nextTab = tabs[nextIndex];
+      const nextId = nextTab?.getAttribute('data-tab-id');
+      setCurrent(nextId);
+      if (nextTab instanceof HTMLElement) {
+        nextTab.focus();
+      }
+    });
+
+    window.addEventListener('hashchange', () => {
+      const hashId = window.location.hash.replace('#', '');
+      if (allowedIds.includes(hashId)) {
+        setCurrent(hashId, { writeHash: false });
+      }
+    });
+
+    const landingHash = window.location.hash.replace('#', '');
+    const initialId = allowedIds.includes(landingHash) ? landingHash : allowedIds[0];
+    setCurrent(initialId, { writeHash: Boolean(landingHash) });
+  }
+
+  function setupContactSentBanner() {
+    const sentBanner = document.querySelector('[data-contact-sent]');
+    if (!(sentBanner instanceof HTMLElement)) {
+      return;
+    }
+
+    const hasSentQuery = new URLSearchParams(window.location.search).get('sent') === '1';
+    sentBanner.toggleAttribute('hidden', !hasSentQuery);
+  }
+
+  function setupContactCombobox() {
+    document.querySelectorAll('[data-contact-combobox]').forEach((combobox) => {
+      if (!(combobox instanceof HTMLElement) || combobox.hasAttribute('data-contact-combobox-ready')) {
+        return;
+      }
+
+      const input = combobox.querySelector('[data-contact-combobox-input]');
+      const toggle = combobox.querySelector('[data-contact-combobox-toggle]');
+      const list = combobox.querySelector('[data-contact-combobox-list]');
+      const options = [...combobox.querySelectorAll('[data-contact-combobox-option]')];
+      const selectOnly = combobox.hasAttribute('data-contact-combobox-select');
+
+      if (
+        !(input instanceof HTMLInputElement) ||
+        !(toggle instanceof HTMLButtonElement) ||
+        !(list instanceof HTMLElement) ||
+        !options.length
+      ) {
+        return;
+      }
+
+      combobox.setAttribute('data-contact-combobox-ready', '');
+      let activeIndex = -1;
+
+      const visibleOptions = () =>
+        options.filter((option) => option instanceof HTMLElement && !option.closest('li')?.hidden);
+
+      const setActive = (nextIndex) => {
+        const currentOptions = visibleOptions();
+        activeIndex = nextIndex;
+
+        currentOptions.forEach((option, optionIndex) => {
+          option.setAttribute('aria-selected', optionIndex === nextIndex ? 'true' : 'false');
+        });
+
+        const activeOption = currentOptions[nextIndex];
+        if (activeOption instanceof HTMLElement) {
+          activeOption.scrollIntoView({ block: 'nearest' });
+        }
+      };
+
+      const filterOptions = () => {
+        if (selectOnly) {
+          options.forEach((option) => {
+            const optionItem = option.closest('li');
+            if (optionItem instanceof HTMLElement) {
+              optionItem.hidden = false;
+            }
+          });
+          return;
+        }
+
+        const query = input.value.trim().toLowerCase();
+
+        options.forEach((option) => {
+          const optionItem = option.closest('li');
+          if (!(optionItem instanceof HTMLElement)) {
+            return;
+          }
+
+          const optionLabel = option.textContent?.trim().toLowerCase() ?? '';
+          optionItem.hidden = Boolean(query) && !optionLabel.includes(query);
+        });
+      };
+
+      const closeList = () => {
+        list.hidden = true;
+        combobox.removeAttribute('data-open');
+        input.setAttribute('aria-expanded', 'false');
+        setActive(-1);
+      };
+
+      const openList = () => {
+        filterOptions();
+        const currentOptions = visibleOptions();
+        if (!currentOptions.length) {
+          closeList();
+          return;
+        }
+
+        list.hidden = false;
+        combobox.setAttribute('data-open', '');
+        input.setAttribute('aria-expanded', 'true');
+      };
+
+      const selectOption = (option) => {
+        input.value = option.textContent?.trim() ?? '';
+        closeList();
+        input.focus();
+      };
+
+      input.addEventListener('focus', () => {
+        openList();
+      });
+
+      input.addEventListener('click', () => {
+        openList();
+      });
+
+      if (!selectOnly) {
+        input.addEventListener('input', () => {
+          openList();
+        });
+      }
+
+      input.addEventListener('keydown', (event) => {
+        const currentOptions = visibleOptions();
+
+        if (event.key === 'ArrowDown') {
+          event.preventDefault();
+          if (list.hidden) {
+            openList();
+          }
+          const nextIndex = Math.min(activeIndex + 1, visibleOptions().length - 1);
+          setActive(nextIndex < 0 ? 0 : nextIndex);
+          return;
+        }
+
+        if (event.key === 'ArrowUp') {
+          event.preventDefault();
+          if (list.hidden) {
+            openList();
+          }
+          setActive(Math.max(activeIndex - 1, 0));
+          return;
+        }
+
+        if (event.key === 'Enter' && !list.hidden && activeIndex >= 0) {
+          const activeOption = currentOptions[activeIndex];
+          if (activeOption) {
+            event.preventDefault();
+            selectOption(activeOption);
+          }
+          return;
+        }
+
+        if (event.key === 'Escape') {
+          closeList();
+        }
+      });
+
+      toggle.addEventListener('mousedown', (event) => {
+        event.preventDefault();
+      });
+
+      toggle.addEventListener('click', () => {
+        if (list.hidden) {
+          input.focus();
+          openList();
+          return;
+        }
+
+        closeList();
+      });
+
+      options.forEach((option) => {
+        option.addEventListener('mousedown', (event) => {
+          event.preventDefault();
+        });
+
+        option.addEventListener('click', () => {
+          selectOption(option);
+        });
+      });
+
+      document.addEventListener('click', (event) => {
+        if (!combobox.contains(event.target)) {
+          closeList();
+        }
+      });
+    });
+  }
+
+  setupContactTabs();
+  setupContactSentBanner();
+  setupContactCombobox();
+</script>
