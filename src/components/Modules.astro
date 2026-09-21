@@ -26,6 +26,15 @@ import ModulePanel from './ModulePanel.astro';
     gap: 0;
   }
 
+  .modules__cell {
+    position: relative;
+  }
+
+  .modules__cell:hover,
+  .modules__cell:focus-within {
+    z-index: 1;
+  }
+
   .modules__cell--query {
     --module-bg: var(--color-module-query-bg);
     --module-accent: var(--color-module-query-accent);

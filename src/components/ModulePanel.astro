@@ -25,15 +25,55 @@ const { title, description, href, imageSrc, imageAlt } = Astro.props;
 
 <style>
   .module-panel {
+    position: relative;
     display: flex;
     flex-direction: column;
     min-height: 753px;
     padding: var(--space-64);
     box-sizing: border-box;
+    overflow: hidden;
+    isolation: isolate;
     background: var(--module-bg);
     color: var(--module-accent);
     --button-bg: var(--module-accent);
     --button-fg: var(--module-bg);
+    transform: scale(1);
+    transform-origin: center center;
+    transition: transform 0.4s ease;
+  }
+
+  .module-panel:hover,
+  .module-panel:focus-within {
+    transform: scale(1.03);
+  }
+
+  .module-panel__image {
+    display: block;
+    width: auto;
+    height: 288px;
+    max-width: 100%;
+    object-fit: contain;
+    transform: scale(1);
+    transition: transform 0.4s ease;
+  }
+
+  .module-panel:hover .module-panel__image,
+  .module-panel:focus-within .module-panel__image {
+    transform: scale(1.06);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .module-panel,
+    .module-panel__image {
+      transition: none;
+    }
+
+    .module-panel:hover,
+    .module-panel:focus-within,
+    .module-panel:hover .module-panel__image,
+    .module-panel:focus-within .module-panel__image {
+      transform: none;
+    }
   }
 
   .module-panel__copy {
@@ -70,14 +110,6 @@ const { title, description, href, imageSrc, imageAlt } = Astro.props;
     justify-content: center;
     min-height: 288px;
     padding-bottom: var(--space-32);
-  }
-
-  .module-panel__image {
-    display: block;
-    width: auto;
-    height: 288px;
-    max-width: 100%;
-    object-fit: contain;
   }
 
   @media (max-width: 1280px) {
