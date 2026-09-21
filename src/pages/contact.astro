@@ -32,6 +32,7 @@ const formFields = contact.form.fields;
 
     <div class="contact__body">
       <div class="contact__tabs" role="tablist" aria-label="Modes de contact">
+        <span class="contact__indicator" data-tab-indicator aria-hidden="true"></span>
         {
           contact.tabs.map((tab) => (
             <button
@@ -60,6 +61,7 @@ const formFields = contact.form.fields;
         {contact.sentMessage}
       </p>
 
+      <div class="contact__panels">
       <section
         class="contact__panel"
         id="contact-panel-formulaire"
@@ -288,7 +290,7 @@ const formFields = contact.form.fields;
             />
           </div>
 
-          <button class="contact__submit" type="submit">
+          <button class="contact__submit" type="submit" data-wave-hover>
             <span class="contact__submit-label">{contact.form.submitLabel}</span>
             <span class="contact__submit-icon">
               <IconArrowUpRight size={24} stroke={1.5} />
@@ -344,6 +346,7 @@ const formFields = contact.form.fields;
           </div>
         </div>
       </section>
+      </div>
     </div>
   </article>
 </BaseLayout>
@@ -386,6 +389,7 @@ const formFields = contact.form.fields;
   }
 
   .contact__tabs {
+    position: relative;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -394,7 +398,23 @@ const formFields = contact.form.fields;
     width: 100%;
   }
 
+  .contact__indicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    border-radius: var(--radius-pill);
+    background: var(--color-primary-50);
+    pointer-events: none;
+    transition:
+      transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
+      width 280ms cubic-bezier(0.22, 1, 0.36, 1),
+      height 280ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
   .contact__tab {
+    position: relative;
+    z-index: 1;
     box-sizing: border-box;
     display: inline-flex;
     align-items: center;
@@ -424,6 +444,12 @@ const formFields = contact.form.fields;
     color: var(--color-primary-500);
   }
 
+  @media (min-width: 641px) {
+    .contact__tabs.is-ready .contact__tab[aria-selected='true'] {
+      background: transparent;
+    }
+  }
+
   .contact__tab :global(svg) {
     display: block;
     flex-shrink: 0;
@@ -445,9 +471,17 @@ const formFields = contact.form.fields;
     text-align: center;
   }
 
-  .contact__panel {
+  .contact__panels {
+    display: grid;
     width: 100%;
     max-width: 981px;
+    overflow: hidden;
+  }
+
+  .contact__panel {
+    grid-area: 1 / 1;
+    width: 100%;
+    min-width: 0;
   }
 
   .contact__panel[hidden] {
@@ -622,6 +656,7 @@ const formFields = contact.form.fields;
   }
 
   .contact__submit {
+    --wave-color: var(--color-primary-600);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -640,9 +675,18 @@ const formFields = contact.form.fields;
     cursor: pointer;
   }
 
-  .contact__submit:hover,
-  .contact__submit:focus-visible {
-    background: var(--color-primary-600);
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .contact__submit:hover,
+    .contact__submit:focus-visible {
+      background: var(--color-action);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce), (hover: none) {
+    .contact__submit:hover,
+    .contact__submit:focus-visible {
+      background: var(--color-primary-600);
+    }
   }
 
   .contact__submit-icon {
@@ -871,6 +915,10 @@ const formFields = contact.form.fields;
       gap: var(--space-8);
     }
 
+    .contact__indicator {
+      display: none;
+    }
+
     .contact__tab {
       width: 100%;
       min-height: 44px;
@@ -972,6 +1020,8 @@ const formFields = contact.form.fields;
 </style>
 
 <script>
+  import { moveTabIndicator } from '../scripts/tab-slide.js';
+
   function setupContactTabs() {
     const root = document.querySelector('[data-contact-tabs]');
     if (!(root instanceof HTMLElement) || root.hasAttribute('data-contact-tabs-ready')) {
@@ -988,9 +1038,22 @@ const formFields = contact.form.fields;
     const allowedIds = tabs
       .map((tab) => tab.getAttribute('data-tab-id'))
       .filter((tabId) => Boolean(tabId));
+    let hasInitialized = false;
+
+    const syncIndicator = (instant = false) => {
+      const selectedTab = tabs.find((tab) => tab.getAttribute('aria-selected') === 'true');
+      moveTabIndicator(tablist, selectedTab, { instant });
+    };
 
     const setCurrent = (nextId, { writeHash } = { writeHash: true }) => {
       if (!nextId || !allowedIds.includes(nextId)) {
+        return;
+      }
+
+      const currentId = tabs
+        .find((tab) => tab.getAttribute('aria-selected') === 'true')
+        ?.getAttribute('data-tab-id');
+      if (currentId === nextId && hasInitialized) {
         return;
       }
 
@@ -1005,6 +1068,9 @@ const formFields = contact.form.fields;
         panel.toggleAttribute('hidden', !isCurrent);
         panel.setAttribute('aria-hidden', isCurrent ? 'false' : 'true');
       });
+
+      syncIndicator(!hasInitialized);
+      hasInitialized = true;
 
       if (writeHash) {
         const nextHash = `#${nextId}`;
@@ -1053,6 +1119,10 @@ const formFields = contact.form.fields;
       if (allowedIds.includes(hashId)) {
         setCurrent(hashId, { writeHash: false });
       }
+    });
+
+    window.addEventListener('resize', () => {
+      syncIndicator(true);
     });
 
     const landingHash = window.location.hash.replace('#', '');

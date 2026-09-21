@@ -26,6 +26,7 @@ const { items, currentId, ariaLabel = 'Sections', name = 'tabs' } = Astro.props;
     <IconChevronLeft size={24} stroke={2} />
   </button>
   <div class="tabs__list" role="tablist" aria-label={ariaLabel}>
+    <span class="tabs__indicator" data-tab-indicator aria-hidden="true"></span>
     {
       items.map((item) => (
         <button
@@ -64,11 +65,26 @@ const { items, currentId, ariaLabel = 'Sections', name = 'tabs' } = Astro.props;
   }
 
   .tabs__list {
+    position: relative;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
     gap: var(--space-8);
+  }
+
+  .tabs__indicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    border-radius: var(--radius-pill);
+    background: var(--color-primary-50);
+    pointer-events: none;
+    transition:
+      transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
+      width 280ms cubic-bezier(0.22, 1, 0.36, 1),
+      height 280ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .tabs__arrow {
@@ -96,6 +112,8 @@ const { items, currentId, ariaLabel = 'Sections', name = 'tabs' } = Astro.props;
   }
 
   .tabs__tab {
+    position: relative;
+    z-index: 1;
     padding: var(--space-16);
     border: 0;
     border-radius: var(--radius-pill);
@@ -117,6 +135,12 @@ const { items, currentId, ariaLabel = 'Sections', name = 'tabs' } = Astro.props;
   .tabs__tab[aria-selected='true'] {
     background: var(--color-primary-50);
     color: var(--color-primary-500);
+  }
+
+  @media (min-width: 769px) {
+    .tabs__list.is-ready .tabs__tab[aria-selected='true'] {
+      background: transparent;
+    }
   }
 
   @media (max-width: 768px) {
@@ -145,11 +169,41 @@ const { items, currentId, ariaLabel = 'Sections', name = 'tabs' } = Astro.props;
 
     .tabs__tab[aria-selected='true'] {
       display: block;
+      background: var(--color-primary-50);
+      animation: tab-label-slide 280ms ease;
+    }
+
+    .tabs__indicator {
+      display: none;
+    }
+  }
+
+  @keyframes tab-label-slide {
+    from {
+      opacity: 0;
+      transform: translateX(calc(var(--tab-direction, 1) * 16px));
+    }
+
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tabs__tab[aria-selected='true'] {
+      animation: none;
     }
   }
 </style>
 
 <script>
+  import {
+    applyTabDirection,
+    getTabDirection,
+    moveTabIndicator,
+  } from '../scripts/tab-slide.js';
+
   function setupTabs() {
     const tabRoots = document.querySelectorAll('[data-tabs]');
     tabRoots.forEach((tabRoot) => {
@@ -168,11 +222,29 @@ const { items, currentId, ariaLabel = 'Sections', name = 'tabs' } = Astro.props;
       const allowedIds = tabs
         .map((tab) => tab.getAttribute('data-tab-id'))
         .filter((tabId) => Boolean(tabId));
+      let hasInitialized = false;
+
+      const syncIndicator = (instant = false) => {
+        const selectedTab = tabs.find((tab) => tab.getAttribute('aria-selected') === 'true');
+        moveTabIndicator(tablist, selectedTab, { instant });
+      };
 
       const setCurrent = (nextId, { writeHash } = { writeHash: true }) => {
         if (!nextId || !allowedIds.includes(nextId)) {
           return;
         }
+
+        const currentId = tabs
+          .find((tab) => tab.getAttribute('aria-selected') === 'true')
+          ?.getAttribute('data-tab-id');
+        if (currentId === nextId && hasInitialized) {
+          return;
+        }
+
+        const currentIndex = allowedIds.indexOf(currentId);
+        const nextIndex = allowedIds.indexOf(nextId);
+        const direction = getTabDirection(currentIndex, nextIndex, allowedIds.length);
+        applyTabDirection(tabRoot, direction);
 
         tabs.forEach((tab) => {
           const isCurrent = tab.getAttribute('data-tab-id') === nextId;
@@ -186,9 +258,11 @@ const { items, currentId, ariaLabel = 'Sections', name = 'tabs' } = Astro.props;
           panel.setAttribute('aria-hidden', isCurrent ? 'false' : 'true');
         });
 
-        const currentIndex = allowedIds.indexOf(nextId);
-        const previousId = allowedIds[(currentIndex - 1 + allowedIds.length) % allowedIds.length];
-        const nextTabId = allowedIds[(currentIndex + 1) % allowedIds.length];
+        syncIndicator(!hasInitialized);
+        hasInitialized = true;
+
+        const previousId = allowedIds[(nextIndex - 1 + allowedIds.length) % allowedIds.length];
+        const nextTabId = allowedIds[(nextIndex + 1) % allowedIds.length];
         const previousTab = tabs.find((tab) => tab.getAttribute('data-tab-id') === previousId);
         const nextTab = tabs.find((tab) => tab.getAttribute('data-tab-id') === nextTabId);
 
@@ -284,6 +358,10 @@ const { items, currentId, ariaLabel = 'Sections', name = 'tabs' } = Astro.props;
         if (allowedIds.includes(hashId)) {
           setCurrent(hashId, { writeHash: false });
         }
+      });
+
+      window.addEventListener('resize', () => {
+        syncIndicator(true);
       });
 
       const landingHash = window.location.hash.replace('#', '');

@@ -26,22 +26,24 @@ const nextCase = useCases[1];
       name="use-cases"
     />
 
-    {
-      useCases.map((useCase) => (
-        <UseCasePanel
-          id={useCase.id}
-          name="use-cases"
-          eyebrow={useCase.eyebrow}
-          title={useCase.title}
-          person={useCase.person}
-          problem={useCase.problem}
-          solution={useCase.solution}
-          quote={useCase.quote}
-          quoteAttribution={useCase.quoteAttribution}
-          hidden={useCase.id !== defaultId}
-        />
-      ))
-    }
+    <div class="use-cases__panels">
+      {
+        useCases.map((useCase) => (
+          <UseCasePanel
+            id={useCase.id}
+            name="use-cases"
+            eyebrow={useCase.eyebrow}
+            title={useCase.title}
+            person={useCase.person}
+            problem={useCase.problem}
+            solution={useCase.solution}
+            quote={useCase.quote}
+            quoteAttribution={useCase.quoteAttribution}
+            hidden={useCase.id !== defaultId}
+          />
+        ))
+      }
+    </div>
 
     <nav class="use-cases__switch" aria-label="Autres profils">
       <a class="use-cases__switch-link" href={`#${previousCase.id}`} data-tab-prev>
@@ -92,6 +94,17 @@ const nextCase = useCases[1];
     letter-spacing: 0;
     line-height: var(--line-height-heading);
     text-align: center;
+  }
+
+  .use-cases__panels {
+    display: grid;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .use-cases__panels > :global(.use-case-panel) {
+    grid-area: 1 / 1;
+    min-width: 0;
   }
 
   .use-cases__switch {

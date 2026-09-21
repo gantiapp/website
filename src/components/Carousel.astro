@@ -47,6 +47,7 @@ const slides = [
       <IconChevronLeft size={24} stroke={2} />
     </button>
     <div class="carousel__tabs" role="tablist" aria-label="Fonctionnalités">
+      <span class="carousel__indicator" data-tab-indicator aria-hidden="true"></span>
       {
         slides.map((slide, index) => (
           <button
@@ -115,6 +116,12 @@ const slides = [
 </div>
 
 <script>
+  import {
+    applyTabDirection,
+    getTabDirection,
+    moveTabIndicator,
+  } from '../scripts/tab-slide.js';
+
   function setupCarousels() {
     const carousels = document.querySelectorAll('[data-carousel]');
     carousels.forEach((carousel) => {
@@ -129,6 +136,7 @@ const slides = [
       let currentIndex = 0;
       let touchStartX = 0;
       let touchStartY = 0;
+      let hasInitialized = false;
 
       images.forEach((image) => {
         if (image.decode) {
@@ -136,8 +144,20 @@ const slides = [
         }
       });
 
+      const syncIndicator = (instant = false) => {
+        moveTabIndicator(tablist, tabs[currentIndex], { instant });
+      };
+
       const show = (nextIndex) => {
-        currentIndex = (nextIndex + slides.length) % slides.length;
+        const normalizedIndex = (nextIndex + slides.length) % slides.length;
+        if (normalizedIndex === currentIndex && hasInitialized) {
+          return;
+        }
+
+        const direction = getTabDirection(currentIndex, normalizedIndex, slides.length);
+        applyTabDirection(carousel, direction);
+        currentIndex = normalizedIndex;
+
         tabs.forEach((tab, index) => {
           const isSelected = index === currentIndex;
           tab.setAttribute('aria-selected', isSelected ? 'true' : 'false');
@@ -151,6 +171,9 @@ const slides = [
           slide.classList.toggle('is-active', isActive);
           slide.setAttribute('aria-hidden', isActive ? 'false' : 'true');
         });
+
+        syncIndicator(!hasInitialized);
+        hasInitialized = true;
       };
 
       tabs.forEach((tab, index) => {
@@ -209,6 +232,12 @@ const slides = [
           { passive: true },
         );
       }
+
+      window.addEventListener('resize', () => {
+        syncIndicator(true);
+      });
+
+      show(0);
     });
   }
 
@@ -258,11 +287,26 @@ const slides = [
   }
 
   .carousel__tabs {
+    position: relative;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
     gap: var(--space-8);
+  }
+
+  .carousel__indicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    border-radius: var(--radius-pill);
+    background: var(--color-primary-50);
+    pointer-events: none;
+    transition:
+      transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
+      width 280ms cubic-bezier(0.22, 1, 0.36, 1),
+      height 280ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .carousel__dots {
@@ -287,6 +331,8 @@ const slides = [
   }
 
   .carousel__tab {
+    position: relative;
+    z-index: 1;
     padding: var(--space-16);
     border: 0;
     border-radius: var(--radius-pill);
@@ -310,10 +356,17 @@ const slides = [
     color: var(--color-primary-500);
   }
 
+  @media (min-width: 769px) {
+    .carousel__tabs.is-ready .carousel__tab[aria-selected='true'] {
+      background: transparent;
+    }
+  }
+
   .carousel__stage {
     position: relative;
     width: 1100px;
     max-width: 100%;
+    overflow: hidden;
     aspect-ratio: 1440 / 900;
   }
 
@@ -366,6 +419,12 @@ const slides = [
 
     .carousel__tab[aria-selected='true'] {
       display: block;
+      background: var(--color-primary-50);
+      animation: carousel-tab-slide 280ms ease;
+    }
+
+    .carousel__indicator {
+      display: none;
     }
 
     .carousel__dots {
@@ -380,6 +439,24 @@ const slides = [
 
     .carousel__image {
       border-radius: var(--radius-m);
+    }
+  }
+
+  @keyframes carousel-tab-slide {
+    from {
+      opacity: 0;
+      transform: translateX(calc(var(--tab-direction, 1) * 16px));
+    }
+
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .carousel__tab[aria-selected='true'] {
+      animation: none;
     }
   }
 </style>
