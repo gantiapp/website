@@ -1,0 +1,34 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Mise à jour — Ganti">
+  <section class="updates" aria-label="Mise à jour">
+    <h1 class="updates__title">Contenu à venir</h1>
+  </section>
+</BaseLayout>
+
+<style>
+  .updates {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: calc(100svh - var(--navbar-height));
+    padding: var(--space-64) var(--space-page);
+  }
+
+  .updates__title {
+    margin: 0;
+    color: var(--color-primary-800);
+    font-family: var(--font-display);
+    font-size: var(--font-size-h1);
+    font-weight: var(--font-weight-extrabold);
+    font-optical-sizing: none;
+    font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 800;
+    letter-spacing: 0;
+    line-height: var(--line-height-heading);
+    text-align: center;
+  }
+</style>
