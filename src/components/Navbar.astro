@@ -5,6 +5,7 @@ const links = [
   { href: '/produit', label: 'Produit' },
   { href: '/cas-d-usages', label: "Cas d'usages" },
   { href: '/formules', label: 'Formules' },
+  { href: '/mise-a-jour', label: 'Mise à jour' },
 ];
 
 const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
@@ -221,12 +222,12 @@ const isContactPage = currentPath === '/contact';
   .navbar__link[aria-current='page'] .navbar__link-label::after {
     content: '';
     position: absolute;
-    bottom: -4px;
+    bottom: -8px;
     left: 25%;
     width: 50%;
     height: 2px;
     border-radius: 1px;
-    background: currentColor;
+    background: var(--color-primary-500);
   }
 
   .navbar__cta {
