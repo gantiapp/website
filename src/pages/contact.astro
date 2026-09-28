@@ -75,8 +75,7 @@ const formFields = contact.form.fields;
           name={contact.form.name}
           method="POST"
           action="/contact?sent=1"
-          data-netlify="true"
-          netlify-honeypot="bot-field"
+          netlify
         >
           <input type="hidden" name="form-name" value={contact.form.name} />
           <p class="visually-hidden">
