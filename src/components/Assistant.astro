@@ -1,4 +1,5 @@
 ---
+import { IconChevronRight } from '@tabler/icons-astro';
 import SectionHeading from './SectionHeading.astro';
 import GaiaChat from './GaiaChat.astro';
 
@@ -41,6 +42,9 @@ const steps = [
                 <a class="assistant__step" href={step.href}>
                   <span class="assistant__index">{String(index + 1).padStart(2, '0')}</span>
                   <span class="assistant__step-label">{step.label}</span>
+                  <span class="assistant__step-arrow" aria-hidden="true">
+                    <IconChevronRight size={18} stroke={1.75} />
+                  </span>
                 </a>
               </li>
             ))
@@ -224,7 +228,7 @@ const steps = [
   .assistant__steps {
     display: flex;
     flex-direction: column;
-    gap: var(--space-12);
+    gap: var(--space-8);
     margin: 0;
     padding: 0;
     list-style: none;
@@ -233,21 +237,24 @@ const steps = [
   .assistant__step {
     display: flex;
     align-items: center;
-    gap: var(--space-8);
+    gap: var(--space-12);
+    width: fit-content;
+    max-width: 100%;
+    padding: var(--space-4) var(--space-12) var(--space-4) var(--space-4);
+    border-radius: var(--radius-l);
     color: inherit;
     text-decoration: none;
+    transition: background-color 0.2s ease;
   }
 
-  .assistant__step:hover .assistant__step-label,
-  .assistant__step:focus-visible .assistant__step-label {
-    color: var(--color-primary-500);
-    text-decoration-color: currentColor;
+  .assistant__step:hover,
+  .assistant__step:focus-visible {
+    background: var(--color-primary-50);
   }
 
   .assistant__step:focus-visible {
     outline: 2px solid var(--color-primary-500);
-    outline-offset: 4px;
-    border-radius: var(--radius-s);
+    outline-offset: 2px;
   }
 
   .assistant__index {
@@ -269,15 +276,34 @@ const steps = [
   }
 
   .assistant__step-label {
-    color: var(--color-primary-600);
+    color: var(--color-primary-800);
     font-family: var(--font-body);
     font-size: var(--font-size-body);
     font-weight: var(--font-weight-regular);
     line-height: var(--line-height-heading);
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
-    text-underline-offset: 0.22em;
+  }
+
+  .assistant__step:hover .assistant__step-label,
+  .assistant__step:focus-visible .assistant__step-label {
+    color: var(--color-primary-600);
+  }
+
+  .assistant__step-arrow {
+    display: flex;
+    flex-shrink: 0;
+    color: var(--color-primary-500);
+    opacity: 0.55;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+
+  .assistant__step:hover .assistant__step-arrow,
+  .assistant__step:focus-visible .assistant__step-arrow {
+    opacity: 1;
+    transform: translateX(3px);
+  }
+
+  .assistant__step-arrow :global(svg) {
+    display: block;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -287,6 +313,10 @@ const steps = [
 
     .assistant__chat {
       animation: none;
+    }
+
+    .assistant__step-arrow {
+      transition: none;
     }
   }
 
