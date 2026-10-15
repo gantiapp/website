@@ -9,6 +9,14 @@
   font-optical-sizing: none;
 }
 
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  src: url("/fonts/PlusJakartaSans-Variable.ttf") format("truetype");
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   /* Local FILL styles — Base */
   --color-base-black: #000000;
@@ -75,6 +83,7 @@
   /* Type — local TEXT styles */
   --font-sans: "Inter", system-ui, sans-serif;
   --font-display: "Bricolage Grotesque", var(--font-sans);
+  --font-section: "Plus Jakarta Sans", var(--font-sans);
   --font-opsz-figma: 14;
 
   --font-weight-regular: 400;
