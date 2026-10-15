@@ -112,7 +112,7 @@ const columns = [
 
   .footer__top {
     display: grid;
-    grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+    grid-template-columns: minmax(280px, 400px) minmax(0, 1fr);
     align-items: start;
     gap: clamp(var(--space-48), 4vw, var(--space-96));
   }
@@ -166,8 +166,14 @@ const columns = [
 
   .footer__columns {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
-    gap: var(--space-48) var(--space-32);
+    grid-template-columns: repeat(5, minmax(0, max-content));
+    justify-content: end;
+    justify-self: end;
+    align-items: start;
+    gap: var(--space-48) var(--space-64);
+    width: fit-content;
+    max-width: 100%;
+    margin-left: auto;
     min-width: 0;
   }
 
@@ -233,6 +239,9 @@ const columns = [
 
     .footer__columns {
       grid-template-columns: repeat(3, minmax(0, 1fr));
+      justify-self: stretch;
+      width: 100%;
+      margin-left: 0;
     }
   }
 
