@@ -41,28 +41,28 @@ import {
           <span class="gaia-chat__author">John Doe</span>
           <time class="gaia-chat__time" data-gaia-time="user" datetime="16:12">16:12</time>
         </div>
-        <p class="gaia-chat__prompt" data-gaia-user-text>
-          Génère-moi un contrôle permettant d'identifier les produits actifs ayant un
-          taux de taxe incohérent dans le référentiel central.
+        <p class="gaia-chat__prompt">
+          <span class="gaia-chat__sizer" aria-hidden="true">Génère-moi un contrôle permettant d'identifier les produits actifs ayant un taux de taxe incohérent dans le référentiel central.</span>
+          <span data-gaia-user-text>Génère-moi un contrôle permettant d'identifier les produits actifs ayant un taux de taxe incohérent dans le référentiel central.</span>
         </p>
       </article>
 
-      <article class="gaia-chat__message gaia-chat__message--loading" data-gaia-loading>
-        <div class="gaia-chat__meta">
-          <span class="gaia-chat__avatar">
-            <IconRobot size={16} stroke={1.5} />
-          </span>
-          <span class="gaia-chat__author">GAIA</span>
-          <time class="gaia-chat__time" data-gaia-time="loading" datetime="16:13">16:13</time>
-        </div>
-        <div class="gaia-chat__dots">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-      </article>
-
       <article class="gaia-chat__message gaia-chat__message--assistant" data-gaia-assistant>
+        <div class="gaia-chat__loading" data-gaia-loading>
+          <div class="gaia-chat__meta">
+            <span class="gaia-chat__avatar">
+              <IconRobot size={16} stroke={1.5} />
+            </span>
+            <span class="gaia-chat__author">GAIA</span>
+            <time class="gaia-chat__time" data-gaia-time="loading" datetime="16:13">16:13</time>
+          </div>
+          <div class="gaia-chat__dots">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+        <div class="gaia-chat__assistant-body">
         <div class="gaia-chat__meta">
           <span class="gaia-chat__avatar">
             <IconRobot size={16} stroke={1.5} />
@@ -70,9 +70,9 @@ import {
           <span class="gaia-chat__author">GAIA</span>
           <time class="gaia-chat__time" data-gaia-time="assistant" datetime="16:13">16:13</time>
         </div>
-        <p class="gaia-chat__answer" data-gaia-answer-text>
-          Voici la requête SQL pour identifier les produits actifs avec un taux de taxe
-          incohérent :
+        <p class="gaia-chat__answer">
+          <span class="gaia-chat__sizer" aria-hidden="true">Voici la requête SQL pour identifier les produits actifs avec un taux de taxe incohérent :</span>
+          <span data-gaia-answer-text>Voici la requête SQL pour identifier les produits actifs avec un taux de taxe incohérent :</span>
         </p>
         <pre class="gaia-chat__sql" data-gaia-sql><code><span class="gaia-chat__kw">SELECT</span>
     p.product_id,
@@ -91,6 +91,7 @@ import {
 <span class="gaia-chat__kw">WHERE</span>
     p.tax_rate <span class="gaia-chat__kw">NOT IN</span> (5.5, 20.00)
     <span class="gaia-chat__kw">AND</span> plc.delisted_date <span class="gaia-chat__kw">IS NULL</span></code></pre>
+        </div>
       </article>
     </div>
 
@@ -98,8 +99,10 @@ import {
       <div class="gaia-chat__field">
         <p class="gaia-chat__placeholder" data-gaia-composer>
           <span class="gaia-chat__placeholder-label">Ask anything to GAIA...</span>
-          <span class="gaia-chat__typed" data-gaia-composer-text></span>
-          <span class="gaia-chat__caret"></span>
+          <span class="gaia-chat__sizer" aria-hidden="true">Génère-moi un contrôle permettant d'identifier les produits actifs ayant un taux de taxe incohérent dans le référentiel central.</span>
+          <span class="gaia-chat__typed-line">
+            <span class="gaia-chat__typed" data-gaia-composer-text></span><span class="gaia-chat__caret"></span>
+          </span>
         </p>
         <span class="gaia-chat__send">
           <IconSend size={16} stroke={1.5} />
@@ -339,6 +342,7 @@ import {
   }
 
   .gaia-chat__thread {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: var(--space-16);
@@ -346,8 +350,10 @@ import {
   }
 
   .gaia-chat__empty {
-    display: none;
-    flex: 1;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -359,9 +365,8 @@ import {
     text-align: center;
   }
 
-  .gaia-chat.is-animating:not(.is-sent) .gaia-chat__empty {
-    display: flex;
-    animation: gaia-reveal 0.4s ease;
+  .gaia-chat.is-sent .gaia-chat__empty {
+    display: none;
   }
 
   .gaia-chat__empty-icon {
@@ -401,21 +406,41 @@ import {
     gap: var(--space-8);
   }
 
-  .gaia-chat.is-animating .gaia-chat__message--user,
-  .gaia-chat.is-animating .gaia-chat__message--loading,
-  .gaia-chat.is-animating .gaia-chat__message--assistant {
-    display: none;
+  .gaia-chat__message--user,
+  .gaia-chat__assistant-body {
+    opacity: 0;
   }
 
   .gaia-chat.is-animating.is-sent .gaia-chat__message--user,
-  .gaia-chat.is-animating.is-loading .gaia-chat__message--loading,
-  .gaia-chat.is-animating.is-answered .gaia-chat__message--assistant {
-    display: flex;
+  .gaia-chat.is-animating.is-answered .gaia-chat__assistant-body {
+    opacity: 1;
     animation: gaia-reveal 0.4s ease;
   }
 
-  .gaia-chat__message--loading {
-    display: none;
+  .gaia-chat__assistant-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .gaia-chat__message--assistant {
+    position: relative;
+  }
+
+  .gaia-chat__loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .gaia-chat.is-animating.is-loading .gaia-chat__loading {
+    opacity: 1;
   }
 
   .gaia-chat__meta {
@@ -454,6 +479,7 @@ import {
 
   .gaia-chat__prompt,
   .gaia-chat__answer {
+    display: grid;
     margin: 0 0 0 40px;
     color: var(--color-base-black);
     font-family: var(--font-body);
@@ -537,16 +563,32 @@ import {
   }
 
   .gaia-chat__placeholder {
+    display: grid;
     flex: 1;
     min-width: 0;
     margin: 0;
     padding: var(--space-6) 0;
-    min-height: calc(var(--space-6) * 2 + 1.2em);
     color: var(--color-gray-500);
     font-family: var(--font-body);
     font-size: var(--font-size-12);
     font-weight: var(--font-weight-medium);
     line-height: 1.2;
+  }
+
+  .gaia-chat__prompt > *,
+  .gaia-chat__answer > *,
+  .gaia-chat__placeholder > * {
+    grid-area: 1 / 1;
+  }
+
+  .gaia-chat__sizer,
+  .gaia-chat__typed,
+  .gaia-chat__typed-line {
+    white-space: pre-wrap;
+  }
+
+  .gaia-chat__sizer {
+    visibility: hidden;
   }
 
   .gaia-chat.is-typing .gaia-chat__placeholder {
@@ -651,14 +693,14 @@ import {
     }
 
     .gaia-chat__message--user,
-    .gaia-chat__message--assistant {
-      display: flex;
+    .gaia-chat__assistant-body {
+      opacity: 1;
       animation: none;
     }
 
-    .gaia-chat__message--loading,
-    .gaia-chat.is-animating:not(.is-sent) .gaia-chat__empty,
+    .gaia-chat__loading,
     .gaia-chat__empty,
+    .gaia-chat__sizer,
     .gaia-chat__caret {
       display: none;
     }
