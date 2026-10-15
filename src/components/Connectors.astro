@@ -518,68 +518,68 @@ const connectorNodes = connectors.map((connector, index) => {
       font-size: var(--font-size-display);
     }
 
-    .connectors__chart {
+    .connectors__chart,
+    .connectors__hub {
       display: none;
     }
 
     .connectors__stage {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: var(--space-32);
       width: 100%;
       aspect-ratio: auto;
       height: auto;
     }
 
-    .connectors__hub {
-      position: relative;
-      top: auto;
-      left: auto;
-      transform: none;
-    }
-
-    .connectors__hub::before,
-    .connectors__hub::after {
-      display: none;
-    }
-
     .connectors__orbit {
       position: relative;
       display: grid;
-      width: 100%;
+      width: min(100%, 920px);
+      margin: 0 auto;
+      inset: auto;
       grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: var(--space-24) var(--space-8);
+      gap: var(--space-16);
     }
 
     .connectors__node {
       position: relative;
       top: auto;
       left: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-8);
       width: auto;
       height: auto;
+      padding: var(--space-16) var(--space-8) var(--space-12);
+      border-radius: var(--radius-xl);
+      background: var(--color-base-white);
+      box-shadow: 0 0 0 1px var(--color-primary-100);
       transform: none;
       animation: none;
     }
 
     .connectors__disc {
-      width: 72px;
-      height: 72px;
-      margin: 0 auto;
+      width: 56px;
+      height: 56px;
+      margin: 0;
+      background: transparent;
+      box-shadow: none;
     }
 
     .connectors__disc img {
-      width: 48px;
-      height: 48px;
+      width: 44px;
+      height: 44px;
     }
 
     .connectors__name {
       position: static;
-      margin-top: var(--space-8);
+      margin: 0;
       padding: 0;
       background: none;
+      box-shadow: none;
       transform: none;
-      white-space: normal;
+      white-space: nowrap;
+      text-align: center;
     }
   }
 
@@ -589,18 +589,20 @@ const connectorNodes = connectors.map((connector, index) => {
     }
 
     .connectors__orbit {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: var(--space-16);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      width: 100%;
     }
 
-    .connectors__disc {
-      width: 64px;
-      height: 64px;
+    .connectors__node {
+      flex-direction: row;
+      justify-content: flex-start;
+      gap: var(--space-12);
+      padding: var(--space-12) var(--space-16);
     }
 
-    .connectors__disc img {
-      width: 42px;
-      height: 42px;
+    .connectors__name {
+      white-space: normal;
+      text-align: left;
     }
   }
 </style>
