@@ -28,13 +28,6 @@ const steps = [
       </SectionHeading>
 
       <div class="assistant__details">
-        <div class="assistant__lead">
-          <h3 class="assistant__kicker">L'IA repère ce que personne ne voit passer</h3>
-          <p class="assistant__body">
-            Notre assistant comprend votre métier et vous aide à garantir la cohérence des
-            données de votre système.
-          </p>
-        </div>
         <ol class="assistant__steps">
           {
             steps.map((step, index) => (
@@ -198,31 +191,6 @@ const steps = [
     display: flex;
     flex-direction: column;
     gap: var(--space-32);
-  }
-
-  .assistant__lead {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-8);
-  }
-
-  .assistant__kicker {
-    margin: 0;
-    color: var(--color-primary-800);
-    font-family: var(--font-section);
-    font-size: var(--font-size-h3);
-    font-weight: var(--font-weight-medium);
-    letter-spacing: 0;
-    line-height: var(--line-height-heading);
-  }
-
-  .assistant__body {
-    margin: 0;
-    color: var(--color-primary-800);
-    font-family: var(--font-section);
-    font-size: var(--font-size-body);
-    font-weight: var(--font-weight-regular);
-    line-height: var(--line-height-body);
   }
 
   .assistant__steps {
