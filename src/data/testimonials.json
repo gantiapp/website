@@ -18,13 +18,13 @@
     "logo": "/images/logos-clients/auchan.png"
   },
   {
-    "name": "Rémi Dejonghe",
-    "role": "Proxy Product Owner",
-    "company": "Auchan",
-    "domain": "SI Commerce",
-    "quote": "Avant, traiter notre supervision, c’était méchant. Maintenant, c’est Ganti !",
+    "name": "Philippe Laby",
+    "role": "Responsable applicatif",
+    "company": "Leroy Merlin",
+    "domain": "Leroy Merlin",
+    "quote": "Avec Ganti, nous ne subissons plus le RUN, nous le pilotons. L’observabilité entre nos applications nous permet de détecter les anomalies plus tôt et de réduire l’impact sur nos utilisateurs et nos clients finaux.",
     "rating": 5,
-    "logo": "/images/logos-clients/auchan.png"
+    "logo": "/images/logos-clients/leroy-merlin.png"
   },
   {
     "name": "Jacques Branchu",
