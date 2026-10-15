@@ -1,5 +1,8 @@
 ---
-import { IconCheck, IconChevronDown, IconRobot, IconShieldCheck } from '@tabler/icons-astro';
+import { IconCheck, IconChevronDown, IconRobot, IconSend, IconShieldCheck } from '@tabler/icons-astro';
+
+const ruleText = '« Chaque produit actif doit avoir un taux de taxe conforme au référentiel. »';
+const promptText = 'Chaque produit actif doit avoir un taux de taxe conforme au référentiel.';
 ---
 
 <article class="ia-control" data-ia-control aria-hidden="true">
@@ -14,7 +17,8 @@ import { IconCheck, IconChevronDown, IconRobot, IconShieldCheck } from '@tabler/
   <p class="ia-control__label">Votre règle métier</p>
   <div class="ia-control__quote">
     <p class="ia-control__quote-text">
-      <span data-ia-rule>« Chaque produit actif doit avoir un taux de taxe conforme au référentiel. »</span><span class="ia-control__caret"></span>
+      <span class="ia-control__sizer" aria-hidden="true">{ruleText}</span>
+      <span data-ia-rule>{ruleText}</span>
     </p>
   </div>
 
@@ -30,12 +34,43 @@ import { IconCheck, IconChevronDown, IconRobot, IconShieldCheck } from '@tabler/
     </span>
   </div>
 
-  <pre class="ia-control__sql"><span class="ia-control__line" data-ia-line="1"><span class="ia-control__kw">SELECT</span> product_id, name, tax_rate</span><span class="ia-control__line" data-ia-line="2"><span class="ia-control__kw">FROM</span> PIM_Products</span><span class="ia-control__line" data-ia-line="3"><span class="ia-control__kw">WHERE</span> tax_rate <span class="ia-control__kw">NOT IN</span> (5.5, 20.00);</span></pre>
+  <div class="ia-control__sql-wrap">
+    <div class="ia-control__loading">
+      <div class="ia-control__loading-meta">
+        <span class="ia-control__loading-avatar">
+          <IconRobot size={16} stroke={1.5} />
+        </span>
+        <span class="ia-control__loading-name">GAIA</span>
+        <time class="ia-control__loading-time" data-ia-loading-time datetime="16:13">16:13</time>
+      </div>
+      <span class="ia-control__dots" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+    </div>
+    <pre class="ia-control__sql"><span class="ia-control__line" data-ia-line="1"><span class="ia-control__kw">SELECT</span> product_id, name, tax_rate</span><span class="ia-control__line" data-ia-line="2"><span class="ia-control__kw">FROM</span> PIM_Products</span><span class="ia-control__line" data-ia-line="3"><span class="ia-control__kw">WHERE</span> tax_rate <span class="ia-control__kw">NOT IN</span> (5.5, 20.00);</span></pre>
+  </div>
 
   <p class="ia-control__note">
     <IconShieldCheck size={16} stroke={1.75} />
     Une proposition, jamais une décision à votre place.
   </p>
+
+  <div class="ia-control__composer">
+    <div class="ia-control__field">
+      <p class="ia-control__composer-copy">
+        <span class="ia-control__placeholder">Décrivez votre règle métier...</span>
+        <span class="ia-control__sizer" aria-hidden="true">{promptText}</span>
+        <span class="ia-control__typed-line">
+          <span data-ia-composer-text></span><span class="ia-control__caret"></span>
+        </span>
+      </p>
+      <span class="ia-control__send">
+        <IconSend size={16} stroke={1.5} />
+      </span>
+    </div>
+  </div>
 </article>
 
 <script>
@@ -50,54 +85,87 @@ import { IconCheck, IconChevronDown, IconRobot, IconShieldCheck } from '@tabler/
       }
 
       const rule = schema.querySelector('[data-ia-rule]');
-      if (!(rule instanceof HTMLElement)) {
+      const composerText = schema.querySelector('[data-ia-composer-text]');
+      const composerSizer = schema.querySelector('.ia-control__composer-copy .ia-control__sizer');
+      if (!(rule instanceof HTMLElement) || !(composerText instanceof HTMLElement) || !(composerSizer instanceof HTMLElement)) {
         return;
       }
 
-      const ruleText = (rule.textContent ?? '').replace(/\s+/g, ' ').trim();
-      const stateClasses = ['is-animating', 'is-typing', 'is-arrow', 'is-badge', 'is-sql-1', 'is-sql-2', 'is-sql-3'];
+      const prompt = (composerSizer.textContent ?? '').replace(/\s+/g, ' ').trim();
+      const stateClasses = ['is-animating', 'is-typing', 'is-sent', 'is-arrow', 'is-loading', 'is-badge', 'is-sql-1', 'is-sql-2', 'is-sql-3'];
 
       const reset = () => {
         stateClasses.forEach((className) => schema.classList.remove(className));
         schema.classList.add('is-animating');
-        rule.textContent = '';
+        composerText.textContent = '';
       };
 
       playWhileVisible(schema, async (wait) => {
         reset();
-        if (!(await wait(420))) {
+        if (!(await wait(500))) {
           return;
         }
 
         schema.classList.add('is-typing');
-        const ruleTyped = await typeText(rule, ruleText, 22, wait);
-        if (!ruleTyped) {
+        const promptTyped = await typeText(composerText, prompt, 30, wait);
+        if (!promptTyped) {
+          return;
+        }
+
+        if (!(await wait(360))) {
           return;
         }
 
         schema.classList.remove('is-typing');
+        composerText.textContent = '';
+        schema.classList.add('is-sent');
+        if (!(await wait(380))) {
+          return;
+        }
+
         schema.classList.add('is-arrow');
+        if (!(await wait(440))) {
+          return;
+        }
+
+        const loadingTime = schema.querySelector('[data-ia-loading-time]');
+        if (loadingTime instanceof HTMLTimeElement) {
+          const now = new Date();
+          const clock = new Intl.DateTimeFormat(undefined, {
+            hour: '2-digit',
+            minute: '2-digit',
+          }).format(now);
+          loadingTime.textContent = clock;
+          loadingTime.dateTime = now.toISOString();
+        }
+
+        schema.classList.add('is-loading');
+        if (!(await wait(1650))) {
+          return;
+        }
+
+        schema.classList.remove('is-loading');
         if (!(await wait(320))) {
           return;
         }
 
         schema.classList.add('is-badge');
-        if (!(await wait(280))) {
+        if (!(await wait(360))) {
           return;
         }
 
         schema.classList.add('is-sql-1');
-        if (!(await wait(380))) {
+        if (!(await wait(480))) {
           return;
         }
 
         schema.classList.add('is-sql-2');
-        if (!(await wait(380))) {
+        if (!(await wait(480))) {
           return;
         }
 
         schema.classList.add('is-sql-3');
-        await wait(4600);
+        await wait(4800);
       });
     });
   }
@@ -184,21 +252,55 @@ import { IconCheck, IconChevronDown, IconRobot, IconShieldCheck } from '@tabler/
     box-sizing: border-box;
     margin: 0;
     border-radius: var(--radius-m);
+  }
+
+  .ia-control__quote {
+    background: var(--color-gray-100);
+  }
+
+  .ia-control__sql {
     background: var(--color-gray-100);
   }
 
   .ia-control__quote {
-    min-height: 76px;
     padding: var(--space-16);
   }
 
-  .ia-control__quote-text {
+  .ia-control__quote-text,
+  .ia-control__composer-copy {
+    display: grid;
     margin: 0;
+  }
+
+  .ia-control__quote-text > *,
+  .ia-control__composer-copy > * {
+    grid-area: 1 / 1;
+  }
+
+  .ia-control__quote-text {
     color: var(--color-primary-800);
     font-family: var(--font-body);
     font-size: var(--font-size-body);
     font-weight: var(--font-weight-medium);
     line-height: 1.45;
+  }
+
+  .ia-control__sizer,
+  .ia-control__typed-line {
+    white-space: pre-wrap;
+  }
+
+  .ia-control__sizer {
+    visibility: hidden;
+  }
+
+  .ia-control.is-animating [data-ia-rule] {
+    opacity: 0;
+    transition: opacity 0.45s ease;
+  }
+
+  .ia-control.is-animating.is-sent [data-ia-rule] {
+    opacity: 1;
   }
 
   .ia-control__caret {
@@ -207,7 +309,7 @@ import { IconCheck, IconChevronDown, IconRobot, IconShieldCheck } from '@tabler/
     height: 0.95em;
     margin-left: 2px;
     background: var(--color-primary-500);
-    vertical-align: -0.1em;
+    vertical-align: -0.12em;
     animation: ia-control-caret 0.9s steps(1) infinite;
   }
 
@@ -240,6 +342,96 @@ import { IconCheck, IconChevronDown, IconRobot, IconShieldCheck } from '@tabler/
     white-space: nowrap;
   }
 
+  .ia-control__sql-wrap {
+    position: relative;
+  }
+
+  .ia-control.is-animating:not(.is-badge) .ia-control__proposal {
+    visibility: hidden;
+  }
+
+  .ia-control.is-animating:not(.is-sql-1):not(.is-sql-2):not(.is-sql-3) .ia-control__sql {
+    background: transparent;
+    transition: background-color 0.45s ease;
+  }
+
+  .ia-control__loading {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+  }
+
+  .ia-control.is-animating.is-loading .ia-control__loading {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .ia-control__loading-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+  }
+
+  .ia-control__loading-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    background: var(--color-gray-100);
+    color: var(--color-gray-600);
+  }
+
+  .ia-control__loading-name {
+    flex: 1;
+    color: var(--color-gray-800);
+    font-family: var(--font-body);
+    font-size: var(--font-size-12);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1.25;
+  }
+
+  .ia-control__loading-time {
+    color: var(--color-gray-600);
+    font-family: var(--font-body);
+    font-size: var(--font-size-12);
+    font-weight: 300;
+    line-height: 1.2;
+  }
+
+  .ia-control__dots {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: 40px;
+    min-height: 16px;
+  }
+
+  .ia-control__dots span {
+    width: 6px;
+    height: 6px;
+    border-radius: var(--radius-pill);
+    background: var(--color-primary-500);
+    animation: ia-control-dot 1s ease-in-out infinite;
+  }
+
+  .ia-control__dots span:nth-child(2) {
+    animation-delay: 0.16s;
+  }
+
+  .ia-control__dots span:nth-child(3) {
+    animation-delay: 0.32s;
+  }
+
   .ia-control__sql {
     display: flex;
     flex-direction: column;
@@ -251,6 +443,56 @@ import { IconCheck, IconChevronDown, IconRobot, IconShieldCheck } from '@tabler/
     font-size: 13px;
     line-height: 1.55;
     white-space: pre-wrap;
+  }
+
+  .ia-control__composer {
+    display: flex;
+  }
+
+  .ia-control__field {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--space-8);
+    width: 100%;
+    padding: var(--space-8) var(--space-8) var(--space-8) var(--space-16);
+    border-radius: var(--radius-m);
+    background: var(--color-gray-100);
+  }
+
+  .ia-control__composer-copy {
+    flex: 1;
+    min-width: 0;
+    padding: var(--space-6) 0;
+    color: var(--color-gray-500);
+    font-family: var(--font-body);
+    font-size: var(--font-size-12);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.35;
+  }
+
+  .ia-control.is-typing .ia-control__composer-copy {
+    color: var(--color-primary-800);
+  }
+
+  .ia-control.is-typing .ia-control__placeholder {
+    display: none;
+  }
+
+  .ia-control__send {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-pill);
+    background: var(--color-gray-200);
+    color: var(--color-gray-400);
+  }
+
+  .ia-control.is-typing .ia-control__send {
+    color: var(--color-primary-50);
+    background: var(--color-primary-500);
   }
 
   .ia-control__kw {
@@ -286,7 +528,9 @@ import { IconCheck, IconChevronDown, IconRobot, IconShieldCheck } from '@tabler/
   .ia-control__arrow,
   .ia-control__badge,
   .ia-control__line {
-    transition: opacity 0.35s ease, transform 0.35s ease;
+    transition:
+      opacity 0.45s ease,
+      transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .ia-control :global(svg) {
@@ -306,11 +550,33 @@ import { IconCheck, IconChevronDown, IconRobot, IconShieldCheck } from '@tabler/
     }
   }
 
+  @keyframes ia-control-dot {
+    0%,
+    80%,
+    100% {
+      opacity: 0.28;
+      transform: translateY(0);
+    }
+
+    40% {
+      opacity: 1;
+      transform: translateY(-3px);
+    }
+  }
+
+  @container (max-width: 1280px) {
+    .ia-control,
+    .ia-feature--reverse .ia-control {
+      margin-left: 0;
+      margin-right: auto;
+    }
+  }
+
   @media (max-width: 1024px) {
     .ia-control,
     .ia-feature--reverse .ia-control {
+      margin-left: 0;
       margin-right: auto;
-      margin-left: auto;
     }
   }
 
@@ -322,10 +588,17 @@ import { IconCheck, IconChevronDown, IconRobot, IconShieldCheck } from '@tabler/
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .ia-control__caret {
+    .ia-control__caret,
+    .ia-control__loading,
+    .ia-control__sizer {
       display: none;
     }
 
+    .ia-control.is-animating:not(.is-sql-1):not(.is-sql-2):not(.is-sql-3) .ia-control__sql {
+      background: var(--color-gray-100);
+    }
+
+    .ia-control.is-animating [data-ia-rule],
     .ia-control.is-animating .ia-control__arrow,
     .ia-control.is-animating .ia-control__badge,
     .ia-control.is-animating .ia-control__line {
