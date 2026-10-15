@@ -353,10 +353,19 @@ const cards = [
     }
   }
 
-  @media (max-width: 1024px) {
-    .ia-env {
+  @container (max-width: 1280px) {
+    .ia-env,
+    .ia-feature--reverse .ia-env {
+      margin-left: 0;
       margin-right: auto;
-      margin-left: auto;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .ia-env,
+    .ia-feature--reverse .ia-env {
+      margin-left: 0;
+      margin-right: auto;
     }
   }
 

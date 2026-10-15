@@ -307,10 +307,19 @@ const rows = [
     }
   }
 
-  @media (max-width: 1024px) {
-    .ia-gaps {
+  @container (max-width: 1280px) {
+    .ia-gaps,
+    .ia-feature--reverse .ia-gaps {
+      margin-left: 0;
       margin-right: auto;
-      margin-left: auto;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .ia-gaps,
+    .ia-feature--reverse .ia-gaps {
+      margin-left: 0;
+      margin-right: auto;
     }
   }
 
