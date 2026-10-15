@@ -85,11 +85,9 @@ const { title, description, href, imageSrc, imageAlt } = Astro.props;
   .module-panel__title {
     margin: 0;
     color: var(--module-accent);
-    font-family: var(--font-display);
+    font-family: var(--font-section);
     font-size: var(--font-size-h2);
     font-weight: var(--font-weight-bold);
-    font-optical-sizing: none;
-    font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 700;
     letter-spacing: 0;
     line-height: var(--line-height-heading);
   }
@@ -97,7 +95,7 @@ const { title, description, href, imageSrc, imageAlt } = Astro.props;
   .module-panel__description {
     margin: 0;
     color: var(--color-base-black);
-    font-family: var(--font-body);
+    font-family: var(--font-section);
     font-size: var(--font-size-body);
     font-weight: var(--font-weight-regular);
     line-height: var(--line-height-body);
