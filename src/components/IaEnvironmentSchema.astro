@@ -1,0 +1,415 @@
+---
+import { IconDatabase, IconHierarchy, IconLock, IconSitemap, IconSparkles } from '@tabler/icons-astro';
+
+const cards = [
+  {
+    id: '1',
+    title: 'Vos données',
+    text: 'Votre contexte métier',
+    tone: 'source',
+  },
+  {
+    id: '2',
+    title: 'GAIA',
+    text: 'Le lien avec vos équipes',
+    tone: 'gaia',
+  },
+  {
+    id: '3',
+    title: 'Vos modèles',
+    text: 'Votre intelligence interne',
+    tone: 'models',
+  },
+];
+---
+
+<article class="ia-env" data-ia-env aria-hidden="true">
+  <header class="ia-env__header">
+    <span class="ia-env__mark">
+      <IconHierarchy size={18} stroke={1.75} />
+    </span>
+    <h3 class="ia-env__title">Votre environnement, votre IA</h3>
+    <span class="ia-env__step">03 / GAIA</span>
+  </header>
+
+  <div class="ia-env__flow">
+    {
+      cards.map((card, index) => (
+        <>
+          {index > 0 && <span class:list={['ia-env__link', `ia-env__link--${index}`]} aria-hidden="true"></span>}
+          <div class:list={['ia-env__card', `ia-env__card--${card.tone}`]} data-ia-card={card.id}>
+            <span class="ia-env__icon">
+              {card.tone === 'source' && <IconDatabase size={28} stroke={1.5} />}
+              {card.tone === 'gaia' && <IconSparkles size={28} stroke={1.5} />}
+              {card.tone === 'models' && <IconSitemap size={28} stroke={1.5} />}
+            </span>
+            <p class="ia-env__card-title">{card.title}</p>
+            <p class="ia-env__card-text">{card.text}</p>
+          </div>
+        </>
+      ))
+    }
+  </div>
+
+  <p class="ia-env__note" data-ia-note>
+    <IconLock size={16} stroke={1.75} />
+    Un cadre de connexion à définir ensemble
+  </p>
+</article>
+
+<script>
+  import { playWhileVisible } from '../scripts/ia-schema.js';
+
+  function setupEnvironmentSchemas() {
+    const schemas = document.querySelectorAll('[data-ia-env]');
+
+    schemas.forEach((schema) => {
+      if (!(schema instanceof HTMLElement)) {
+        return;
+      }
+
+      const stateClasses = [
+        'is-animating',
+        'is-card-1',
+        'is-card-2',
+        'is-card-3',
+        'is-link-1',
+        'is-link-2',
+        'is-note',
+        'is-pulsing',
+      ];
+
+      const reset = () => {
+        stateClasses.forEach((className) => schema.classList.remove(className));
+        schema.classList.add('is-animating');
+      };
+
+      playWhileVisible(schema, async (wait) => {
+        reset();
+        if (!(await wait(320))) {
+          return;
+        }
+
+        schema.classList.add('is-card-1');
+        if (!(await wait(280))) {
+          return;
+        }
+
+        schema.classList.add('is-link-1');
+        if (!(await wait(320))) {
+          return;
+        }
+
+        schema.classList.add('is-card-2');
+        if (!(await wait(280))) {
+          return;
+        }
+
+        schema.classList.add('is-link-2');
+        if (!(await wait(320))) {
+          return;
+        }
+
+        schema.classList.add('is-card-3');
+        if (!(await wait(280))) {
+          return;
+        }
+
+        schema.classList.add('is-note', 'is-pulsing');
+        await wait(4600);
+      });
+    });
+  }
+
+  setupEnvironmentSchemas();
+</script>
+
+<style>
+  .ia-env {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 552px;
+    margin-left: auto;
+    padding: var(--space-20);
+    border: var(--stroke-width) solid var(--color-border);
+    border-radius: var(--radius-l);
+    background: var(--color-base-white);
+    box-shadow: 0 0 16px rgb(0 0 0 / 0.08);
+  }
+
+  .ia-env__header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+  }
+
+  .ia-env__mark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-s);
+    background: var(--color-primary-500);
+    color: var(--color-base-white);
+  }
+
+  .ia-env__title {
+    margin: 0;
+    color: var(--color-primary-800);
+    font-family: var(--font-body);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1.2;
+  }
+
+  .ia-env__step {
+    margin-left: auto;
+    color: var(--color-gray-500);
+    font-family: var(--font-body);
+    font-size: var(--font-size-12);
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .ia-env__flow {
+    display: flex;
+    align-items: center;
+    min-height: 220px;
+    padding: var(--space-16) 0 var(--space-8);
+  }
+
+  .ia-env__card {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-8);
+    min-width: 0;
+    padding: var(--space-20) var(--space-12);
+    border: var(--stroke-width) solid var(--color-border);
+    border-radius: var(--radius-m);
+    background: var(--color-base-white);
+    text-align: center;
+  }
+
+  .ia-env__card--gaia {
+    border-color: var(--color-primary-200);
+  }
+
+  .ia-env__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    color: var(--color-primary-800);
+  }
+
+  .ia-env__card--gaia .ia-env__icon,
+  .ia-env__card--gaia .ia-env__card-title {
+    color: var(--color-primary-500);
+  }
+
+  .ia-env__card-title,
+  .ia-env__card-text {
+    margin: 0;
+  }
+
+  .ia-env__card-title {
+    color: var(--color-primary-800);
+    font-family: var(--font-body);
+    font-size: var(--font-size-14);
+    font-weight: var(--font-weight-bold);
+    line-height: 1.2;
+  }
+
+  .ia-env__card-text {
+    color: var(--color-gray-500);
+    font-family: var(--font-body);
+    font-size: var(--font-size-12);
+    line-height: 1.35;
+  }
+
+  .ia-env__link {
+    position: relative;
+    flex: 0 0 28px;
+    height: 1px;
+    background: var(--color-gray-300);
+    transform-origin: left center;
+  }
+
+  .ia-env__link::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 7px;
+    height: 7px;
+    border-radius: var(--radius-pill);
+    background: var(--color-primary-500);
+    opacity: 0;
+    transform: translate(-50%, -50%);
+  }
+
+  .ia-env.is-pulsing .ia-env__link::after {
+    animation: ia-env-pulse 1.6s ease-in-out infinite;
+  }
+
+  .ia-env.is-pulsing .ia-env__link--2::after {
+    animation-delay: 0.45s;
+  }
+
+  .ia-env__note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-8);
+    margin: 0;
+    padding-top: var(--space-16);
+    border-top: var(--stroke-width) solid var(--color-gray-200);
+    color: var(--color-gray-500);
+    font-family: var(--font-body);
+    font-size: var(--font-size-12);
+    line-height: 1.3;
+  }
+
+  .ia-env.is-animating .ia-env__card,
+  .ia-env.is-animating .ia-env__note {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  .ia-env.is-animating .ia-env__link {
+    transform: scaleX(0);
+  }
+
+  .ia-env.is-animating.is-card-1 .ia-env__card[data-ia-card='1'],
+  .ia-env.is-animating.is-card-2 .ia-env__card[data-ia-card='2'],
+  .ia-env.is-animating.is-card-3 .ia-env__card[data-ia-card='3'],
+  .ia-env.is-animating.is-note .ia-env__note {
+    opacity: 1;
+    transform: none;
+  }
+
+  .ia-env.is-animating.is-link-1 .ia-env__link--1,
+  .ia-env.is-animating.is-link-2 .ia-env__link--2 {
+    transform: scaleX(1);
+  }
+
+  .ia-env__card,
+  .ia-env__note,
+  .ia-env__link {
+    transition: opacity 0.4s ease, transform 0.45s ease;
+  }
+
+  .ia-env :global(svg) {
+    display: block;
+    flex-shrink: 0;
+  }
+
+  @keyframes ia-env-pulse {
+    0% {
+      left: 0;
+      opacity: 0;
+    }
+
+    18% {
+      opacity: 1;
+    }
+
+    82% {
+      opacity: 1;
+    }
+
+    100% {
+      left: 100%;
+      opacity: 0;
+    }
+  }
+
+  @keyframes ia-env-pulse-vertical {
+    0% {
+      top: 0;
+      left: 50%;
+      opacity: 0;
+    }
+
+    18% {
+      opacity: 1;
+    }
+
+    82% {
+      opacity: 1;
+    }
+
+    100% {
+      top: 100%;
+      left: 50%;
+      opacity: 0;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .ia-env {
+      margin-right: auto;
+      margin-left: auto;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .ia-env__flow {
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    .ia-env__card {
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .ia-env__link {
+      flex-basis: 20px;
+      width: 1px;
+      height: 20px;
+      transform-origin: center top;
+    }
+
+    .ia-env.is-animating .ia-env__link {
+      transform: scaleY(0);
+    }
+
+    .ia-env.is-animating.is-link-1 .ia-env__link--1,
+    .ia-env.is-animating.is-link-2 .ia-env__link--2 {
+      transform: scaleY(1);
+    }
+
+    .ia-env.is-pulsing .ia-env__link::after {
+      animation-name: ia-env-pulse-vertical;
+    }
+
+    .ia-env__header {
+      align-items: flex-start;
+    }
+
+    .ia-env__title {
+      min-width: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ia-env__link::after {
+      content: none;
+    }
+
+    .ia-env.is-animating .ia-env__card,
+    .ia-env.is-animating .ia-env__note,
+    .ia-env.is-animating .ia-env__link {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>

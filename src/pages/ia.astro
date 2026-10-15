@@ -1,0 +1,344 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import Highlight from '../components/Highlight.astro';
+import IaControlSchema from '../components/IaControlSchema.astro';
+import IaEnvironmentSchema from '../components/IaEnvironmentSchema.astro';
+import IaFeature from '../components/IaFeature.astro';
+import IaGapsSchema from '../components/IaGapsSchema.astro';
+
+const principles = [
+  {
+    icon: '/images/ia/exprimer.svg',
+    title: 'Exprimer le besoin',
+    text: 'Décrivez votre règle métier ou votre question. GAIA vous aide à préciser ce qui doit être vérifié.',
+  },
+  {
+    icon: '/images/ia/main.svg',
+    title: 'Vous gardez la main',
+    text: 'Les propositions de l’assistant sont à examiner et à valider par vos équipes.',
+  },
+  {
+    icon: '/images/ia/reponse.svg',
+    title: 'Construire la réponse',
+    text: 'L’assistant propose un contrôle ou accompagne l’interprétation des résultats avec vous.',
+  },
+  {
+    icon: '/images/ia/contexte.svg',
+    title: 'Votre contexte, votre intelligence',
+    text: 'Une approche ancrée dans vos règles métier et ouverte à vos modèles internes.',
+  },
+  {
+    icon: '/images/ia/valider.svg',
+    title: 'Valider et agir',
+    text: 'Vous relisez la proposition, validez le contrôle et décidez des suites à donner aux écarts.',
+  },
+  {
+    icon: '/images/ia/integration.svg',
+    title: 'Une intégration à cadrer ensemble',
+    text: 'Sources accessibles, modèles et contraintes de sécurité : définissons le périmètre adapté à votre organisation.',
+  },
+];
+
+const ctaTitle = 'Et si vos données avaient leur propre copilote ?';
+---
+
+<BaseLayout title="IA — Ganti">
+  <header class="ia-hero" id="gaia">
+    <h1 class="ia-hero__title">
+      GAIA, votre copilote <Highlight rotate={-1.92}>data</Highlight>.
+    </h1>
+    <p class="ia-hero__subtitle">
+      Une IA qui comprend <Highlight strong rotate={0.73} seed={1}>votre métier</Highlight>. Des contrôles plus simples, des analyses <Highlight strong rotate={0.73} seed={2}>plus claires</Highlight>.
+    </p>
+  </header>
+
+  <IaFeature
+    id="regles-metier"
+    muted
+    titleLines={['Vos règles métier.', 'Des contrôles concrets.']}
+    description="Décrivez ce que vous souhaitez vérifier, avec vos mots. GAIA vous accompagne pour traduire votre besoin métier en un contrôle de données compréhensible et exploitable."
+    points={[
+      'Exprimez vos règles en langage naturel',
+      'Obtenez une proposition de contrôle SQL',
+      'Relisez et validez avant toute utilisation',
+    ]}
+  >
+    <IaControlSchema />
+  </IaFeature>
+
+  <IaFeature
+    id="anomalies"
+    reverse
+    titleLines={['Des anomalies.', 'Et surtout, des réponses.']}
+    description="Explorez vos données avec un assistant à vos côtés. Posez une question, examinez les résultats et approfondissez les écarts pour comprendre leur origine, sans perdre le fil de votre analyse."
+    points={[
+      'Interrogez les résultats de vos contrôles',
+      'Mettez les écarts en perspective avec votre métier',
+      'Affinez l’analyse au fil de la conversation',
+    ]}
+  >
+    <IaGapsSchema />
+  </IaFeature>
+
+  <IaFeature
+    id="environnement"
+    muted
+    titleLines={['Votre intelligence.', 'Dans votre environnement.']}
+    description="Vous disposez déjà de modèles IA internes ? La connexion à vos modèles permet d’inscrire GAIA dans votre écosystème, en tenant compte de vos choix technologiques et de vos besoins métier."
+    points={[
+      'Capitalisez sur vos modèles internes',
+      'Intégrez l’IA à votre écosystème existant',
+      'Définissez les modalités de connexion avec Ganti',
+    ]}
+  >
+    <IaEnvironmentSchema />
+  </IaFeature>
+
+  <section class="ia-principles" aria-labelledby="ia-principles-title">
+    <div class="ia-principles__inner">
+      <header class="ia-principles__header">
+        <h2 class="ia-principles__title" id="ia-principles-title">
+          L’intelligence est artificielle.<br />
+          La décision reste humaine.
+        </h2>
+        <p class="ia-principles__subtitle">
+          Votre connaissance du métier et votre regard critique restent au cœur de chaque contrôle et de chaque analyse.
+        </p>
+      </header>
+      <ul class="ia-principles__grid">
+        {
+          principles.map((principle) => (
+            <li class="ia-principles__item">
+              <img src={principle.icon} alt="" width="32" height="32" />
+              <div class="ia-principles__copy">
+                <h3 class="ia-principles__item-title">{principle.title}</h3>
+                <p class="ia-principles__item-text">{principle.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="ia-cta" aria-label={ctaTitle}>
+    <div class="ia-cta__copy">
+      <h2 class="ia-cta__title">{ctaTitle}</h2>
+      <p class="ia-cta__subtitle">{ctaTitle}</p>
+    </div>
+    <Button href="/contact" variant="inverse">Nous contacter</Button>
+  </section>
+</BaseLayout>
+
+<style>
+  .ia-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-16);
+    box-sizing: border-box;
+    padding: var(--space-64) var(--space-page);
+    text-align: center;
+  }
+
+  .ia-hero__title {
+    margin: 0;
+    color: var(--color-base-black);
+    font-family: var(--font-display);
+    font-size: var(--font-size-h1);
+    font-weight: var(--font-weight-extrabold);
+    font-optical-sizing: none;
+    font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 800;
+    letter-spacing: 0;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  .ia-hero__subtitle {
+    margin: 0;
+    max-width: 1040px;
+    color: var(--color-base-black);
+    font-family: var(--font-display);
+    font-size: var(--font-size-subtitle);
+    font-weight: var(--font-weight-medium);
+    font-optical-sizing: none;
+    font-variation-settings: "opsz" var(--font-opsz-figma), "wdth" 100, "wght" 500;
+    letter-spacing: 0;
+    line-height: 1.35;
+  }
+
+  .ia-principles {
+    box-sizing: border-box;
+    padding: var(--space-section-y) var(--space-page-marketing);
+  }
+
+  .ia-principles__inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-96);
+    max-width: 1408px;
+    margin: 0 auto;
+  }
+
+  .ia-principles__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-16);
+    text-align: center;
+  }
+
+  .ia-principles__title {
+    margin: 0;
+    color: var(--color-primary-800);
+    font-family: var(--font-section);
+    font-size: var(--font-size-h1);
+    font-weight: var(--font-weight-extrabold);
+    letter-spacing: 0;
+    line-height: var(--line-height-heading);
+  }
+
+  .ia-principles__subtitle {
+    margin: 0;
+    max-width: 720px;
+    color: var(--color-primary-800);
+    font-family: var(--font-body);
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-body);
+  }
+
+  .ia-principles__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-64);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ia-principles__item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-16);
+    min-width: 0;
+  }
+
+  .ia-principles__item img {
+    display: block;
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+  }
+
+  .ia-principles__copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    min-width: 0;
+  }
+
+  .ia-principles__item-title {
+    margin: 0;
+    color: var(--color-primary-800);
+    font-family: var(--font-section);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-bold);
+    line-height: 1.3;
+  }
+
+  .ia-principles__item-text {
+    margin: 0;
+    color: var(--color-primary-800);
+    font-family: var(--font-body);
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-body);
+    opacity: 0.75;
+  }
+
+  .ia-cta {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-64);
+    box-sizing: border-box;
+    width: 100%;
+    padding: var(--space-128) var(--space-page-wide);
+    background: var(--color-primary-700);
+  }
+
+  .ia-cta__copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+    max-width: 846px;
+  }
+
+  .ia-cta__title {
+    margin: 0;
+    color: var(--color-primary-50);
+    font-family: var(--font-section);
+    font-size: var(--font-size-h2);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: 0;
+    line-height: var(--line-height-heading);
+  }
+
+  .ia-cta__subtitle {
+    margin: 0;
+    color: var(--color-primary-50);
+    font-family: var(--font-body);
+    font-size: var(--font-size-body-large);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-body);
+  }
+
+  .ia-cta :global(.button) {
+    align-self: flex-end;
+  }
+
+  @media (max-width: 1280px) {
+    .ia-cta {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-48);
+    }
+
+    .ia-cta :global(.button) {
+      align-self: flex-start;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .ia-principles__grid {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-32);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .ia-hero__title {
+      max-width: 100%;
+      white-space: normal;
+    }
+
+    .ia-principles__inner {
+      gap: var(--space-32);
+    }
+
+    .ia-principles__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .ia-cta {
+      gap: var(--space-32);
+      padding: var(--space-section-y) var(--space-page);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .ia-cta :global(.button) {
+      width: 100%;
+    }
+  }
+</style>

@@ -1,0 +1,220 @@
+---
+interface Props {
+  id?: string;
+  titleLines: string[];
+  description: string;
+  points: string[];
+  reverse?: boolean;
+  muted?: boolean;
+}
+
+const { id, titleLines, description, points, reverse = false, muted = false } = Astro.props;
+---
+
+<section
+  id={id}
+  class:list={['ia-feature', reverse && 'ia-feature--reverse', muted && 'ia-feature--muted']}
+>
+  <div class="ia-feature__inner">
+    <div class="ia-feature__copy">
+      <div class="ia-feature__intro">
+        <h2 class="ia-feature__title">
+          {
+            titleLines.map((line, index) => (
+              <>
+                {index > 0 && <br />}
+                {line}
+              </>
+            ))
+          }
+        </h2>
+        <p class="ia-feature__description">{description}</p>
+      </div>
+      <ul class="ia-feature__points">
+        {
+          points.map((point) => (
+            <li class="ia-feature__point">
+              <img src="/images/ia/check.svg" alt="" width="20" height="20" />
+              <span>{point}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+    <div class="ia-feature__visual">
+      <slot />
+    </div>
+  </div>
+</section>
+
+<style>
+  .ia-feature {
+    container-type: inline-size;
+    box-sizing: border-box;
+    padding: var(--space-section-y) var(--space-page-marketing);
+    background: var(--color-bg);
+  }
+
+  .ia-feature--muted {
+    background: var(--color-bg-muted);
+  }
+
+  .ia-feature__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(480px, 552px);
+    align-items: center;
+    gap: clamp(var(--space-48), 8vw, var(--space-128));
+    max-width: 1408px;
+    margin: 0 auto;
+  }
+
+  .ia-feature__copy {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .ia-feature__visual {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .ia-feature--reverse .ia-feature__inner {
+    grid-template-columns: minmax(480px, 552px) minmax(0, 1fr);
+  }
+
+  .ia-feature--reverse .ia-feature__copy {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .ia-feature--reverse .ia-feature__visual {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .ia-feature__copy,
+  .ia-feature__intro,
+  .ia-feature__points {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ia-feature__copy {
+    gap: var(--space-48);
+    min-width: 0;
+  }
+
+  .ia-feature__intro {
+    gap: var(--space-16);
+  }
+
+  .ia-feature__title {
+    margin: 0;
+    color: var(--color-primary-800);
+    font-family: var(--font-section);
+    font-size: var(--font-size-h1);
+    font-weight: var(--font-weight-extrabold);
+    letter-spacing: 0;
+    line-height: var(--line-height-heading);
+  }
+
+  .ia-feature__description {
+    margin: 0;
+    color: var(--color-primary-800);
+    font-family: var(--font-body);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-body);
+  }
+
+  .ia-feature__points {
+    gap: var(--space-12);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ia-feature__point {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-8);
+    color: var(--color-primary-800);
+    font-family: var(--font-body);
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-body);
+  }
+
+  .ia-feature__point img {
+    display: block;
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+  }
+
+  .ia-feature__visual {
+    min-width: 0;
+  }
+
+  @container (max-width: 1280px) {
+    .ia-feature__inner,
+    .ia-feature--reverse .ia-feature__inner {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-32);
+    }
+
+    .ia-feature__copy,
+    .ia-feature--reverse .ia-feature__copy {
+      grid-column: 1;
+      grid-row: 1;
+      justify-self: stretch;
+      width: auto;
+      margin-inline: 0;
+    }
+
+    .ia-feature__visual,
+    .ia-feature--reverse .ia-feature__visual {
+      grid-column: 1;
+      grid-row: 2;
+      justify-self: stretch;
+    }
+
+    .ia-feature__visual :global(article) {
+      margin-inline: auto;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .ia-feature__inner,
+    .ia-feature--reverse .ia-feature__inner {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-32);
+    }
+
+    .ia-feature__copy,
+    .ia-feature--reverse .ia-feature__copy {
+      grid-column: 1;
+      grid-row: 1;
+      justify-self: stretch;
+      width: auto;
+      margin-inline: 0;
+    }
+
+    .ia-feature__visual,
+    .ia-feature--reverse .ia-feature__visual {
+      grid-column: 1;
+      grid-row: 2;
+      justify-self: stretch;
+    }
+
+    .ia-feature__visual :global(article) {
+      margin-inline: auto;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .ia-feature__copy {
+      gap: var(--space-32);
+    }
+  }
+</style>

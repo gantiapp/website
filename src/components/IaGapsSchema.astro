@@ -1,0 +1,340 @@
+---
+import { IconBrowser, IconSparkles } from '@tabler/icons-astro';
+
+const rows = [
+  { product: 'Produit A', expected: '5,5 %', observed: '20 %' },
+  { product: 'Produit B', expected: '20 %', observed: '0 %' },
+  { product: 'Produit C', expected: '5,5 %', observed: '10 %' },
+];
+---
+
+<article class="ia-gaps" data-ia-gaps aria-hidden="true">
+  <header class="ia-gaps__header">
+    <span class="ia-gaps__mark">
+      <IconBrowser size={18} stroke={1.75} />
+    </span>
+    <h3 class="ia-gaps__title">Comprendre les écarts</h3>
+    <span class="ia-gaps__step">02 / GAIA</span>
+  </header>
+
+  <div class="ia-gaps__summary">
+    <p class="ia-gaps__control">Contrôle des taux de taxe</p>
+    <span class="ia-gaps__count">3 écarts illustratifs</span>
+  </div>
+
+  <div class="ia-gaps__table" role="table">
+    <div class="ia-gaps__row ia-gaps__row--head" role="row">
+      <span role="columnheader">Produit</span>
+      <span role="columnheader">Taux attendu</span>
+      <span role="columnheader">Taux constaté</span>
+    </div>
+    {
+      rows.map((row, index) => (
+        <div class="ia-gaps__row" role="row" data-ia-row={String(index + 1)}>
+          <span role="cell">{row.product}</span>
+          <span role="cell">{row.expected}</span>
+          <span class="ia-gaps__observed" role="cell">{row.observed}</span>
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="ia-gaps__insight" data-ia-insight>
+    <p class="ia-gaps__insight-title">
+      <IconSparkles size={16} stroke={1.75} />
+      L’éclairage de GAIA
+    </p>
+    <p class="ia-gaps__insight-text">
+      <span data-ia-insight-text>Ces produits présentent un écart avec le taux attendu. Comparez leur catégorisation au référentiel pour préciser votre diagnostic.</span><span class="ia-gaps__caret"></span>
+    </p>
+  </div>
+
+  <p class="ia-gaps__note">Exemple de données, à titre d’illustration.</p>
+</article>
+
+<script>
+  import { playWhileVisible, typeText } from '../scripts/ia-schema.js';
+
+  function setupGapSchemas() {
+    const schemas = document.querySelectorAll('[data-ia-gaps]');
+
+    schemas.forEach((schema) => {
+      if (!(schema instanceof HTMLElement)) {
+        return;
+      }
+
+      const insightText = schema.querySelector('[data-ia-insight-text]');
+      if (!(insightText instanceof HTMLElement)) {
+        return;
+      }
+
+      const fullInsight = (insightText.textContent ?? '').replace(/\s+/g, ' ').trim();
+      const stateClasses = ['is-animating', 'is-row-1', 'is-row-2', 'is-row-3', 'is-insight', 'is-typing'];
+
+      const reset = () => {
+        stateClasses.forEach((className) => schema.classList.remove(className));
+        schema.classList.add('is-animating');
+        insightText.textContent = '';
+      };
+
+      playWhileVisible(schema, async (wait) => {
+        reset();
+        if (!(await wait(360))) {
+          return;
+        }
+
+        schema.classList.add('is-row-1');
+        if (!(await wait(420))) {
+          return;
+        }
+
+        schema.classList.add('is-row-2');
+        if (!(await wait(420))) {
+          return;
+        }
+
+        schema.classList.add('is-row-3');
+        if (!(await wait(360))) {
+          return;
+        }
+
+        schema.classList.add('is-insight', 'is-typing');
+        const insightTyped = await typeText(insightText, fullInsight, 16, wait);
+        if (!insightTyped) {
+          return;
+        }
+
+        schema.classList.remove('is-typing');
+        await wait(4200);
+      });
+    });
+  }
+
+  setupGapSchemas();
+</script>
+
+<style>
+  .ia-gaps {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 552px;
+    margin-right: auto;
+    padding: var(--space-20);
+    border: var(--stroke-width) solid var(--color-border);
+    border-radius: var(--radius-l);
+    background: var(--color-base-white);
+    box-shadow: 0 0 16px rgb(0 0 0 / 0.08);
+  }
+
+  .ia-gaps__header,
+  .ia-gaps__summary,
+  .ia-gaps__insight-title {
+    display: flex;
+    align-items: center;
+  }
+
+  .ia-gaps__header {
+    gap: var(--space-12);
+  }
+
+  .ia-gaps__mark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-s);
+    background: var(--color-primary-500);
+    color: var(--color-base-white);
+  }
+
+  .ia-gaps__title,
+  .ia-gaps__control {
+    margin: 0;
+    color: var(--color-primary-800);
+    font-family: var(--font-body);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1.2;
+  }
+
+  .ia-gaps__step {
+    margin-left: auto;
+    color: var(--color-gray-500);
+    font-family: var(--font-body);
+    font-size: var(--font-size-12);
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .ia-gaps__summary {
+    justify-content: space-between;
+    gap: var(--space-12);
+  }
+
+  .ia-gaps__count {
+    flex-shrink: 0;
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+    background: color-mix(in srgb, var(--color-alert-warning-500) 32%, white);
+    color: color-mix(in srgb, var(--color-alert-warning-500) 42%, var(--color-primary-800));
+    font-family: var(--font-body);
+    font-size: var(--font-size-12);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  .ia-gaps__table {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ia-gaps__row {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr 1fr;
+    gap: var(--space-8);
+    align-items: center;
+    padding: var(--space-12) var(--space-16);
+    border-bottom: var(--stroke-width) solid var(--color-gray-200);
+    color: var(--color-primary-800);
+    font-family: var(--font-body);
+    font-size: var(--font-size-14);
+    line-height: 1.3;
+  }
+
+  .ia-gaps__row--head {
+    border-bottom: 0;
+    border-radius: var(--radius-s);
+    background: var(--color-gray-100);
+    color: var(--color-gray-500);
+    font-size: var(--font-size-12);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .ia-gaps__observed {
+    color: color-mix(in srgb, var(--color-alert-warning-500) 48%, var(--color-primary-800));
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .ia-gaps__insight {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    min-height: 108px;
+    padding: var(--space-16);
+    border-radius: var(--radius-m);
+    background: var(--color-primary-50);
+  }
+
+  .ia-gaps__insight-title {
+    gap: var(--space-8);
+    margin: 0;
+    color: var(--color-primary-500);
+    font-family: var(--font-body);
+    font-size: var(--font-size-14);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1.2;
+  }
+
+  .ia-gaps__insight-text {
+    margin: 0;
+    color: var(--color-primary-800);
+    font-family: var(--font-body);
+    font-size: var(--font-size-14);
+    line-height: 1.45;
+  }
+
+  .ia-gaps__caret {
+    display: none;
+    width: 2px;
+    height: 0.95em;
+    margin-left: 2px;
+    background: var(--color-primary-500);
+    vertical-align: -0.1em;
+    animation: ia-gaps-caret 0.9s steps(1) infinite;
+  }
+
+  .ia-gaps.is-typing .ia-gaps__caret {
+    display: inline-block;
+  }
+
+  .ia-gaps__note {
+    margin: 0;
+    color: var(--color-gray-500);
+    font-family: var(--font-body);
+    font-size: var(--font-size-12);
+    line-height: 1.3;
+  }
+
+  .ia-gaps.is-animating .ia-gaps__row:not(.ia-gaps__row--head),
+  .ia-gaps.is-animating .ia-gaps__insight {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  .ia-gaps.is-animating.is-row-1 .ia-gaps__row[data-ia-row='1'],
+  .ia-gaps.is-animating.is-row-2 .ia-gaps__row[data-ia-row='2'],
+  .ia-gaps.is-animating.is-row-3 .ia-gaps__row[data-ia-row='3'],
+  .ia-gaps.is-animating.is-insight .ia-gaps__insight {
+    opacity: 1;
+    transform: none;
+  }
+
+  .ia-gaps__row,
+  .ia-gaps__insight {
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+
+  .ia-gaps :global(svg) {
+    display: block;
+    flex-shrink: 0;
+  }
+
+  @keyframes ia-gaps-caret {
+    0%,
+    50% {
+      opacity: 1;
+    }
+
+    50.01%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .ia-gaps {
+      margin-right: auto;
+      margin-left: auto;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .ia-gaps__summary {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .ia-gaps__row {
+      grid-template-columns: 1fr;
+      gap: var(--space-4);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ia-gaps__caret {
+      display: none;
+    }
+
+    .ia-gaps.is-animating .ia-gaps__row:not(.ia-gaps__row--head),
+    .ia-gaps.is-animating .ia-gaps__insight {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>

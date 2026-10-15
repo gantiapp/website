@@ -1,0 +1,336 @@
+---
+import { IconCheck, IconChevronDown, IconRobot, IconShieldCheck } from '@tabler/icons-astro';
+---
+
+<article class="ia-control" data-ia-control aria-hidden="true">
+  <header class="ia-control__header">
+    <span class="ia-control__mark">
+      <IconRobot size={18} stroke={1.75} />
+    </span>
+    <h3 class="ia-control__title">Du besoin au contrôle</h3>
+    <span class="ia-control__step">01 / GAIA</span>
+  </header>
+
+  <p class="ia-control__label">Votre règle métier</p>
+  <div class="ia-control__quote">
+    <p class="ia-control__quote-text">
+      <span data-ia-rule>« Chaque produit actif doit avoir un taux de taxe conforme au référentiel. »</span><span class="ia-control__caret"></span>
+    </p>
+  </div>
+
+  <span class="ia-control__arrow">
+    <IconChevronDown size={20} stroke={2} />
+  </span>
+
+  <div class="ia-control__proposal">
+    <p class="ia-control__label">Proposition de contrôle</p>
+    <span class="ia-control__badge">
+      <IconCheck size={14} stroke={2.5} />
+      À valider par vos équipes
+    </span>
+  </div>
+
+  <pre class="ia-control__sql"><span class="ia-control__line" data-ia-line="1"><span class="ia-control__kw">SELECT</span> product_id, name, tax_rate</span><span class="ia-control__line" data-ia-line="2"><span class="ia-control__kw">FROM</span> PIM_Products</span><span class="ia-control__line" data-ia-line="3"><span class="ia-control__kw">WHERE</span> tax_rate <span class="ia-control__kw">NOT IN</span> (5.5, 20.00);</span></pre>
+
+  <p class="ia-control__note">
+    <IconShieldCheck size={16} stroke={1.75} />
+    Une proposition, jamais une décision à votre place.
+  </p>
+</article>
+
+<script>
+  import { playWhileVisible, typeText } from '../scripts/ia-schema.js';
+
+  function setupControlSchemas() {
+    const schemas = document.querySelectorAll('[data-ia-control]');
+
+    schemas.forEach((schema) => {
+      if (!(schema instanceof HTMLElement)) {
+        return;
+      }
+
+      const rule = schema.querySelector('[data-ia-rule]');
+      if (!(rule instanceof HTMLElement)) {
+        return;
+      }
+
+      const ruleText = (rule.textContent ?? '').replace(/\s+/g, ' ').trim();
+      const stateClasses = ['is-animating', 'is-typing', 'is-arrow', 'is-badge', 'is-sql-1', 'is-sql-2', 'is-sql-3'];
+
+      const reset = () => {
+        stateClasses.forEach((className) => schema.classList.remove(className));
+        schema.classList.add('is-animating');
+        rule.textContent = '';
+      };
+
+      playWhileVisible(schema, async (wait) => {
+        reset();
+        if (!(await wait(420))) {
+          return;
+        }
+
+        schema.classList.add('is-typing');
+        const ruleTyped = await typeText(rule, ruleText, 22, wait);
+        if (!ruleTyped) {
+          return;
+        }
+
+        schema.classList.remove('is-typing');
+        schema.classList.add('is-arrow');
+        if (!(await wait(320))) {
+          return;
+        }
+
+        schema.classList.add('is-badge');
+        if (!(await wait(280))) {
+          return;
+        }
+
+        schema.classList.add('is-sql-1');
+        if (!(await wait(380))) {
+          return;
+        }
+
+        schema.classList.add('is-sql-2');
+        if (!(await wait(380))) {
+          return;
+        }
+
+        schema.classList.add('is-sql-3');
+        await wait(4600);
+      });
+    });
+  }
+
+  setupControlSchemas();
+</script>
+
+<style>
+  .ia-control {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 552px;
+    margin-left: auto;
+    padding: var(--space-20);
+    border: var(--stroke-width) solid var(--color-border);
+    border-radius: var(--radius-l);
+    background: var(--color-base-white);
+    box-shadow: 0 0 16px rgb(0 0 0 / 0.08);
+  }
+
+  .ia-feature--reverse .ia-control {
+    margin-left: 0;
+    margin-right: auto;
+  }
+
+  .ia-control__header,
+  .ia-control__proposal,
+  .ia-control__note,
+  .ia-control__badge {
+    display: flex;
+    align-items: center;
+  }
+
+  .ia-control__header {
+    gap: var(--space-12);
+  }
+
+  .ia-control__mark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-s);
+    background: var(--color-primary-500);
+    color: var(--color-base-white);
+  }
+
+  .ia-control__title {
+    margin: 0;
+    color: var(--color-primary-800);
+    font-family: var(--font-body);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1.2;
+  }
+
+  .ia-control__step {
+    margin-left: auto;
+    color: var(--color-gray-500);
+    font-family: var(--font-body);
+    font-size: var(--font-size-12);
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .ia-control__label {
+    margin: 0;
+    color: var(--color-gray-500);
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: var(--font-weight-medium);
+    letter-spacing: 0.06em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .ia-control__quote,
+  .ia-control__sql {
+    box-sizing: border-box;
+    margin: 0;
+    border-radius: var(--radius-m);
+    background: var(--color-primary-50);
+  }
+
+  .ia-control__quote {
+    min-height: 76px;
+    padding: var(--space-16);
+  }
+
+  .ia-control__quote-text {
+    margin: 0;
+    color: var(--color-primary-800);
+    font-family: var(--font-body);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.45;
+  }
+
+  .ia-control__caret {
+    display: none;
+    width: 2px;
+    height: 0.95em;
+    margin-left: 2px;
+    background: var(--color-primary-500);
+    vertical-align: -0.1em;
+    animation: ia-control-caret 0.9s steps(1) infinite;
+  }
+
+  .ia-control.is-typing .ia-control__caret {
+    display: inline-block;
+  }
+
+  .ia-control__arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-primary-500);
+  }
+
+  .ia-control__proposal {
+    justify-content: space-between;
+    gap: var(--space-12);
+  }
+
+  .ia-control__badge {
+    gap: var(--space-6);
+    padding: 4px 8px 4px 4px;
+    border-radius: var(--radius-pill);
+    background: color-mix(in srgb, var(--color-alert-success-500) 16%, white);
+    color: color-mix(in srgb, var(--color-alert-success-500) 62%, #14532d);
+    font-family: var(--font-body);
+    font-size: var(--font-size-12);
+    font-weight: var(--font-weight-medium);
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .ia-control__sql {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-height: 88px;
+    padding: var(--space-16);
+    color: var(--color-primary-800);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 13px;
+    line-height: 1.55;
+    white-space: pre-wrap;
+  }
+
+  .ia-control__kw {
+    color: var(--color-primary-500);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .ia-control__note {
+    gap: var(--space-8);
+    margin: 0;
+    color: var(--color-gray-500);
+    font-family: var(--font-body);
+    font-size: var(--font-size-12);
+    line-height: 1.3;
+  }
+
+  .ia-control.is-animating .ia-control__arrow,
+  .ia-control.is-animating .ia-control__badge,
+  .ia-control.is-animating .ia-control__line {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  .ia-control.is-animating.is-arrow .ia-control__arrow,
+  .ia-control.is-animating.is-badge .ia-control__badge,
+  .ia-control.is-animating.is-sql-1 .ia-control__line[data-ia-line='1'],
+  .ia-control.is-animating.is-sql-2 .ia-control__line[data-ia-line='2'],
+  .ia-control.is-animating.is-sql-3 .ia-control__line[data-ia-line='3'] {
+    opacity: 1;
+    transform: none;
+  }
+
+  .ia-control__arrow,
+  .ia-control__badge,
+  .ia-control__line {
+    transition: opacity 0.35s ease, transform 0.35s ease;
+  }
+
+  .ia-control :global(svg) {
+    display: block;
+    flex-shrink: 0;
+  }
+
+  @keyframes ia-control-caret {
+    0%,
+    50% {
+      opacity: 1;
+    }
+
+    50.01%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .ia-control,
+    .ia-feature--reverse .ia-control {
+      margin-right: auto;
+      margin-left: auto;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .ia-control__proposal {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ia-control__caret {
+      display: none;
+    }
+
+    .ia-control.is-animating .ia-control__arrow,
+    .ia-control.is-animating .ia-control__badge,
+    .ia-control.is-animating .ia-control__line {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>
