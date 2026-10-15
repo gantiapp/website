@@ -556,6 +556,7 @@ const connectorNodes = connectors.map((connector, index) => {
       box-shadow: 0 0 0 1px var(--color-primary-100);
       transform: none;
       animation: none;
+      transition: transform 0.28s ease;
     }
 
     .connectors__disc {
@@ -581,6 +582,18 @@ const connectorNodes = connectors.map((connector, index) => {
       white-space: nowrap;
       text-align: center;
     }
+
+    .connectors__node:hover,
+    .connectors__node:focus-within {
+      z-index: 2;
+      transform: scale(1.035) rotate(-1.25deg);
+    }
+
+    .connectors__node:hover .connectors__disc,
+    .connectors__node:focus-within .connectors__disc {
+      transform: none;
+      box-shadow: none;
+    }
   }
 
   @media (max-width: 768px) {
@@ -603,6 +616,15 @@ const connectorNodes = connectors.map((connector, index) => {
     .connectors__name {
       white-space: normal;
       text-align: left;
+    }
+  }
+
+  @media (max-width: 1024px) and (prefers-reduced-motion: reduce) {
+    .connectors__node,
+    .connectors__node:hover,
+    .connectors__node:focus-within {
+      transition: none;
+      transform: none;
     }
   }
 </style>
